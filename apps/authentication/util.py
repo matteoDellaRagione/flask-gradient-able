@@ -112,7 +112,7 @@ def dnsrecon(domain):
     
     return data
 
-def merge_json(json1, json2):
+def merge_json(json1, json2,json3):
     merged = {}
 
     # Unisci indirizzi
@@ -124,8 +124,16 @@ def merge_json(json1, json2):
     merged['server mail'] = list(mail_set)
 
     # Unisci conf se esiste(da modificare visto che potrebbe esserci o no conf solo nel json2)
-    if 'conf' in json1 or 'conf' in json2:
-        conf_set = set(json1.get('conf', [])) | set(json2.get('conf', []))
+    if 'conf' in json1:
+        conf_set = set(json1.get('conf', []))
         merged['conf'] = list(conf_set)
     
     return merged
+
+def theharvester(domain):
+    command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f /tmp/prova.json"
+    result = subprocess.run(command, shell=True, capture_output=True, text=True)
+
+def run_theharvester(domain, output_file):
+    command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f {output_file}"
+    subprocess.run(command, shell=True)
