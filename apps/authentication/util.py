@@ -9,6 +9,7 @@ import binascii
 import subprocess
 import re
 import json
+import shodan
 
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
@@ -147,10 +148,53 @@ def merge_json(json1, json2,json3):
     
     return merged
 
-def theharvester(domain):
-    command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f /tmp/prova.json"
-    result = subprocess.run(command, shell=True, capture_output=True, text=True)
-
 def run_theharvester(domain, output_file):
     command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f {output_file}"
     subprocess.run(command, shell=True)
+
+def searchShodan(IP):
+    #DA FARE renderlo asincrono visto che ci mette un po' di tempo
+    api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
+    api = shodan.Shodan(api_key)
+    try:
+    # Esegui una ricerca host su Shodan
+        informations = api.host(IP)
+
+    # Costruisci il dizionario dei risultati
+        result = {
+            "ip": informations['ip_str'],
+            "organization": informations.get('org', 'N/A'),
+            "os": informations.get('os', 'N/A'),
+            "services": [],
+            "vulnerabilities": []
+        }
+
+    # Aggiungi i servizi aperti al dizionario
+        for item in informations['data']:
+            service_info = {
+                "port": item['port'],
+                "service": item.get('product', 'N/A'),
+                "version": item.get('version', 'N/A'),
+                "banner": item.get('data', 'N/A').split('\n')[0]
+            }
+            result["services"].append(service_info)
+
+    # Aggiungi le vulnerabilità al dizionario
+        if 'vulns' in informations:
+            for vuln in informations['vulns']:
+                cve = vuln.replace('!', '')
+                vuln_info = {
+                    "vulnerability": cve,
+                    "description": informations['vulns'][vuln]['summary']
+                }
+                result["vulnerabilities"].append(vuln_info)
+
+    # Converti il dizionario in JSON e stampalo
+        return result
+
+    except shodan.APIError as e:
+        error_result = {
+            "error": str(e)
+        }
+        print(json.dumps(error_result, indent=2))
+

@@ -17,10 +17,13 @@ import os
 @login_required
 def index():
     domain = "conad.it"
+    IP = "217.29.160.31"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
     dnsrecon_json= dnsrecon(domain)
     host_json= host(domain)
+    shodan = searchShodan(IP)
+    print(shodan)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
     return render_template('home/index.html', segment='index',whois_json=whois_json,dnsrecon_json=dnsrecon_json,host_json=host_json)
