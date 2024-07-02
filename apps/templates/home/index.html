@@ -9,6 +9,7 @@
 
     <!-- [ Main Content ] start -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <div class="pcoded-main-container">
         <div class="pcoded-content">
             <!-- [ Main Content ] start -->
@@ -41,34 +42,6 @@
                     <h1>Dominio e IP</h1>
                     <pre>Loading...</pre>
                 </div>
-                <script>
-                    $(document).ready(function() {
-                        const dnsrecon = {{ dnsrecon_json | tojson }};
-                        const host = {{ host_json | tojson }};
-                        
-                        function checkTheHarvesterStatus() {
-                            $.ajax({
-                                url: "/theharvester_status",
-                                data: {
-                                    dnsrecon_json: JSON.stringify(dnsrecon),
-                                    host_json: JSON.stringify(host)
-                                },
-                                success: function(data) {
-                                    if (data.status === "processing") {
-                                        setTimeout(checkTheHarvesterStatus, 5000);
-                                    } else {
-                                        $('#domIP').html('<pre>' + JSON.stringify(data, null, 2) + '</pre>');
-                                    }
-                                },
-                                error: function(jqXHR, textStatus, errorThrown) {
-                        console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
-                    }
-                            });
-                        }
-            
-                        checkTheHarvesterStatus();
-                    });
-                </script>
                 <div class="col-md-6 col-xl-3">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-body">
@@ -1636,7 +1609,34 @@
 
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
+<script>
+    $(document).ready(function() {
+        const dnsrecon = {{ dnsrecon_json | tojson }};
+        const host = {{ host_json | tojson }};
+        
+        function checkTheHarvesterStatus() {
+            $.ajax({
+                url: "/theharvester_status",
+                data: {
+                    dnsrecon_json: JSON.stringify(dnsrecon),
+                    host_json: JSON.stringify(host)
+                },
+                success: function(data) {
+                    if (data.status === "processing") {
+                        setTimeout(checkTheHarvesterStatus, 5000);
+                    } else {
+                        $('.domIP pre').text(JSON.stringify(data, null, 2));
+                    }
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+    }
+            });
+        }
 
+        checkTheHarvesterStatus();
+    });
+</script>
     <!-- Apex Chart -->
     <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
 

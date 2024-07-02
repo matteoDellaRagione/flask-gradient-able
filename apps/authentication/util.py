@@ -116,7 +116,7 @@ def merge_json(json1, json2,json3):
     merged = {}
 
     # Unisci indirizzi
-    indirizzi_set = set(json1.get('indirizzi', [])) | set(json2.get('indirizzi', []))
+    indirizzi_set = set(json1.get('indirizzi', [])) | set(json2.get('indirizzi', [])) | set(json3.get('ips', []))
     merged['indirizzi'] = list(indirizzi_set)
 
     # Unisci server mail
@@ -127,6 +127,23 @@ def merge_json(json1, json2,json3):
     if 'conf' in json1:
         conf_set = set(json1.get('conf', []))
         merged['conf'] = list(conf_set)
+    
+    if 'hosts' in json3:
+        hosts_set = set(json3.get('hosts', []))
+        merged['hosts'] = list(hosts_set)
+    
+    if 'emails' in json3:
+        emails_set = set(json3.get('emails', []))
+        merged['emails'] = list(emails_set)
+    
+    if 'interesting_urls' in json3:
+        urls_set = set(json3.get('interesting_urls', []))
+        merged['interesting_urls'] = list(urls_set)
+
+    #if 'shodan' in json3:
+     #   shodan_set = set(json3.get('shodan', []))
+      #  merged['shodan'] = list(shodan_set)
+    #DA FARE aggiungere shodan perchè ritorna un array e in caso ASNS
     
     return merged
 

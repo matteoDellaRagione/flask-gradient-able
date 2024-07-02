@@ -21,13 +21,12 @@ def index():
     whois_json = whois_to_json(domain)
     dnsrecon_json= dnsrecon(domain)
     host_json= host(domain)
-    #theharvester(domain)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
     return render_template('home/index.html', segment='index',whois_json=whois_json,dnsrecon_json=dnsrecon_json,host_json=host_json)
 
 @blueprint.route('/theharvester_status')
-#@login_required
+@login_required
 def theharvester_status():
     domain = "conad.it"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
@@ -35,17 +34,15 @@ def theharvester_status():
     if os.path.exists(theharvester_output_file):
         with open(theharvester_output_file, 'r') as f:
             theharvester_json = json.load(f)
-        
-        #dnsrecon_json = request.args.get('dnsrecon_json')
-        #host_json = request.args.get('host_json')
+        dnsrecon_json = request.args.get('dnsrecon_json')
+        host_json = request.args.get('host_json')
         
         # Converti da stringa JSON a oggetto JSON
-        #dnsrecon_json = json.loads(dnsrecon_json)
-        #host_json = json.loads(host_json)    
+        dnsrecon_json = json.loads(dnsrecon_json)
+        host_json = json.loads(host_json)    
         # Unisci i JSON
-        #combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
-        #return jsonify(combined_json)
-        return jsonify(theharvester_json)
+        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
+        return (combined_json)
 
     else:
         return jsonify({"status": "processing"})
