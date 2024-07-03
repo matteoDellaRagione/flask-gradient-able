@@ -113,6 +113,29 @@ def dnsrecon(domain):
     
     return data
 
+def domain2IP(json):
+    hosts = json['hosts']
+    resolved_hosts = {}
+
+    for host_entry in hosts:
+        host = host_entry.split(':')[0]  # prendi solo l'host prima dei due punti
+        try:
+            # Esegui nslookup per l'host
+            result = subprocess.run(['nslookup', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+            output = result.stdout
+
+             # Trova tutte le linee che contengono l'indirizzo IP
+            ip_addresses = re.findall(r'Address: (\d+\.\d+\.\d+\.\d+)', output)
+            if ip_addresses:
+                resolved_hosts[host] = ip_addresses[-1]  # Prendi l'ultimo indirizzo IP trovato
+            else:
+                resolved_hosts[host] = "No IP found"
+        except Exception as e:
+            resolved_hosts[host_entry] = f"Error: {str(e)}"
+
+    json['resolved_hosts'] = resolved_hosts
+    return json
+
 def merge_json(json1, json2,json3):
     merged = {}
 
@@ -144,7 +167,7 @@ def merge_json(json1, json2,json3):
     #if 'shodan' in json3:
      #   shodan_set = set(json3.get('shodan', []))
       #  merged['shodan'] = list(shodan_set)
-    #DA FARE aggiungere shodan perchè ritorna un array e in caso ASNS
+    #DA FARE aggiungere in caso ASNS
     
     return merged
 

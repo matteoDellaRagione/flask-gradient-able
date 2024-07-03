@@ -22,8 +22,8 @@ def index():
     whois_json = whois_to_json(domain)
     dnsrecon_json= dnsrecon(domain)
     host_json= host(domain)
-    shodan = searchShodan(IP)
-    print(shodan)
+    #shodan = searchShodan(IP)
+    #print(shodan)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
     return render_template('home/index.html', segment='index',whois_json=whois_json,dnsrecon_json=dnsrecon_json,host_json=host_json)
@@ -45,7 +45,9 @@ def theharvester_status():
         host_json = json.loads(host_json)    
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
-        return (combined_json)
+        #prova a togliere ste robe del domain2IP
+        converted_json = domain2IP(combined_json)
+        return (converted_json)
 
     else:
         return jsonify({"status": "processing"})
