@@ -10,6 +10,7 @@ import subprocess
 import re
 import json
 import shodan
+import concurrent.futures
 
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
@@ -113,28 +114,39 @@ def dnsrecon(domain):
     
     return data
 
-def domain2IP(json):
-    hosts = json['hosts']
+def resolve_host(host):
+    try:
+        # Esegui nslookup per l'host
+        result = subprocess.run(['nslookup', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+        output = result.stdout
+
+        # Trova tutte le linee che contengono l'indirizzo IP
+        ip_addresses = re.findall(r'Address: (\d+\.\d+\.\d+\.\d+)', output)
+        #valid_ip_addresses = [ip for ip in ip_addresses if ip != "127.0.0.53"]
+        
+        if ip_addresses:
+            return host, ip_addresses[-1]  # Prendi l'ultimo indirizzo IP valido trovato
+        else:
+            return host, "No IP found"
+    except Exception as e:
+        return host, f"Error: {str(e)}"
+
+def domain2IP(json_data):
+    hosts = [host_entry.split(':')[0] for host_entry in json_data['hosts']]  # Prendi solo l'host prima dei due punti
     resolved_hosts = {}
 
-    for host_entry in hosts:
-        host = host_entry.split(':')[0]  # prendi solo l'host prima dei due punti
-        try:
-            # Esegui nslookup per l'host
-            result = subprocess.run(['nslookup', host], stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-            output = result.stdout
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        future_to_host = {executor.submit(resolve_host, host): host for host in hosts}
+        for future in concurrent.futures.as_completed(future_to_host):
+            host = future_to_host[future]
+            try:
+                host, ip = future.result()
+                resolved_hosts[host] = ip
+            except Exception as e:
+                resolved_hosts[host] = f"Error: {str(e)}"
 
-             # Trova tutte le linee che contengono l'indirizzo IP
-            ip_addresses = re.findall(r'Address: (\d+\.\d+\.\d+\.\d+)', output)
-            if ip_addresses:
-                resolved_hosts[host] = ip_addresses[-1]  # Prendi l'ultimo indirizzo IP trovato
-            else:
-                resolved_hosts[host] = "No IP found"
-        except Exception as e:
-            resolved_hosts[host_entry] = f"Error: {str(e)}"
-
-    json['resolved_hosts'] = resolved_hosts
-    return json
+    json_data['resolved_hosts'] = resolved_hosts
+    return json_data
 
 def merge_json(json1, json2,json3):
     merged = {}

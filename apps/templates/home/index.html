@@ -1623,7 +1623,8 @@
                 },
                 success: function(data) {
                     if (data.status === "processing") {
-                        setTimeout(checkTheHarvesterStatus, 5000);
+                        console.log("Sta processando")
+                        setTimeout(checkTheHarvesterStatus, 2000);
                     } else {
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
                     }
