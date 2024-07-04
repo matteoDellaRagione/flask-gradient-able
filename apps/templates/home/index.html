@@ -1611,16 +1611,9 @@
 {% block javascripts %}
 <script>
     $(document).ready(function() {
-        const dnsrecon = {{ dnsrecon_json | tojson }};
-        const host = {{ host_json | tojson }};
-        
         function checkTheHarvesterStatus() {
             $.ajax({
                 url: "/theharvester_status",
-                data: {
-                    dnsrecon_json: JSON.stringify(dnsrecon),
-                    host_json: JSON.stringify(host)
-                },
                 success: function(data) {
                     if (data.status === "processing") {
                         console.log("Sta processando")
