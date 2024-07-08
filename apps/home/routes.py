@@ -28,11 +28,9 @@ def index():
     host_json= host(domain)
     session['dnsrecon_json'] = dnsrecon_json
     session['host_json'] = host_json
-    #una volta fatta la roba da dominio a IP fai shodan
-    #shodan = searchShodan(IP)
-    #print(shodan)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
+    searchShodan("54.171.29.175")
     return render_template('home/index.html', segment='index',whois_json=whois_json)
 
 @blueprint.route('/theharvester_status')
@@ -72,19 +70,19 @@ def search_shodan_route():
     results = []
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
-        #future_to_ip = {executor.submit(searchShodan, ip): ip for ip in ips}
+        futures = []
         for ip in ips:
-            # Aggiungi un ritardo di 2 secondi prima di ogni richiesta
-            time.sleep(2)
+            # Aggiungi un ritardo di 1 secondo prima di ogni richiesta
+            time.sleep(1)
+            futures.append(executor.submit(searchShodan, ip))
 
-            future = executor.submit(searchShodan, ip)
-        #for future in as_completed(future_to_ip):
-            #ip = future_to_ip[future]
+        for future in concurrent.futures.as_completed(futures):
             try:
                 result = future.result()
+                if result is not None:
+                    results.append(result)
             except Exception as e:
-                result = {"ip": ip, "error": str(e)}
-            results.append(result)
+                results.append({"ip": ip, "error": str(e)})
 
     return results
 

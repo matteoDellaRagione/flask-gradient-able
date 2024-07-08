@@ -188,31 +188,43 @@ def run_theharvester(domain, output_file):
     subprocess.run(command, shell=True)
 
 def searchShodan(IP):
-    #DA FARE renderlo asincrono visto che ci mette un po' di tempo
     api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
     api = shodan.Shodan(api_key)
     try:
     # Esegui una ricerca host su Shodan
         informations = api.host(IP)
+        filtered_services = []
+        
+        for item in informations['data']:
+            print("Struttura: ",item)
+            if 'http' in item:
+                status_code = item['http'].get('status', None)
+                if status_code is not None and status_code not in [400, 401, 403, 404, 500, 502, 503]:
+                    service_info = {
+                        "port": item['port'],
+                        "service": item.get('product', 'N/A'),
+                        "version": item.get('version', 'N/A'),
+                        "banner": item.get('data', 'N/A').split('\n')[0]
+                    }
+                    #CONTROLLA COME FARE per mettere sto location perchè può essere in questi due punti, la prova è nel file ciao
+                    location_header1 = item.get('data', None).split('\n')[6]
+                    location_header2 = item.get('data',None).split('\n')[4]
+                    if 'Location' in location_header:
+                        service_info['location'] = location_header
+                    filtered_services.append(service_info)
+                    print("Filtered_services ",filtered_services)
+
+        if not filtered_services:
+            return None
 
     # Costruisci il dizionario dei risultati
         result = {
             "ip": informations['ip_str'],
             "organization": informations.get('org', 'N/A'),
             "os": informations.get('os', 'N/A'),
-            "services": [],
+            "services": filtered_services,
             "vulnerabilities": []
         }
-
-    # Aggiungi i servizi aperti al dizionario
-        for item in informations['data']:
-            service_info = {
-                "port": item['port'],
-                "service": item.get('product', 'N/A'),
-                "version": item.get('version', 'N/A'),
-                "banner": item.get('data', 'N/A').split('\n')[0]
-            }
-            result["services"].append(service_info)
 
     # Aggiungi le vulnerabilità al dizionario
         if 'vulns' in informations:
@@ -227,12 +239,14 @@ def searchShodan(IP):
     # Converti il dizionario in JSON e stampalo
         return result
 
+    #Sotto la stampa di può anche togliere
     except shodan.APIError as e:
         error_result = {
             "ip" : IP,
             "error": str(e)
         }
         print(json.dumps(error_result, indent=2))
+        return None
 
 def rmDuplicati(json):
     indirizzi = set(json['indirizzi'])
