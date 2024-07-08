@@ -10,6 +10,10 @@ from jinja2 import TemplateNotFound
 from apps.authentication.util import *
 from threading import Thread
 import os
+import concurrent.futures
+import time
+
+
 
   
 
@@ -29,11 +33,10 @@ def index():
     #print(shodan)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
-    #return render_template('home/index.html', segment='index',whois_json=whois_json,dnsrecon_json=dnsrecon_json,host_json=host_json)
     return render_template('home/index.html', segment='index',whois_json=whois_json)
 
 @blueprint.route('/theharvester_status')
-#@login_required
+@login_required
 def theharvester_status():
     domain = "conad.it"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
@@ -41,20 +44,49 @@ def theharvester_status():
     if os.path.exists(theharvester_output_file):
         with open(theharvester_output_file, 'r') as f:
             theharvester_json = json.load(f)
-       # dnsrecon_json = request.args.get('dnsrecon_json')
-        #host_json = request.args.get('host_json')
         dnsrecon_json = session.get('dnsrecon_json', {})
-        host_json = session.get('host_json', {})
-        # Converti da stringa JSON a oggetto JSON
-      #  dnsrecon_json = json.loads(dnsrecon_json)
-       # host_json = json.loads(host_json)    
+        host_json = session.get('host_json', {})  
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
         true_json = domain2IP(combined_json)
-        return (true_json)
+        nodupl_json = rmDuplicati(true_json)
+        return (nodupl_json)
 
     else:
         return jsonify({"status": "processing"})
+
+@blueprint.route('/search_shodan', methods=['GET'])
+@login_required
+def search_shodan_route():
+    json_data = request.args.get('json')
+    
+    if not json_data:
+        return jsonify({"error": "No JSON data provided"}), 400
+    
+    try:
+        json_obj = json.loads(json_data)
+        ips = json_obj.get('indirizzi', [])
+    except json.JSONDecodeError:
+        return jsonify({"error": "Invalid JSON data"}), 400
+
+    results = []
+
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        #future_to_ip = {executor.submit(searchShodan, ip): ip for ip in ips}
+        for ip in ips:
+            # Aggiungi un ritardo di 2 secondi prima di ogni richiesta
+            time.sleep(2)
+
+            future = executor.submit(searchShodan, ip)
+        #for future in as_completed(future_to_ip):
+            #ip = future_to_ip[future]
+            try:
+                result = future.result()
+            except Exception as e:
+                result = {"ip": ip, "error": str(e)}
+            results.append(result)
+
+    return results
 
 @blueprint.route('/<template>')
 @login_required

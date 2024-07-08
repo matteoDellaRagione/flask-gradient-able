@@ -42,6 +42,10 @@
                     <h1>Dominio e IP</h1>
                     <pre>Loading...</pre>
                 </div>
+                <div class="shodan">
+                    <h1>Shodan</h1>
+                    <pre>Loading...</pre>
+                </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-body">
@@ -1616,10 +1620,11 @@
                 url: "/theharvester_status",
                 success: function(data) {
                     if (data.status === "processing") {
-                        console.log("Sta processando")
-                        setTimeout(checkTheHarvesterStatus, 2000);
+                        setTimeout(checkTheHarvesterStatus, 5000);
                     } else {
+                        var indirizzi = data.indirizzi;
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
+                        shodan(indirizzi);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -1628,7 +1633,39 @@
             });
         }
 
+        function shodan(indirizzi) {
+            $.ajax({
+                url: "/search_shodan",
+                method: "GET",
+                data: { json: JSON.stringify({ indirizzi: indirizzi }) },
+                success: function(data) {
+                    $('.shodan pre').text(JSON.stringify(data, null, 2));
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+                }
+            });
+        }
+
         checkTheHarvesterStatus();
+    });
+</script>
+
+<script>
+    $(document).ready(function() {
+        function shodan() {
+            $.ajax({
+                url: "/search_shodan",
+                success: function(data) {
+                $('.shodan pre').text(JSON.stringify(data, null, 2));
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+        console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+    }
+            });
+        }
+
+        shodan();
     });
 </script>
     <!-- Apex Chart -->

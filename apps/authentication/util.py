@@ -229,7 +229,35 @@ def searchShodan(IP):
 
     except shodan.APIError as e:
         error_result = {
+            "ip" : IP,
             "error": str(e)
         }
         print(json.dumps(error_result, indent=2))
 
+def rmDuplicati(json):
+    indirizzi = set(json['indirizzi'])
+    resolved_hosts = json['resolved_hosts']
+
+    for host, ip in resolved_hosts.items():
+        if ip != "No IP found":
+            indirizzi.add(ip)
+
+    json['indirizzi'] = list(indirizzi)
+    return json
+
+def cuncurrentShodan(json):
+    ips = json['indirizzi']
+    results = []
+
+    with ThreadPoolExecutor(max_workers=5) as executor:
+        future_to_ip = {executor.submit(searchShodan, ip): ip for ip in ips}
+
+        for future in as_completed(future_to_ip):
+            ip = future_to_ip[future]
+            try:
+                result = future.result()
+            except Exception as e:
+                result = {"ip": ip, "error": str(e)}
+            results.append(result)
+
+    return results
