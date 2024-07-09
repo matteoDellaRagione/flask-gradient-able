@@ -1623,8 +1623,9 @@
                         setTimeout(checkTheHarvesterStatus, 5000);
                     } else {
                         var indirizzi = data.indirizzi;
+                        var urls = data.interesting_urls;
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
-                        shodan(indirizzi);
+                        shodan(indirizzi,urls);
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -1633,11 +1634,11 @@
             });
         }
 
-        function shodan(indirizzi) {
+        function shodan(indirizzi,urls) {
             $.ajax({
                 url: "/search_shodan",
                 method: "GET",
-                data: { json: JSON.stringify({ indirizzi: indirizzi }) },
+                data: { json: JSON.stringify({ indirizzi: indirizzi, urls: urls }) },
                 success: function(data) {
                     $('.shodan pre').text(JSON.stringify(data, null, 2));
                 },

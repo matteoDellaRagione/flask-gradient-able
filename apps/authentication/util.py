@@ -152,7 +152,7 @@ def merge_json(json1, json2,json3):
     merged = {}
 
     # Unisci indirizzi
-    indirizzi_set = set(json1.get('indirizzi', [])) | set(json2.get('indirizzi', [])) | set(json3.get('ips', []))
+    indirizzi_set = set(json1.get('indirizzi', [])) | set(json2.get('indirizzi', [])) | set(json3.get('ips', [])) | set(json1.get('server mail', []))
     merged['indirizzi'] = list(indirizzi_set)
 
     # Unisci server mail
@@ -175,13 +175,8 @@ def merge_json(json1, json2,json3):
     if 'interesting_urls' in json3:
         urls_set = set(json3.get('interesting_urls', []))
         merged['interesting_urls'] = list(urls_set)
-
-    #if 'shodan' in json3:
-     #   shodan_set = set(json3.get('shodan', []))
-      #  merged['shodan'] = list(shodan_set)
-    #DA FARE aggiungere in caso ASNS
-    
-    return merged
+    translated_json = domain2IP(merged)
+    return rmDuplicati(translated_json)
 
 def run_theharvester(domain, output_file):
     command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f {output_file}"
@@ -196,23 +191,25 @@ def searchShodan(IP):
         filtered_services = []
         
         for item in informations['data']:
-            print("Struttura: ",item)
-            if 'http' in item:
-                status_code = item['http'].get('status', None)
-                if status_code is not None and status_code not in [400, 401, 403, 404, 500, 502, 503]:
-                    service_info = {
+            service_info = {
                         "port": item['port'],
                         "service": item.get('product', 'N/A'),
                         "version": item.get('version', 'N/A'),
                         "banner": item.get('data', 'N/A').split('\n')[0]
                     }
-                    #CONTROLLA COME FARE per mettere sto location perchè può essere in questi due punti, la prova è nel file ciao
-                    location_header1 = item.get('data', None).split('\n')[6]
-                    location_header2 = item.get('data',None).split('\n')[4]
-                    if 'Location' in location_header:
-                        service_info['location'] = location_header
+            if 'http' in item:
+                status_code = item['http'].get('status', None)
+                if status_code is not None and status_code not in [400, 401, 403, 404, 500, 502, 503]:
+                    http_data = item.get('data', None)
+                    location_regex = r'Location: (http[^\r\n]+)'
+                    match = re.search(location_regex, http_data, re.IGNORECASE)
+                    if match:
+                        service_info['location'] = match.group(1)
+                    else: 
+                        service_info['location'] = "/"
                     filtered_services.append(service_info)
-                    print("Filtered_services ",filtered_services)
+            else:
+                filtered_services.append(service_info)
 
         if not filtered_services:
             return None
@@ -259,19 +256,32 @@ def rmDuplicati(json):
     json['indirizzi'] = list(indirizzi)
     return json
 
-def cuncurrentShodan(json):
-    ips = json['indirizzi']
-    results = []
+def eyewitness(results, urls):
+    url_set = set(urls)
+    for entry in results:
+        ip = entry["ip"]
+        for service in entry["services"]:
+            location = service.get("location", "")
+            banner = service.get("banner", "")
+            port = service.get("port", 80)
 
-    with ThreadPoolExecutor(max_workers=5) as executor:
-        future_to_ip = {executor.submit(searchShodan, ip): ip for ip in ips}
+        # Aggiungiamo l'URL dal campo location
+            if "/" in location and "200 OK" in banner:
+                url_set.add(create_url(ip, port))
+                #urls.append(create_url(ip, port))
+            else:
+                url_set.add(location)
+                #urls.append(location)
 
-        for future in as_completed(future_to_ip):
-            ip = future_to_ip[future]
-            try:
-                result = future.result()
-            except Exception as e:
-                result = {"ip": ip, "error": str(e)}
-            results.append(result)
+# Creiamo il nuovo JSON
+    output = {
+        #"urls": urls
+        "urls": list(url_set)
+    }
+    print("URLS: ",output)
 
-    return results
+def create_url(ip, port):
+    if port == 443:
+        return f"https://{ip}"
+    else:
+        return f"http://{ip}:{port}"

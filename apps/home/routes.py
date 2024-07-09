@@ -21,7 +21,6 @@ import time
 @login_required
 def index():
     domain = "conad.it"
-    IP = "217.29.160.31"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
     dnsrecon_json= dnsrecon(domain)
@@ -30,7 +29,6 @@ def index():
     session['host_json'] = host_json
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
-    searchShodan("54.171.29.175")
     return render_template('home/index.html', segment='index',whois_json=whois_json)
 
 @blueprint.route('/theharvester_status')
@@ -46,16 +44,16 @@ def theharvester_status():
         host_json = session.get('host_json', {})  
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
-        true_json = domain2IP(combined_json)
-        nodupl_json = rmDuplicati(true_json)
-        return (nodupl_json)
+        #true_json = domain2IP(combined_json)
+        #nodupl_json = rmDuplicati(true_json)
+        return (combined_json)
 
     else:
         return jsonify({"status": "processing"})
 
 @blueprint.route('/search_shodan', methods=['GET'])
 @login_required
-def search_shodan_route():
+def search_shodan_route_eyewitness():
     json_data = request.args.get('json')
     
     if not json_data:
@@ -64,6 +62,7 @@ def search_shodan_route():
     try:
         json_obj = json.loads(json_data)
         ips = json_obj.get('indirizzi', [])
+        urls = json_obj.get('urls', [])
     except json.JSONDecodeError:
         return jsonify({"error": "Invalid JSON data"}), 400
 
@@ -82,8 +81,8 @@ def search_shodan_route():
                 if result is not None:
                     results.append(result)
             except Exception as e:
-                results.append({"ip": ip, "error": str(e)})
-
+                print({"ip": ip, "error": str(e)})
+    eyewitness(results,urls)
     return results
 
 @blueprint.route('/<template>')
