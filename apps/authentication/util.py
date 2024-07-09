@@ -287,5 +287,10 @@ def create_url(ip, port):
         return f"http://{ip}:{port}"
 
 def run_eyewitness(url):
-    command = f"eyewitness --single {url} -d /tmp/{url} --no-prompt"
+    eyewitness_path = "/usr/share/eyewitness"
+    os.chdir(eyewitness_path)
+    url2 = url.replace("/", "_")
+    #command = f"eyewitness --single {url} -d /tmp/{url} --no-prompt"
+    command = f"./EyeWitness.py --single {url} -d /tmp/{url2} --no-prompt"
+    print("command:",command)
     subprocess.run(command, shell=True)
