@@ -268,20 +268,24 @@ def eyewitness(results, urls):
         # Aggiungiamo l'URL dal campo location
             if "/" in location and "200 OK" in banner:
                 url_set.add(create_url(ip, port))
-                #urls.append(create_url(ip, port))
             else:
                 url_set.add(location)
-                #urls.append(location)
 
 # Creiamo il nuovo JSON
     output = {
-        #"urls": urls
         "urls": list(url_set)
     }
-    print("URLS: ",output)
+    
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(run_eyewitness, url) for url in output["urls"]]
+        concurrent.futures.wait(futures)
 
 def create_url(ip, port):
     if port == 443:
         return f"https://{ip}"
     else:
         return f"http://{ip}:{port}"
+
+def run_eyewitness(url):
+    command = f"eyewitness --single {url} -d /tmp/{url} --no-prompt"
+    subprocess.run(command, shell=True)
