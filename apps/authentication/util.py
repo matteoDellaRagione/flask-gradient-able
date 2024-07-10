@@ -286,11 +286,31 @@ def create_url(ip, port):
     else:
         return f"http://{ip}:{port}"
 
-def run_eyewitness(url):
-    eyewitness_path = "/usr/share/eyewitness"
-    os.chdir(eyewitness_path)
-    url2 = url.replace("/", "_")
-    #command = f"eyewitness --single {url} -d /tmp/{url} --no-prompt"
-    command = f"./EyeWitness.py --no-prompt --timeout 120 --single \"{url}\" -d /tmp/{url2}"
-    print("command:",command)
+
+def run_gowitness(url):
+    command = f"gowitness -P /tmp/ --screenshot-filter 200 --disable-db single \"{url}\""
     subprocess.run(command, shell=True)
+
+def gowitness(results, urls):
+    url_set = set(urls)
+    for entry in results:
+        ip = entry["ip"]
+        for service in entry["services"]:
+            location = service.get("location", "")
+            banner = service.get("banner", "")
+            port = service.get("port", 80)
+
+        # Aggiungiamo l'URL dal campo location
+            if "/" in location and "200 OK" in banner:
+                url_set.add(create_url(ip, port))
+            else:
+                url_set.add(location)
+
+# Creiamo il nuovo JSON
+    output = {
+        "urls": list(url_set)
+    }
+    
+    with concurrent.futures.ThreadPoolExecutor() as executor:
+        futures = [executor.submit(run_gowitness, url) for url in output["urls"]]
+        concurrent.futures.wait(futures)

@@ -44,8 +44,6 @@ def theharvester_status():
         host_json = session.get('host_json', {})  
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
-        #true_json = domain2IP(combined_json)
-        #nodupl_json = rmDuplicati(true_json)
         return (combined_json)
 
     else:
@@ -53,7 +51,7 @@ def theharvester_status():
 
 @blueprint.route('/search_shodan', methods=['GET'])
 @login_required
-def search_shodan_route_eyewitness():
+def search_shodan_route_gowitness():
     json_data = request.args.get('json')
     
     if not json_data:
@@ -82,8 +80,7 @@ def search_shodan_route_eyewitness():
                     results.append(result)
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
-    #Funziona ma troppo tempo e CPU            
-    #eyewitness(results,urls)
+    gowitness(results,urls)
     return results
 
 @blueprint.route('/<template>')
