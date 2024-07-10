@@ -82,7 +82,8 @@ def search_shodan_route_eyewitness():
                     results.append(result)
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
-    eyewitness(results,urls)
+    #Funziona ma troppo tempo e CPU            
+    #eyewitness(results,urls)
     return results
 
 @blueprint.route('/<template>')

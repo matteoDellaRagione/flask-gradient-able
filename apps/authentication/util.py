@@ -291,6 +291,6 @@ def run_eyewitness(url):
     os.chdir(eyewitness_path)
     url2 = url.replace("/", "_")
     #command = f"eyewitness --single {url} -d /tmp/{url} --no-prompt"
-    command = f"./EyeWitness.py --single {url} -d /tmp/{url2} --no-prompt"
+    command = f"./EyeWitness.py --no-prompt --timeout 120 --single \"{url}\" -d /tmp/{url2}"
     print("command:",command)
     subprocess.run(command, shell=True)
