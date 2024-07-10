@@ -80,8 +80,15 @@ def search_shodan_route_gowitness():
                     results.append(result)
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
-    gowitness(results,urls)
+    #stand by per testing linkedin
+    #gowitness(results,urls)
     return results
+
+@blueprint.route('/linkedinDump')
+@login_required
+def linkedinDump():
+    #return linkedinDumper()
+    return linkedinDumperTry()
 
 @blueprint.route('/<template>')
 @login_required

@@ -11,7 +11,9 @@ import re
 import json
 import shodan
 import concurrent.futures
-
+import csv
+import io
+import sys
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
 
@@ -314,3 +316,84 @@ def gowitness(results, urls):
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(run_gowitness, url) for url in output["urls"]]
         concurrent.futures.wait(futures)
+
+def linkedinDumper():
+    os.chdir("LinkedInDumper-main")
+    command = [
+        'python3', 'linkedindumper.py', '--url', 'https://www.linkedin.com/company/conad/', 
+        '--cookie', 'AQEDAUdNDO8EwfkIAAABj7jgMYQAAAGQv53pG04AmECKQZE95Q1_Pmhaw-lbOPXkPEJyl376j0FvOTMkij4Tgxm-Mpx5O7p3EBtZzpH3owZo1XmqcEXBcmhxyoKecDW6nI320MMtoAObKwvGeRT4gk_O', 
+        '--quiet'
+    ]
+    print("Prima del comando")
+    result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
+    #result = subprocess.run(command, stdout=sys.stdout, stderr=sys.stderr, text=True)
+    print("Dopo il comando")
+    
+    if result.returncode != 0:
+        # Gestione errore
+        raise Exception(f"Errore nell'esecuzione del comando: {result.stderr}")
+    
+    output_lines = result.stdout.split('\n')
+    csv_lines = [line for line in output_lines if not line.startswith('Progress')]
+    
+    f = io.StringIO('\n'.join(csv_lines))
+    reader = csv.DictReader(f, delimiter=';')
+    data = [row for row in reader]
+    print("CSV: ",data)
+    return data
+
+def linkedinDumperTry():
+    # Output simulato ricevuto direttamente
+    simulated_output = [
+        {
+            "null": [
+                "Firstname",
+                "Lastname",
+                "Position",
+                "Gender",
+                "Location",
+                "Profile"
+            ]
+        },
+        {
+            "null": [
+                "Angelo",
+                "Bernunzo",
+                "Vice direttore presso Supermercato Conad Lodi",
+                "N/A",
+                "Lodi",
+                "https://www.linkedin.com/in/angelo-bernunzo-a97007ab"
+            ]
+        },
+        {
+            "null": [
+                "Maria Morena",
+                "Castrianni",
+                "conad",
+                "N/A",
+                "Milan",
+                "https://www.linkedin.com/in/maria-morena-castrianni-774441227"
+            ]
+        },
+        {
+            "null": [
+                "Stefano",
+                "Gadda",
+                "Store Manager Conad presso Cernuscostore s.r.l.",
+                "N/A",
+                "Cernusco sul Naviglio",
+                "https://www.linkedin.com/in/stefano-gadda-21569013b"
+            ]
+        }
+    ]
+    
+    # Estrazione delle intestazioni
+    headers = simulated_output[0]["null"]
+    
+    # Creazione di un array di dizionari con i dati
+    data = []
+    for row in simulated_output[1:]:
+        row_data = row["null"]
+        entry = {headers[i]: row_data[i] for i in range(len(headers))}
+        data.append(entry)
+    return data

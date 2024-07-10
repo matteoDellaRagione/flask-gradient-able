@@ -46,6 +46,10 @@
                     <h1>Shodan</h1>
                     <pre>Loading...</pre>
                 </div>
+                <div class="linkedinDump">
+                    <h1>Account Linkedin</h1>
+                    <pre>Loading...</pre>
+                </div>
                 <div class="col-md-6 col-xl-3">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-body">
@@ -1625,7 +1629,9 @@
                         var indirizzi = data.indirizzi;
                         var urls = data.interesting_urls;
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
+                        linkedinDump();
                         shodan(indirizzi,urls);
+                        
                     }
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
@@ -1641,6 +1647,19 @@
                 data: { json: JSON.stringify({ indirizzi: indirizzi, urls: urls }) },
                 success: function(data) {
                     $('.shodan pre').text(JSON.stringify(data, null, 2));
+                },
+                error: function(jqXHR, textStatus, errorThrown) {
+                    console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+                }
+            });
+        }
+
+        function linkedinDump() {
+            $.ajax({
+                url: "/linkedinDump",
+                method: "GET",
+                success: function(data) {
+                    $('.linkedinDump pre').text(JSON.stringify(data, null, 2));
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
