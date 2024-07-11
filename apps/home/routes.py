@@ -87,8 +87,35 @@ def search_shodan_route_gowitness():
 @blueprint.route('/linkedinDump')
 @login_required
 def linkedinDump():
+    #Commenti per non sprecare cpu e API
     #return linkedinDumper()
-    return linkedinDumperTry()
+    linkedin = linkedinDumperTry()
+    domain = "conad.it"
+    emails = [
+    {
+      "Email": "angelo.bernunzo@conad.it",
+      "Firstname": "Angelo",
+      "Lastname": "Bernunzo"
+    },
+    {
+      "Email": "maria.morena.castrianni@conad.it",
+      "Firstname": "Maria Morena",
+      "Lastname": "Castrianni"
+    },
+    {
+      "Email": "stefano.gadda@conad.it",
+      "Firstname": "Stefano",
+      "Lastname": "Gadda"
+    }
+    ]
+    
+    #pattern = domain_search(domain)
+    #emails = createEmail(pattern,domain,linkedin)
+    combined_data = {
+    "linkedin": linkedin,
+    "company_emails": emails
+    }
+    return combined_data
 
 @blueprint.route('/<template>')
 @login_required

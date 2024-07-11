@@ -14,6 +14,7 @@ import concurrent.futures
 import csv
 import io
 import sys
+import requests
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
 
@@ -384,7 +385,18 @@ def linkedinDumperTry():
                 "Cernusco sul Naviglio",
                 "https://www.linkedin.com/in/stefano-gadda-21569013b"
             ]
+        },
+        {
+            "null": [
+                "Giuseppe",
+                "Zuliani",
+                "Store Manager Conad presso Cernuscostore s.r.l.",
+                "N/A",
+                "Cernusco sul Naviglio",
+                "https://www.linkedin.com/in/stefano-gadda-21569013b"
+            ]
         }
+
     ]
     
     # Estrazione delle intestazioni
@@ -397,3 +409,46 @@ def linkedinDumperTry():
         entry = {headers[i]: row_data[i] for i in range(len(headers))}
         data.append(entry)
     return data
+
+def domain_search(domain):
+    api_key = '38efac4a66dbb53ea2ee81fa9dc60770fe57d4c4'  # Inserisci qui la tua API key di Hunter.io
+    
+    # URL dell'API di Hunter.io
+    url = f'https://api.hunter.io/v2/domain-search?domain={domain}&api_key={api_key}'
+
+    # Fai la richiesta GET all'API
+    response = requests.get(url)
+
+    # Controlla lo stato della risposta
+    if response.status_code == 200:
+        # Converte la risposta JSON in un dizionario Python
+        data = response.json()
+        pattern = data.get('data', {}).get('pattern')
+        return pattern
+    else:
+        return jsonify({'error': 'Impossibile ottenere i dati'}), response.status_code
+
+def createEmail(pattern,domain,json):
+    emails = []
+
+    for person in json:
+        # Ottieni i campi necessari
+        first_name = person.get('Firstname', '').lower().replace(' ', '.')
+        last_name = person.get('Lastname', '').lower().replace(' ', '.')
+        
+        # Applica il pattern
+        #Qua andrà cambiato per fare altre prove, così è solo con fist.last
+        email = pattern.replace('{first}', first_name).replace('{last}', last_name)
+        email = f"{email}@{domain}"
+
+        #DA FARE validazione dell'email per vedere se esiste
+
+        # Aggiungi l'email al risultato
+        emails.append({
+            "Firstname": person.get('Firstname'),
+            "Lastname": person.get('Lastname'),
+            "Email": email
+        })
+
+    return emails
+
