@@ -20,11 +20,12 @@ import time
 @blueprint.route('/index')
 @login_required
 def index():
-    domain = "conad.it"
+    domain = "edison.it"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
     dnsrecon_json= dnsrecon(domain)
     host_json= host(domain)
+    domainShodan()
     session['dnsrecon_json'] = dnsrecon_json
     session['host_json'] = host_json
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
@@ -34,7 +35,7 @@ def index():
 @blueprint.route('/theharvester_status')
 @login_required
 def theharvester_status():
-    domain = "conad.it"
+    domain = "edison.it"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):

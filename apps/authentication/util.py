@@ -452,3 +452,20 @@ def createEmail(pattern,domain,json):
 
     return emails
 
+def domainShodan():
+    api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
+    api = shodan.Shodan(api_key)
+    try:
+        # Fai la query a Shodan
+        query = 'hostname:*.edison.it country:"IT"'
+        result = api.search(query)
+        
+        hostnames = []
+        for service in result['http']:
+            if 'hostnames' in service['http']:
+                hostnames.extend(service['http']['hostnames'])
+        
+        print(hostnames)
+        return hostnames
+    except shodan.APIError as e:
+        return jsonify({'error': str(e)}), 500
