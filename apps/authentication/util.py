@@ -61,8 +61,8 @@ def parse_host_output(output):
 
     # Creare un dizionario con i risultati
     host_data = {
-        "indirizzi": addresses,
-        "server mail": mail_servers
+        "IP": addresses,
+        "mail server": mail_servers
     }
     
     return host_data
@@ -110,8 +110,8 @@ def dnsrecon(domain):
     
     # Crea il dizionario JSON
     data = {
-        'server mail': mail_servers,
-        'indirizzi': addresses,
+        'mail server': mail_servers,
+        'IP': addresses,
         'conf': conf
     }
     
@@ -135,7 +135,7 @@ def resolve_host(host):
         return host, f"Error: {str(e)}"
 
 def domain2IP(json_data):
-    hosts = [host_entry.split(':')[0] for host_entry in json_data['hosts']]  # Prendi solo l'host prima dei due punti
+    hosts = [host_entry.split(':')[0] for host_entry in json_data['domini']]  # Prendi solo l'host prima dei due punti
     resolved_hosts = {}
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -144,40 +144,38 @@ def domain2IP(json_data):
             host = future_to_host[future]
             try:
                 host, ip = future.result()
-                resolved_hosts[host] = ip
+                if ip != "No IP found":
+                    resolved_hosts[host] = ip
             except Exception as e:
                 resolved_hosts[host] = f"Error: {str(e)}"
 
     json_data['resolved_hosts'] = resolved_hosts
     return json_data
 
-def merge_json(json1, json2,json3):
+def merge_json(json1, json2,json3,json4):
     merged = {}
 
     # Unisci indirizzi
-    indirizzi_set = set(json1.get('indirizzi', [])) | set(json2.get('indirizzi', [])) | set(json3.get('ips', [])) | set(json1.get('server mail', []))
+    indirizzi_set = set(json1.get('IP', [])) | set(json2.get('IP', [])) | set(json3.get('ips', [])) | set(json1.get('mail server', []))
     merged['indirizzi'] = list(indirizzi_set)
 
     # Unisci server mail
-    mail_set = set(json1.get('server mail', [])) | set(json2.get('server mail', []))
+    mail_set = set(json1.get('mail server', [])) | set(json2.get('mail server', []))
     merged['server mail'] = list(mail_set)
 
-    # Unisci conf se esiste(da modificare visto che potrebbe esserci o no conf solo nel json2)
-    if 'conf' in json1:
-        conf_set = set(json1.get('conf', []))
-        merged['conf'] = list(conf_set)
+    conf_set = set(json1.get('conf', []))
+    merged['conf'] = list(conf_set)
     
-    if 'hosts' in json3:
-        hosts_set = set(json3.get('hosts', []))
-        merged['hosts'] = list(hosts_set)
+    hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', []))
+    merged['domini'] = list(hosts_set)
     
-    if 'emails' in json3:
-        emails_set = set(json3.get('emails', []))
-        merged['emails'] = list(emails_set)
+    emails_set = set(json3.get('emails', []))
+    merged['emails'] = list(emails_set)
     
-    if 'interesting_urls' in json3:
-        urls_set = set(json3.get('interesting_urls', []))
-        merged['interesting_urls'] = list(urls_set)
+    urls_set = set(json3.get('interesting_urls', []))
+    merged['interesting_urls'] = list(urls_set)
+
+    
     translated_json = domain2IP(merged)
     return rmDuplicati(translated_json)
 
@@ -459,13 +457,14 @@ def domainShodan():
         # Fai la query a Shodan
         query = 'hostname:*.edison.it country:"IT"'
         result = api.search(query)
-        
-        hostnames = []
-        for service in result['http']:
-            if 'hostnames' in service['http']:
-                hostnames.extend(service['http']['hostnames'])
-        
-        print(hostnames)
-        return hostnames
+        all_hostnames = []
+        for match in result.get("matches", []):
+    # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
+            hostnames = match.get("hostnames", [])
+    # Stampa gli hostnames per ogni elemento di "matches"
+        for hostname in hostnames:
+            all_hostnames.append(hostname)
+        json = {"hostnames": all_hostnames}
+        return json
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500

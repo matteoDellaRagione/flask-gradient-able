@@ -51,7 +51,7 @@ def configure_database(app):
 def create_app(config):
     app = Flask(__name__)
     #DA FARE SICURA
-    app.secret_key = 'supersecretkey'
+    #app.secret_key = 'supersecretkey'
     app.config.from_object(config)
     register_extensions(app)
     register_blueprints(app)

@@ -23,11 +23,6 @@ def index():
     domain = "edison.it"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
-    dnsrecon_json= dnsrecon(domain)
-    host_json= host(domain)
-    domainShodan()
-    session['dnsrecon_json'] = dnsrecon_json
-    session['host_json'] = host_json
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
     return render_template('home/index.html', segment='index',whois_json=whois_json)
@@ -41,10 +36,12 @@ def theharvester_status():
     if os.path.exists(theharvester_output_file):
         with open(theharvester_output_file, 'r') as f:
             theharvester_json = json.load(f)
-        dnsrecon_json = session.get('dnsrecon_json', {})
-        host_json = session.get('host_json', {})  
+        dnsrecon_json= dnsrecon(domain)
+        host_json= host(domain)
+        shodan_json = domainShodan()  
         # Unisci i JSON
-        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json)
+        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json,shodan_json)
+        print("Fatto")
         return (combined_json)
 
     else:
