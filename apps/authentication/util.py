@@ -157,7 +157,7 @@ def merge_json(json1, json2,json3,json4):
 
     # Unisci indirizzi
     indirizzi_set = set(json1.get('IP', [])) | set(json2.get('IP', [])) | set(json3.get('ips', [])) | set(json1.get('mail server', []))
-    merged['indirizzi'] = list(indirizzi_set)
+    merged['IP'] = list(indirizzi_set)
 
     # Unisci server mail
     mail_set = set(json1.get('mail server', [])) | set(json2.get('mail server', []))
@@ -166,8 +166,13 @@ def merge_json(json1, json2,json3,json4):
     conf_set = set(json1.get('conf', []))
     merged['conf'] = list(conf_set)
     
-    hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', []))
-    merged['domini'] = list(hosts_set)
+    if json3 is not None and json4 is not None:
+        hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', []))
+        merged['domini'] = list(hosts_set)
+    elif json4 is None:
+        hosts_set = set(json3.get('hosts', []))
+        merged['domini'] = list(hosts_set)
+    #aggiungi altra condizione
     
     emails_set = set(json3.get('emails', []))
     merged['emails'] = list(emails_set)
@@ -200,7 +205,7 @@ def searchShodan(IP):
                     }
             if 'http' in item:
                 status_code = item['http'].get('status', None)
-                if status_code is not None and status_code not in [400, 401, 403, 404, 500, 502, 503]:
+                if status_code is not None and not (400 <= status_code < 600):
                     http_data = item.get('data', None)
                     location_regex = r'Location: (http[^\r\n]+)'
                     match = re.search(location_regex, http_data, re.IGNORECASE)
@@ -247,14 +252,14 @@ def searchShodan(IP):
         return None
 
 def rmDuplicati(json):
-    indirizzi = set(json['indirizzi'])
+    indirizzi = set(json['IP'])
     resolved_hosts = json['resolved_hosts']
 
     for host, ip in resolved_hosts.items():
         if ip != "No IP found":
             indirizzi.add(ip)
 
-    json['indirizzi'] = list(indirizzi)
+    json['IP'] = list(indirizzi)
     return json
 
 def eyewitness(results, urls):
@@ -455,16 +460,18 @@ def domainShodan():
     api = shodan.Shodan(api_key)
     try:
         # Fai la query a Shodan
-        query = 'hostname:*.edison.it country:"IT"'
+        query = 'hostname:*.pasqualebruni.com country:"IT"'
         result = api.search(query)
         all_hostnames = []
-        for match in result.get("matches", []):
-    # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
-            hostnames = match.get("hostnames", [])
-    # Stampa gli hostnames per ogni elemento di "matches"
-        for hostname in hostnames:
-            all_hostnames.append(hostname)
-        json = {"hostnames": all_hostnames}
-        return json
+        matches = result.get("matches", [])
+        if matches:       
+            for match in matches:
+            # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
+                hostnames = match.get("hostnames", [])
+            # Stampa gli hostnames per ogni elemento di "matches"
+            for hostname in hostnames:
+                all_hostnames.append(hostname)
+            json = {"hostnames": all_hostnames}
+            return json
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500

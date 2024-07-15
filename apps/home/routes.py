@@ -20,7 +20,7 @@ import time
 @blueprint.route('/index')
 @login_required
 def index():
-    domain = "edison.it"
+    domain = "pasqualebruni.com"
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
@@ -30,7 +30,8 @@ def index():
 @blueprint.route('/theharvester_status')
 @login_required
 def theharvester_status():
-    domain = "edison.it"
+    domain = "pasqualebruni.com"
+    #Fare che ogni volta viene generato un nuovo file, visto che può buggarsi
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):
@@ -57,7 +58,7 @@ def search_shodan_route_gowitness():
     
     try:
         json_obj = json.loads(json_data)
-        ips = json_obj.get('indirizzi', [])
+        ips = json_obj.get('IP', [])
         urls = json_obj.get('urls', [])
     except json.JSONDecodeError:
         return jsonify({"error": "Invalid JSON data"}), 400

@@ -1626,7 +1626,7 @@
                     if (data.status === "processing") {
                         setTimeout(checkTheHarvesterStatus, 5000);
                     } else {
-                        var indirizzi = data.indirizzi;
+                        var indirizzi = data.IP;
                         var urls = data.interesting_urls;
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
                         linkedinDump();
