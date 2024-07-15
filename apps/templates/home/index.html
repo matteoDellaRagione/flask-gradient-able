@@ -35,19 +35,21 @@
                     </div>
                 </div>
                 <div class="container">
-                    <h1>Whois Information</h1>
-                    <pre>{{ whois_json }}</pre>
+                    <h1>Ricerca per il dominio:</h1>
+                    <pre>{{ domain }}</pre>
                 </div>
+                <h1>Digita sotto il link linkedin associato al dominio:</h1>
+                <form id="linkedinForm">
+                    <input type="text" id="linkedinUrl" name="url" placeholder="Formato 'https://www.linkedin.com/company/tuodominio/'">
+                    <button type="submit">Search</button>
+                </form>
+                <div id="result"></div>
                 <div class="domIP">
                     <h1>Dominio e IP</h1>
                     <pre>Loading...</pre>
                 </div>
                 <div class="shodan">
                     <h1>Shodan</h1>
-                    <pre>Loading...</pre>
-                </div>
-                <div class="linkedinDump">
-                    <h1>Account Linkedin</h1>
                     <pre>Loading...</pre>
                 </div>
                 <div class="col-md-6 col-xl-3">
@@ -1619,18 +1621,38 @@
 {% block javascripts %}
 <script>
     $(document).ready(function() {
+        $('#linkedinForm').submit(function(event) {
+                event.preventDefault(); // Previene il submit di default del form
+                var url = $('#linkedinUrl').val();
+                $('#result').html('<p>Loading...</p>');
+                $.ajax({
+                    url: "/linkedinDump",
+                    type: "GET",
+                    data: { url: url, domain: "{{ domain }}" },
+                    success: function(response) {
+                        $('#result').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+                    },
+                    error: function(error) {
+                        console.error(error);
+                        $('#result').html('<p>Si è verificato un errore durante la richiesta.</p>');
+                    }
+                });
+            });
         function checkTheHarvesterStatus() {
+            var domain = $('.domain pre').text();
+            console.log(domain)
             $.ajax({
                 url: "/theharvester_status",
+                type: "GET",
+                data: { domain: "{{ domain }}" },
                 success: function(data) {
                     if (data.status === "processing") {
                         setTimeout(checkTheHarvesterStatus, 5000);
                     } else {
-                        var indirizzi = data.IP;
+                        var IP = data.IP;
                         var urls = data.interesting_urls;
                         $('.domIP pre').text(JSON.stringify(data, null, 2));
-                        linkedinDump();
-                        shodan(indirizzi,urls);
+                        shodan(IP,urls);
                         
                     }
                 },
@@ -1640,26 +1662,13 @@
             });
         }
 
-        function shodan(indirizzi,urls) {
+        function shodan(IP,urls) {
             $.ajax({
                 url: "/search_shodan",
                 method: "GET",
-                data: { json: JSON.stringify({ indirizzi: indirizzi, urls: urls }) },
+                data: { json: JSON.stringify({ IP: IP, urls: urls }) },
                 success: function(data) {
                     $('.shodan pre').text(JSON.stringify(data, null, 2));
-                },
-                error: function(jqXHR, textStatus, errorThrown) {
-                    console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
-                }
-            });
-        }
-
-        function linkedinDump() {
-            $.ajax({
-                url: "/linkedinDump",
-                method: "GET",
-                success: function(data) {
-                    $('.linkedinDump pre').text(JSON.stringify(data, null, 2));
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);

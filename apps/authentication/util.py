@@ -321,17 +321,16 @@ def gowitness(results, urls):
         futures = [executor.submit(run_gowitness, url) for url in output["urls"]]
         concurrent.futures.wait(futures)
 
-def linkedinDumper():
+def linkedinDumper(linkedinUrl):
     os.chdir("LinkedInDumper-main")
+    li_at = 'AQEDAU7_L-sBv28FAAABkLb5gBcAAAGQ2wYEF00ACXcYLn3K0_XOEDw7glxhghXLZinmkffn3pThuJzo5X1ncYfTTr-ne3RgbMhNWLoZEkpB6qvO-NYNUfxooLCX3MCOnM0eujY2vXkJZ8abUqo6EboW'
     command = [
-        'python3', 'linkedindumper.py', '--url', 'https://www.linkedin.com/company/conad/', 
-        '--cookie', 'AQEDAUdNDO8EwfkIAAABj7jgMYQAAAGQv53pG04AmECKQZE95Q1_Pmhaw-lbOPXkPEJyl376j0FvOTMkij4Tgxm-Mpx5O7p3EBtZzpH3owZo1XmqcEXBcmhxyoKecDW6nI320MMtoAObKwvGeRT4gk_O', 
+        'python3', 'linkedindumper.py', '--url', linkedinUrl, 
+        '--cookie', li_at, 
         '--quiet'
     ]
-    print("Prima del comando")
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     #result = subprocess.run(command, stdout=sys.stdout, stderr=sys.stderr, text=True)
-    print("Dopo il comando")
     
     if result.returncode != 0:
         # Gestione errore
@@ -343,8 +342,16 @@ def linkedinDumper():
     f = io.StringIO('\n'.join(csv_lines))
     reader = csv.DictReader(f, delimiter=';')
     data = [row for row in reader]
-    print("CSV: ",data)
-    return data
+    
+    headers = data[0]["null"]
+
+    # Creazione di un array di dizionari con i dati
+    true_data = []
+    for row in data[1:]:
+        row_data = row["null"]
+        entry = {headers[i]: row_data[i] for i in range(len(headers))}
+        data.append(entry)
+    return true_data
 
 def linkedinDumperTry():
     # Output simulato ricevuto direttamente
@@ -426,8 +433,45 @@ def domain_search(domain):
     if response.status_code == 200:
         # Converte la risposta JSON in un dizionario Python
         data = response.json()
-        pattern = data.get('data', {}).get('pattern')
-        return pattern
+        extracted_data = {}
+    
+        add_if_not_null(extracted_data, "pattern", data["data"].get("pattern"))
+
+        social_networks = {}
+        add_if_not_null(social_networks, "twitter", data["data"].get("twitter"))
+        add_if_not_null(social_networks, "facebook", data["data"].get("facebook"))
+        add_if_not_null(social_networks, "linkedin", data["data"].get("linkedin"))
+        add_if_not_null(social_networks, "instagram", data["data"].get("instagram"))
+        add_if_not_null(social_networks, "youtube", data["data"].get("youtube"))
+
+        if social_networks:
+            extracted_data["social_networks"] = social_networks
+
+        emails = []
+        for email in data["data"].get("emails", []):
+            email_info = {}
+            add_if_not_null(email_info, "value", email.get("value"))
+            add_if_not_null(email_info, "first_name", email.get("first_name"))
+            add_if_not_null(email_info, "last_name", email.get("last_name"))
+            add_if_not_null(email_info, "position", email.get("position"))
+            add_if_not_null(email_info, "seniority", email.get("seniority"))
+            add_if_not_null(email_info, "department", email.get("department"))
+            add_if_not_null(email_info, "linkedin", email.get("linkedin"))
+            add_if_not_null(email_info, "twitter", email.get("twitter"))
+            add_if_not_null(email_info, "phone_number", email.get("phone_number"))
+        
+            if email_info:
+                emails.append(email_info)
+
+        if emails:
+            extracted_data["emails"] = emails
+
+        linked_domains = data["data"].get("linked_domains", [])
+        if linked_domains:
+            extracted_data["linked_domains"] = linked_domains
+    
+        return extracted_data
+
     else:
         return jsonify({'error': 'Impossibile ottenere i dati'}), response.status_code
 
@@ -455,12 +499,12 @@ def createEmail(pattern,domain,json):
 
     return emails
 
-def domainShodan():
+def domainShodan(domain):
     api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
     api = shodan.Shodan(api_key)
     try:
-        # Fai la query a Shodan
-        query = 'hostname:*.pasqualebruni.com country:"IT"'
+        # Fai la query a Shodan DA VERIFICARE SE VA
+        query = f'hostname:*.{domain} country:"IT"'
         result = api.search(query)
         all_hostnames = []
         matches = result.get("matches", [])
@@ -475,3 +519,7 @@ def domainShodan():
             return json
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
+
+def add_if_not_null(dictionary, key, value):
+        if value is not None:
+            dictionary[key] = value

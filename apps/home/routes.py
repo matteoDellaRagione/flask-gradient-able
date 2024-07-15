@@ -20,18 +20,24 @@ import time
 @blueprint.route('/index')
 @login_required
 def index():
-    domain = "pasqualebruni.com"
+    return render_template('home/sample-page.html', segment='sample-page')
+
+@blueprint.route('/search', methods=['GET'])
+@login_required
+def searchDomain():
+    domain = request.args.get('domain')
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
     theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
     theharvester_thread.start()
-    return render_template('home/index.html', segment='index',whois_json=whois_json)
+    return render_template('home/index.html', segment='index', domain=domain)
 
-@blueprint.route('/theharvester_status')
+@blueprint.route('/theharvester_status',methods=['GET'])
 @login_required
 def theharvester_status():
-    domain = "pasqualebruni.com"
+    domain = request.args.get('domain')
     #Fare che ogni volta viene generato un nuovo file, visto che può buggarsi
+    #Se il file esiste non fare partire il thread
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):
@@ -39,10 +45,9 @@ def theharvester_status():
             theharvester_json = json.load(f)
         dnsrecon_json= dnsrecon(domain)
         host_json= host(domain)
-        shodan_json = domainShodan()  
+        shodan_json = domainShodan(domain)  
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json,shodan_json)
-        print("Fatto")
         return (combined_json)
 
     else:
@@ -83,13 +88,14 @@ def search_shodan_route_gowitness():
     #gowitness(results,urls)
     return results
 
-@blueprint.route('/linkedinDump')
+@blueprint.route('/linkedinDump',methods=['GET'])
 @login_required
 def linkedinDump():
+    linkedinUrl = request.args.get('url')
+    domain = request.args.get('domain')
     #Commenti per non sprecare cpu e API
-    #return linkedinDumper()
-    linkedin = linkedinDumperTry()
-    domain = "conad.it"
+    #linkedin = linkedinDumperTry()
+    #linkedin = linkedinDumper(linkedinUrl)
     emails = [
     {
       "Email": "angelo.bernunzo@conad.it",
@@ -107,12 +113,17 @@ def linkedinDump():
       "Lastname": "Gadda"
     }
     ]
-    
-    #pattern = domain_search(domain)
-    #emails = createEmail(pattern,domain,linkedin)
+    #Commentate per non sprecare api
+    #verified_emails = domain_search(domain)
+    #pattern = verified_emails.get('pattern')
+    pattern = f"{first}.{last}"
+    #print("Pattern: ",pattern)
+    linkedin = linkedinDumper(linkedinUrl)
+    emails = createEmail(pattern,domain,linkedin)
     combined_data = {
-    "linkedin": linkedin,
-    "company_emails": emails
+    "verified_emails": verified_emails,
+    "guessable_emails": emails,
+    "linkedinDump": linkedin
     }
     return combined_data
 
