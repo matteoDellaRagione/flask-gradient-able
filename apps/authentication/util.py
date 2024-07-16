@@ -323,7 +323,7 @@ def gowitness(results, urls):
 
 def linkedinDumper(linkedinUrl):
     os.chdir("LinkedInDumper-main")
-    li_at = 'AQEDAU7_L-sBv28FAAABkLb5gBcAAAGQ2wYEF00ACXcYLn3K0_XOEDw7glxhghXLZinmkffn3pThuJzo5X1ncYfTTr-ne3RgbMhNWLoZEkpB6qvO-NYNUfxooLCX3MCOnM0eujY2vXkJZ8abUqo6EboW'
+    li_at = 'AQEDAS4TeJYEgzKGAAABhlmefTcAAAGQ2b-mUU4AEhi3cbC5_OCVjENtJhHSPaa9DzAt2CNeP8UH7lU_1XGsZkDg7pHQlZaq_Sa6-sBSp7cy_kehJoq234tB7RUXgHN4VCMfzf_ApwL5DY9ZIOF08rZO'
     command = [
         'python3', 'linkedindumper.py', '--url', linkedinUrl, 
         '--cookie', li_at, 
@@ -342,6 +342,7 @@ def linkedinDumper(linkedinUrl):
     f = io.StringIO('\n'.join(csv_lines))
     reader = csv.DictReader(f, delimiter=';')
     data = [row for row in reader]
+    print(data)
     
     headers = data[0]["null"]
 

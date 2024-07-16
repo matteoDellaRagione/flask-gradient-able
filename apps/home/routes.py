@@ -28,16 +28,15 @@ def searchDomain():
     domain = request.args.get('domain')
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
     whois_json = whois_to_json(domain)
-    theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
-    theharvester_thread.start()
+    if not os.path.exists(theharvester_output_file):
+        theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
+        theharvester_thread.start()
     return render_template('home/index.html', segment='index', domain=domain)
 
 @blueprint.route('/theharvester_status',methods=['GET'])
 @login_required
 def theharvester_status():
     domain = request.args.get('domain')
-    #Fare che ogni volta viene generato un nuovo file, visto che può buggarsi
-    #Se il file esiste non fare partire il thread
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):
@@ -116,9 +115,24 @@ def linkedinDump():
     #Commentate per non sprecare api
     #verified_emails = domain_search(domain)
     #pattern = verified_emails.get('pattern')
-    pattern = f"{first}.{last}"
+    pattern = r"{first}.{last}"
     #print("Pattern: ",pattern)
-    linkedin = linkedinDumper(linkedinUrl)
+    #linkedin = linkedinDumper(linkedinUrl)
+    #Da qui DA CAMBIARE
+    with open('/home/kali/jsonlinkedin', 'r', encoding='utf-8') as f:
+        file_content = f.read
+    data = ast.literal_eval(file_content)
+    # Estrarre le intestazioni
+    headers = data[0][None]
+    
+    # Creare una lista di dizionari trasformati
+    linkedin = []
+    for entry in data[1:]:
+        details = entry[None]
+        transformed_entry = {headers[i]: details[i] for i in range(len(headers))}
+        linkedin.append(transformed_entry)
+    
+    # A qui da mettere in util linkedin dumpreturn transformed_data
     emails = createEmail(pattern,domain,linkedin)
     combined_data = {
     "verified_emails": verified_emails,
