@@ -118,10 +118,16 @@ def linkedinDump():
     pattern = r"{first}.{last}"
     #print("Pattern: ",pattern)
     #linkedin = linkedinDumper(linkedinUrl)
-    #Da qui DA CAMBIARE
-    with open('/home/kali/jsonlinkedin', 'r', encoding='utf-8') as f:
-        file_content = f.read
-    data = ast.literal_eval(file_content)
+    
+    #Da qui 
+    data = [
+    {None: ['Firstname', 'Lastname', 'Position', 'Gender', 'Location', 'Profile']},
+    {None: ['Mattia', 'Erroi', "Double Degree Master's Graduate | Energy and Nuclear Engineer | Politecnico di Torino | KTH Royal Institute of Technology", 'N/A', 'Greater Turin Metropolitan Area', 'https://www.linkedin.com/in/mattia-erroi']},
+    {None: ['Nicolo', 'Magnani', 'Edison S.p.a', 'N/A', 'Milan', 'https://www.linkedin.com/in/nicol%C3%B2-magnani-8a3527171']},
+    {None: ['Bellacicco', 'Silvana', 'impiegato presso Edison SpA', 'N/A', 'Milan', 'https://www.linkedin.com/in/bellacicco-silvana-02a891a4']},
+    {None: ['Alessio', 'Ramundo', 'Risk Mandate & Costing Analyst', 'N/A', 'Italy', 'https://www.linkedin.com/in/alessio-ramundo-298447185']},
+    {None: ['Noemi', 'Falchi', '#Creditanalyst helping @Arval Italia determine the financial risks evaluating the financial health of a loan supporting business strategy', 'N/A', 'Milan', 'https://www.linkedin.com/in/noemifalchi']}
+    ]
     # Estrarre le intestazioni
     headers = data[0][None]
     
@@ -135,7 +141,7 @@ def linkedinDump():
     # A qui da mettere in util linkedin dumpreturn transformed_data
     emails = createEmail(pattern,domain,linkedin)
     combined_data = {
-    "verified_emails": verified_emails,
+    #"verified_emails": verified_emails,
     "guessable_emails": emails,
     "linkedinDump": linkedin
     }
