@@ -42,8 +42,8 @@ def theharvester_status():
     if os.path.exists(theharvester_output_file):
         with open(theharvester_output_file, 'r') as f:
             theharvester_json = json.load(f)
-        dnsrecon_json= dnsrecon(domain)
-        host_json= host(domain)
+        dnsrecon_json = dnsrecon(domain)
+        host_json = host(domain)
         shodan_json = domainShodan(domain)  
         # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json,shodan_json)

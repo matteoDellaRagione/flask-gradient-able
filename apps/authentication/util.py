@@ -150,6 +150,7 @@ def domain2IP(json_data):
                 resolved_hosts[host] = f"Error: {str(e)}"
 
     json_data['resolved_hosts'] = resolved_hosts
+    json_data['numResolvedHosts'] = len(resolved_hosts)
     return json_data
 
 def merge_json(json1, json2,json3,json4):
@@ -162,6 +163,7 @@ def merge_json(json1, json2,json3,json4):
     # Unisci server mail
     mail_set = set(json1.get('mail server', [])) | set(json2.get('mail server', []))
     merged['server mail'] = list(mail_set)
+    merged['numServerMail'] = len(merged['server mail'])
 
     conf_set = set(json1.get('conf', []))
     merged['conf'] = list(conf_set)
@@ -169,16 +171,19 @@ def merge_json(json1, json2,json3,json4):
     if json3 is not None and json4 is not None:
         hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', []))
         merged['domini'] = list(hosts_set)
+        merged['numDomini'] = len(merged['domini'])
     elif json4 is None:
         hosts_set = set(json3.get('hosts', []))
         merged['domini'] = list(hosts_set)
-    #aggiungi altra condizione
+    #aggiungi altra condizione e le numeriche del caso
     
     emails_set = set(json3.get('emails', []))
     merged['emails'] = list(emails_set)
+    merged['numEmail'] = len(merged['emails'])
     
     urls_set = set(json3.get('interesting_urls', []))
     merged['interesting_urls'] = list(urls_set)
+    merged['numUrls'] = len(merged['interesting_urls'])
 
     
     translated_json = domain2IP(merged)
@@ -260,6 +265,7 @@ def rmDuplicati(json):
             indirizzi.add(ip)
 
     json['IP'] = list(indirizzi)
+    json['numIP'] = len(json['IP'])
     return json
 
 def eyewitness(results, urls):
