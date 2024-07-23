@@ -68,6 +68,9 @@ def search_shodan_route_gowitness():
         return jsonify({"error": "Invalid JSON data"}), 400
 
     results = []
+    total_ports_80 = 0
+    total_ports_443 = 0
+    total_other_ports = 0
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
@@ -81,11 +84,21 @@ def search_shodan_route_gowitness():
                 result = future.result()
                 if result is not None:
                     results.append(result)
+
+                    total_ports_80 += sum(1 for service in result['services'] if service['port'] == 80)
+                    total_ports_443 += sum(1 for service in result['services'] if service['port'] == 443)
+                    total_other_ports += sum(1 for service in result['services'] if service['port'] not in [80, 443])
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
     #stand by per testing linkedin
     #gowitness(results,urls)
-    return results
+    final_result = {
+        "results": results,
+        "total_ports_80": total_ports_80,
+        "total_ports_443": total_ports_443,
+        "total_other_ports": total_other_ports
+    }
+    return final_result
 
 @blueprint.route('/linkedinDump',methods=['GET'])
 @login_required

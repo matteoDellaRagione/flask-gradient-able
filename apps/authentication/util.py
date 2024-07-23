@@ -219,9 +219,22 @@ def searchShodan(IP):
                     else: 
                         service_info['location'] = "/"
                     filtered_services.append(service_info)
+                    
             else:
                 filtered_services.append(service_info)
-
+        #DA PROVARE e sistemare
+        for item in informations['data']:
+            if 'vulns' in item:
+                print("Ho trovato vulns")
+                print("Informazioni: ", item)
+                for vuln in item['vulns']:
+                    print("Vulnerabilità: ", vuln)
+                    vuln_info = {
+                        "vulnerability": vuln,
+                        "cvss": item['vulns'][vuln].get('cvss', 'N/A'),
+                        "description": item['vulns'][vuln].get('summary', 'N/A')
+                    }
+                    result["vulnerabilities"].append(vuln_info)
         if not filtered_services:
             return None
 
@@ -235,14 +248,17 @@ def searchShodan(IP):
         }
 
     # Aggiungi le vulnerabilità al dizionario
-        if 'vulns' in informations:
-            for vuln in informations['vulns']:
-                cve = vuln.replace('!', '')
-                vuln_info = {
-                    "vulnerability": cve,
-                    "description": informations['vulns'][vuln]['summary']
-                }
-                result["vulnerabilities"].append(vuln_info)
+        #if 'vulns' in informations:
+         #   print("Ho trovato vulns")
+          #  print("Vediamo cosa vedi: ",informations['data']['vulns'])
+           # for vuln in informations['data']['vulns']:
+            #    print("Vulnerabilità: ",vuln)
+             #   vuln_info = {
+              #      "vulnerability": vuln,
+               #     "cvss": informations['data']['vulns'][vuln]['cvss'],
+                #    "description": informations['data']['vulns'][vuln]['cvss']
+               # }
+                #result["vulnerabilities"].append(vuln_info)
 
     # Converti il dizionario in JSON e stampalo
         return result
