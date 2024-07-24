@@ -223,42 +223,51 @@ def searchShodan(IP):
             else:
                 filtered_services.append(service_info)
         #DA PROVARE e sistemare
-        for item in informations['data']:
-            if 'vulns' in item:
-                print("Ho trovato vulns")
-                print("Informazioni: ", item)
-                for vuln in item['vulns']:
-                    print("Vulnerabilità: ", vuln)
-                    vuln_info = {
-                        "vulnerability": vuln,
-                        "cvss": item['vulns'][vuln].get('cvss', 'N/A'),
-                        "description": item['vulns'][vuln].get('summary', 'N/A')
-                    }
-                    result["vulnerabilities"].append(vuln_info)
-        if not filtered_services:
-            return None
-
-    # Costruisci il dizionario dei risultati
+        # Costruisci il dizionario dei risultati
         result = {
             "ip": informations['ip_str'],
             "organization": informations.get('org', 'N/A'),
             "os": informations.get('os', 'N/A'),
             "services": filtered_services,
-            "vulnerabilities": []
+            "vulnerabilities": [],
+            "lowVulns": 0,
+            "mediumVulns": 0,
+            "highVulns": 0,
+            "criticalVulns": 0
         }
 
-    # Aggiungi le vulnerabilità al dizionario
-        #if 'vulns' in informations:
-         #   print("Ho trovato vulns")
-          #  print("Vediamo cosa vedi: ",informations['data']['vulns'])
-           # for vuln in informations['data']['vulns']:
-            #    print("Vulnerabilità: ",vuln)
-             #   vuln_info = {
-              #      "vulnerability": vuln,
-               #     "cvss": informations['data']['vulns'][vuln]['cvss'],
-                #    "description": informations['data']['vulns'][vuln]['cvss']
-               # }
-                #result["vulnerabilities"].append(vuln_info)
+        counterLow = 0
+        counterMedium = 0
+        counterHigh = 0
+        counterCritical = 0
+        for item in informations['data']:
+            if 'vulns' in item:
+                for vuln in item['vulns']:
+                    vuln_info = {
+                        "vulnerability": vuln,
+                        "cvss": item['vulns'][vuln].get('cvss', 'N/A'),
+                        "description": item['vulns'][vuln].get('summary', 'N/A')
+                    }
+                    if isinstance(vuln_info['cvss'], (int, float)):
+                        if 0.0 <= vuln_info['cvss'] <= 3.9:
+                            counterLow += 1
+                        elif 4.0 <= vuln_info['cvss'] <= 6.9:
+                            counterMedium += 1
+                        elif 7.0 <= vuln_info['cvss'] <= 8.9:
+                            counterHigh += 1
+                        elif 9.0 <= vuln_info['cvss'] <= 10.0:
+                            counterCritical += 1
+
+                    result["vulnerabilities"].append(vuln_info)
+
+        result['lowVulns'] = counterLow
+        result['mediumVulns'] = counterMedium
+        result['highVulns'] = counterHigh
+        result['criticalVulns'] = counterCritical
+                    
+        if not filtered_services:
+            return None
+
 
     # Converti il dizionario in JSON e stampalo
         return result
