@@ -363,6 +363,7 @@ def linkedinDumper(linkedinUrl):
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
     #result = subprocess.run(command, stdout=sys.stdout, stderr=sys.stderr, text=True)
     
+    
     if result.returncode != 0:
         # Gestione errore
         raise Exception(f"Errore nell'esecuzione del comando: {result.stderr}")
