@@ -71,6 +71,10 @@ def search_shodan_route_gowitness():
     total_ports_80 = 0
     total_ports_443 = 0
     total_other_ports = 0
+    total_critical_vulns = 0
+    total_high_vulns = 0
+    total_medium_vulns = 0
+    total_low_vulns = 0
 
     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
@@ -88,6 +92,11 @@ def search_shodan_route_gowitness():
                     total_ports_80 += sum(1 for service in result['services'] if service['port'] == 80)
                     total_ports_443 += sum(1 for service in result['services'] if service['port'] == 443)
                     total_other_ports += sum(1 for service in result['services'] if service['port'] not in [80, 443])
+
+                    total_critical_vulns += result['criticalVulns']
+                    total_high_vulns += result['highVulns']
+                    total_medium_vulns += result['mediumVulns']
+                    total_low_vulns += result['lowVulns']
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
     #stand by per testing linkedin
@@ -96,7 +105,12 @@ def search_shodan_route_gowitness():
         "results": results,
         "total_ports_80": total_ports_80,
         "total_ports_443": total_ports_443,
-        "total_other_ports": total_other_ports
+        "total_other_ports": total_other_ports,
+        "total_critical_vulns": total_critical_vulns,
+        "total_high_vulns": total_high_vulns,
+        "total_medium_vulns": total_medium_vulns,
+        "total_low_vulns": total_low_vulns,
+        "total_vulns": total_critical_vulns + total_high_vulns + total_medium_vulns +total_low_vulns
     }
     return final_result
 

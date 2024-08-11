@@ -15,22 +15,21 @@
             <!-- [ Main Content ] start -->
             <div class="row">
                 <!-- order-card start -->
-                <div class="col-md-6 col-xl-3">
+                <div class="col-md-6 col-xl-3" id="domain">
                     <div class="card bg-c-blue order-card">
                         <div class="card-body">
-                            <h6 class="text-white">Orders Received</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-shopping-cart float-start"></i><span>234</span></h2>
-                            <p class="m-b-0">Completed Orders<span class="float-end">351</span></p>
+                            <h6 class="text-white">Total domain found</h6>
+                            <h2 class="text-end text-white"><i class="feather icon-loader float-start"></i><span id="total-domain">$0</span></h2>
+                            <p class="m-b-0">Resolved domain<span class="float-end" id="resolved-domain">$0</span></p>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-3">
+                <div class="col-md-6 col-xl-3" id="IP">
                     <div class="card bg-c-green order-card">
                         <div class="card-body">
-                            <h6 class="text-white">Total Sales</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-tag float-start"></i><span>1641</span>
+                            <h6 class="text-white">Total IP Found</h6>
+                            <h2 class="text-end text-white"><i class="feather icon-info float-start"></i><span id="total-ip">$0</span>
                             </h2>
-                            <p class="m-b-0">This Month<span class="float-end">213</span></p>
                         </div>
                     </div>
                 </div>
@@ -52,23 +51,28 @@
                     <h1>Shodan</h1>
                     <pre>Loading...</pre>
                 </div>
-                <div class="col-md-6 col-xl-3">
+                <div class="col-md-6 col-xl-3" id="urls">
                     <div class="card bg-c-yellow order-card">
                         <div class="card-body">
-                            <h6 class="text-white">Revenue</h6>
+                            <h6 class="text-white">Total URLS Found</h6>
                             <h2 class="text-end text-white"><i
-                                    class="feather icon-repeat float-start"></i><span>$42,562</span></h2>
-                            <p class="m-b-0">This Month<span class="float-end">$5,032</span></p>
+                                    class="feather icon-eye float-start"></i><span id="total-urls">$0</span></h2>
                         </div>
                     </div>
                 </div>
-                <div class="col-md-6 col-xl-3">
+                <div id="loading" style="display: none;">
+                    <p>Loading...</p>
+                </div>
+                
+                <div id="vulns" class="col-md-6 col-xl-3" style="display: none;">
                     <div class="card bg-c-red order-card">
                         <div class="card-body">
-                            <h6 class="text-white">Total Profit</h6>
-                            <h2 class="text-end text-white"><i
-                                    class="feather icon-award float-start"></i><span>$9,562</span></h2>
-                            <p class="m-b-0">This Month<span class="float-end">$542</span></p>
+                            <h6 class="text-white">Total Found Vulnerabilities</h6>
+                            <h2 class="text-end text-white">
+                                <i class="feather icon-alert-triangle float-start"></i>
+                                <span id="total-vulns">$0</span>
+                            </h2>
+                            <p class="m-b-0">Most critical IP<span class="float-end" id="most-critical-ip">$0</span></p>
                         </div>
                     </div>
                 </div>
@@ -1621,6 +1625,11 @@
 {% block javascripts %}
 <script>
     $(document).ready(function() {
+        $('#loading').show();
+        $('#vulns').hide();
+        $('#domain').hide();
+        $('#IP').hide();
+        $('#urls').hide();
         $('#linkedinForm').submit(function(event) {
                 event.preventDefault(); // Previene il submit di default del form
                 var url = $('#linkedinUrl').val();
@@ -1661,14 +1670,41 @@
     }
             });
         }
+        function updateInfo(jsonResponse) {
+            let totalVulns = jsonResponse.total_vulns;
+            let mostCriticalIP = '';
+            let maxVulns = 0;
+            document.getElementById('total-domain').textContent = jsonResponse.results.numDomini;;
+            document.getElementById('resolved-domain').textContent = jsonResponse.results.numResolvedHosts;
+            document.getElementById('total-ip').textContent = jsonResponse.results.numIP;
+            document.getElementById('total-urls').textContent = jsonResponse.results.numUrls;
 
+            // Trova l'IP con il numero massimo di vulnerabilità
+            jsonResponse.results.forEach(result => {
+                let ipVulns = result.criticalVulns + result.highVulns + result.mediumVulns + result.lowVulns;
+                if (ipVulns > maxVulns) {
+                    maxVulns = ipVulns;
+                    mostCriticalIP = result.ip;
+            }
+        });
+
+            // Aggiorna il DOM
+            document.getElementById('total-vulns').textContent = totalVulns;
+            document.getElementById('most-critical-ip').textContent = mostCriticalIP;
+}
         function shodan(IP,urls) {
             $.ajax({
                 url: "/search_shodan",
                 method: "GET",
                 data: { json: JSON.stringify({ IP: IP, urls: urls }) },
                 success: function(data) {
+                    $('#loading').hide();
+                    $('#vulns').show();
+                    $('#domain').show();
+                    $('#IP').show();
+                    $('#urls').show();
                     $('.shodan pre').text(JSON.stringify(data, null, 2));
+                    updateInfo(data);
                 },
                 error: function(jqXHR, textStatus, errorThrown) {
                     console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);

@@ -233,7 +233,8 @@ def searchShodan(IP):
             "lowVulns": 0,
             "mediumVulns": 0,
             "highVulns": 0,
-            "criticalVulns": 0
+            "criticalVulns": 0,
+            "totalVulns": 0
         }
 
         counterLow = 0
@@ -264,6 +265,7 @@ def searchShodan(IP):
         result['mediumVulns'] = counterMedium
         result['highVulns'] = counterHigh
         result['criticalVulns'] = counterCritical
+        result['totalVulns'] = counterCritical + counterHigh + counterMedium + counterLow
                     
         if not filtered_services:
             return None
