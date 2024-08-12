@@ -19,12 +19,16 @@
                 <li class="nav-item">
                     <a href="#" class="pop-search"><i class="feather icon-search"></i></a>
                     <div class="search-bar">
-                        <input type="text" class="form-control border-0 shadow-none" placeholder="Search here">
-                        <button type="button" class="btn-close" aria-label="Close">
-                        </button>
+                        <!-- Modulo di ricerca integrato -->
+                        <form action="/search" method="get">
+                            <input type="text" name="domain" class="form-control border-0 shadow-none" placeholder="Inserisci il dominio">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                        </form>
+                        <button type="button" class="btn-close" aria-label="Close"></button>
                     </div>
                 </li>
             </ul>
+        </div>
             <ul class="navbar-nav ms-auto">
                 <li>
                     <div class="dropdown drp-user">

@@ -436,3 +436,192 @@ function floatchart() {
     })();
     // [ unique-visitor-chart ] end
 }
+$(document).ready(function() {
+    $('#loading').show();
+    $('#vulns').hide();
+    $('#domain').hide();
+    $('#pie-chart-1').hide();
+    $('#IP').hide();
+    $('#urls').hide();
+    $('#vuln-chart').hide();
+    $('#table').hide();
+    $('#linkedinForm').submit(function(event) {
+            event.preventDefault(); // Previene il submit di default del form
+            var url = $('#linkedinUrl').val();
+            var domain = window.domain;
+            $('#result').html('<p>Loading...</p>');
+            $.ajax({
+                url: "/linkedinDump",
+                type: "GET",
+                data: { url: url, domain: domain},
+                success: function(response) {
+                    $('#result').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+                },
+                error: function(error) {
+                    console.error(error);
+                    $('#result').html('<p>Si è verificato un errore durante la richiesta.</p>');
+                }
+            });
+        });
+    function checkTheHarvesterStatus() {
+        var domain = window.domain;
+        $.ajax({
+            url: "/theharvester_status",
+            type: "GET",
+            data: { domain: domain },
+            success: function(data) {
+                if (data.status === "processing") {
+                    setTimeout(checkTheHarvesterStatus, 5000);
+                } else {
+                    var IP = data.IP;
+                    var urls = data.interesting_urls;
+                    $('.domIP pre').text(JSON.stringify(data, null, 2));
+                    document.getElementById('total-domain').textContent = data.numDomini;;
+                    document.getElementById('resolved-domain').textContent = data.numResolvedHosts;
+                    document.getElementById('total-ip').textContent = data.numIP;
+                    document.getElementById('total-urls').textContent = data.numUrls;
+                    $('#domain').show();
+                    $('#IP').show();
+                    $('#urls').show();
+
+                    shodan(IP,urls);
+                    
+                }
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+    console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+}
+        });
+    }
+    function populateTable(jsonResponse) {
+// Trova il corpo della tabella
+let tableBody = document.getElementById('table-body');
+tableBody.innerHTML = ''; // Resetta il contenuto della tabella
+
+// Itera sui dati JSON e crea le righe della tabella
+jsonResponse.forEach(item => {
+    let row = document.createElement('tr');
+
+    if (item.criticalVulns > 0 || item.highVulns > 0) {
+        row.className = 'table-danger';
+    }
+    else if (item.mediumVulns > 0) {
+        row.className = 'table-warning';
+    }
+
+    else row.className = 'table-success';
+
+    // Colonna per l'indirizzo IP
+    let ipCell = document.createElement('td');
+    ipCell.textContent = item.ip;
+    row.appendChild(ipCell);
+
+    // Colonna per Critical Vulnerabilities
+    let criticalCell = document.createElement('td');
+    criticalCell.textContent = item.criticalVulns;
+    row.appendChild(criticalCell);
+
+    // Colonna per High Vulnerabilities
+    let highCell = document.createElement('td');
+    highCell.textContent = item.highVulns;
+    row.appendChild(highCell);
+
+    // Colonna per Medium Vulnerabilities
+    let mediumCell = document.createElement('td');
+    mediumCell.textContent = item.mediumVulns;
+    row.appendChild(mediumCell);
+
+    // Colonna per Low Vulnerabilities
+    let lowCell = document.createElement('td');
+    lowCell.textContent = item.lowVulns;
+    row.appendChild(lowCell);
+
+    // Aggiungi la riga alla tabella
+    tableBody.appendChild(row);
+});
+}
+    function updateInfo(jsonResponse) {
+        let totalVulns = jsonResponse.total_vulns;
+        let mostCriticalIP = '';
+        let maxVulns = 0;
+        // Trova l'IP con il numero massimo di vulnerabilità
+        jsonResponse.results.forEach(result => {
+            let ipVulns = result.criticalVulns + result.highVulns + result.mediumVulns + result.lowVulns;
+            if (ipVulns > maxVulns) {
+                maxVulns = ipVulns;
+                mostCriticalIP = result.ip;
+        }
+    });
+
+        // Aggiorna il DOM
+        document.getElementById('total-vulns').textContent = totalVulns;
+        document.getElementById('most-critical-ip').textContent = mostCriticalIP;
+
+    var options = {
+        chart: {
+            height: 320,
+            type: 'pie',
+        },
+        labels:  ["Critical", "High", "Medium", "Low"],
+        series: [
+    jsonResponse.total_critical_vulns,
+    jsonResponse.total_high_vulns,
+    jsonResponse.total_medium_vulns,
+    jsonResponse.total_low_vulns
+    ],
+        colors:  ["#800080", "#FF0000", "#FFA500", "#228B22"],
+        legend: {
+            show: true,
+            position: 'bottom',
+        },
+        fill: {
+            type: 'gradient',
+            gradient: {
+                shade: 'light',
+                inverseColors: true,
+            }
+        },
+        dataLabels: {
+            enabled: true,
+            dropShadow: {
+                enabled: false,
+            }
+        },
+        responsive: [{
+            breakpoint: 480,
+            options: {
+                legend: {
+                    position: 'bottom'
+                }
+            }
+        }]
+    };
+    var chart = new ApexCharts(
+        document.querySelector("#pie-chart-1"),
+        options
+    );
+    chart.render();
+}
+    function shodan(IP,urls) {
+        $.ajax({
+            url: "/search_shodan",
+            method: "GET",
+            data: { json: JSON.stringify({ IP: IP, urls: urls }) },
+            success: function(data) {
+                $('#loading').hide();
+                $('#vulns').show();
+                $('#vuln-chart').show();
+                $('#pie-chart-1').show();
+                $('#table').show();
+                $('.shodan pre').text(JSON.stringify(data, null, 2));
+                updateInfo(data);
+                populateTable(data.results);
+            },
+            error: function(jqXHR, textStatus, errorThrown) {
+                console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);
+            }
+        });
+    }
+
+    checkTheHarvesterStatus();
+});
