@@ -174,6 +174,17 @@ def linkedinDump():
     }
     return combined_data
 
+@blueprint.route('/get_chart_data',methods=['POST'])
+@login_required
+def get_chart_data():
+    vulns = request.json
+    series = vulns.get('series', [])
+    data = {
+        "labels": ["Critical", "High", "Medium", "Low"],
+        "series": series
+    }
+    return data
+
 @blueprint.route('/<template>')
 @login_required
 def route_template(template):
