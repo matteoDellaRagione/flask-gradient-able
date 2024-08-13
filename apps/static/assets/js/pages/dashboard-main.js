@@ -440,6 +440,7 @@ $(document).ready(function() {
     $('#loading').show();
     $('#vulns').hide();
     $('#domain').hide();
+    $('#result').hide();
     $('#pie-chart-1').hide();
     $('#IP').hide();
     $('#urls').hide();
@@ -455,7 +456,21 @@ $(document).ready(function() {
                 type: "GET",
                 data: { url: url, domain: domain},
                 success: function(response) {
-                    $('#result').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+                    //$('#result').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+                    $('#result').show();
+                    console.log(response);
+                    console.log(response.linkedinDump.length);
+                    document.getElementById('worker-count').textContent = response.linkedinDump.length;
+                    if (response.linkedinDump.length > 0) {
+                        $('#download-workers-btn').show();
+                        document.getElementById('download-workers-btn').onclick = function() {
+                            downloadJson("Workers",response.linkedinDump);
+                        };
+                        $('#download-email-btn').show();
+                        document.getElementById('download-email-btn').onclick = function() {
+                            downloadJson("Guessable-Emails",response.guessable_emails);
+                        };
+                    }
                 },
                 error: function(error) {
                     console.error(error);
@@ -484,6 +499,38 @@ $(document).ready(function() {
                     $('#IP').show();
                     $('#urls').show();
 
+                    if (data.domini.length > 0) {
+                        $('#download-domain-btn').show();
+                        document.getElementById('download-domain-btn').onclick = function() {
+                            downloadJson("Domains",data.domini);
+                        };
+                    }
+
+                    if (Object.keys(data.resolved_hosts).length > 0) {
+                        $('#download-resolved-domain-btn').show();
+                        document.getElementById('download-resolved-domain-btn').onclick = function() {
+                            downloadJson("Resolved_domains",data.resolved_hosts);
+                        };
+                    }
+
+                    if (IP.length > 0) {
+                        $('#download-ip-btn').show();
+                        document.getElementById('download-ip-btn').onclick = function() {
+                            downloadJson("IP",IP);
+                        };
+                    }
+
+                    if (urls.length > 0) {
+                        $('#download-urls-btn').show();
+                        document.getElementById('download-urls-btn').onclick = function() {
+                            downloadJson("URLs",urls);
+                        };
+                    }
+                    $('#download-all-btn').show();
+                        document.getElementById('download-all-btn').onclick = function() {
+                            downloadJson("Full_Json",data);
+                        };
+
                     shodan(IP,urls);
                     
                 }
@@ -493,6 +540,20 @@ $(document).ready(function() {
 }
         });
     }
+
+    function downloadJson(key,json) {
+        const data = JSON.stringify({ [key]: json }, null, 2);
+        const blob = new Blob([data], { type: "application/json" });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement("a");
+        a.href = url;
+        a.download = `${key}.json`;
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+    }
+
     function populateTable(jsonResponse) {
 // Trova il corpo della tabella
 let tableBody = document.getElementById('table-body');
@@ -614,6 +675,13 @@ jsonResponse.forEach(item => {
                 $('#pie-chart-1').show();
                 $('#table').show();
                 $('.shodan pre').text(JSON.stringify(data, null, 2));
+                
+                if (data.results.length > 0) {
+                    $('#download-vuln-btn').show();
+                    document.getElementById('download-vuln-btn').onclick = function() {
+                        downloadJson("Vulnerabilities",data);
+                    };
+                }
                 updateInfo(data);
                 populateTable(data.results);
             },

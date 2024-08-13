@@ -146,7 +146,7 @@ def linkedinDump():
     #print("Pattern: ",pattern)
     #linkedin = linkedinDumper(linkedinUrl)
     
-    #Da qui 
+    #Da qui ricordati!
     data = [
     {None: ['Firstname', 'Lastname', 'Position', 'Gender', 'Location', 'Profile']},
     {None: ['Mattia', 'Erroi', "Double Degree Master's Graduate | Energy and Nuclear Engineer | Politecnico di Torino | KTH Royal Institute of Technology", 'N/A', 'Greater Turin Metropolitan Area', 'https://www.linkedin.com/in/mattia-erroi']},
@@ -165,7 +165,7 @@ def linkedinDump():
         transformed_entry = {headers[i]: details[i] for i in range(len(headers))}
         linkedin.append(transformed_entry)
     
-    # A qui da mettere in util linkedin dumpreturn transformed_data
+    # A qui da mettere in util linkedin dumper per transformed_data e poi togliere i commenti per non sprecare api
     emails = createEmail(pattern,domain,linkedin)
     combined_data = {
     #"verified_emails": verified_emails,

@@ -21,6 +21,8 @@
                             <h6 class="text-white">Total domain found</h6>
                             <h2 class="text-end text-white"><i class="feather icon-loader float-start"></i><span id="total-domain">$0</span></h2>
                             <p class="m-b-0">Resolved domain<span class="float-end" id="resolved-domain">$0</span></p>
+                            <button class="btn btn-light mt-3 w-100" id="download-domain-btn" style="display:none;">Download Domains</button>
+                            <button class="btn btn-light mt-3 w-100" id="download-resolved-domain-btn" style="display:none;">Download Resolved Domains</button>
                         </div>
                     </div>
                 </div>
@@ -30,6 +32,9 @@
                             <h6 class="text-white">Total IP Found</h6>
                             <h2 class="text-end text-white"><i class="feather icon-info float-start"></i><span id="total-ip">$0</span>
                             </h2>
+                            <button class="btn btn-light mt-3 w-100" id="download-ip-btn" style="display:none;">Download IPs</button>
+                            <button class="btn btn-light mt-3 w-100" id="download-all-btn" style="display:none;">Download Complete Json</button>
+                        </div>
                         </div>
                     </div>
                 </div>
@@ -37,12 +42,22 @@
                     <h1>Ricerca per il dominio:</h1>
                     <pre>{{ domain }}</pre>
                 </div>
-                <h1>Digita sotto il link linkedin associato al dominio:</h1>
-                <form id="linkedinForm">
-                    <input type="text" id="linkedinUrl" name="url" placeholder="Formato 'https://www.linkedin.com/company/tuodominio/'">
-                    <button type="submit">Search</button>
-                </form>
-                <div id="result"></div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Digita sotto il link linkedin associato al dominio:</h3>
+                    </div>
+                    <div class="card-body">
+                        <form id="linkedinForm">
+                            <input type="text" id="linkedinUrl" name="url" placeholder="Formato 'https://www.linkedin.com/company/tuodominio/'">
+                            <button type="submit">Search</button>
+                            <div id="result">
+                                <strong>Number of Workers found: <span id="worker-count">0</span></strong>
+                            </div>
+                        </form>
+                        <button class="btn btn-light mt-3 w-100" id="download-workers-btn" style="display:none;">Download Workers</button>
+                        <button class="btn btn-light mt-3 w-100" id="download-email-btn" style="display:none;">Download Guessable Emails</button>
+                    </div>
+                </div>
                 <div class="domIP">
                     <h1>Dominio e IP</h1>
                     <pre>Loading...</pre>
@@ -57,6 +72,7 @@
                             <h6 class="text-white">Total URLS Found</h6>
                             <h2 class="text-end text-white"><i
                                     class="feather icon-eye float-start"></i><span id="total-urls">$0</span></h2>
+                            <button class="btn btn-light mt-3 w-100" id="download-urls-btn" style="display:none;">Download URLs</button>
                         </div>
                     </div>
                 </div>
@@ -73,6 +89,7 @@
                                 <span id="total-vulns">$0</span>
                             </h2>
                             <p class="m-b-0">Most critical IP<span class="float-end" id="most-critical-ip">$0</span></p>
+                            <button class="btn btn-light mt-3 w-100" id="download-vuln-btn" style="display:none;">Download Vulnerabilities</button>
                         </div>
                     </div>
                 </div>
