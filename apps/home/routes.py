@@ -10,9 +10,9 @@ from jinja2 import TemplateNotFound
 from apps.authentication.util import *
 from threading import Thread
 import os
+import shutil
 import concurrent.futures
 import time
-
 
 
   
@@ -26,8 +26,10 @@ def index():
 @login_required
 def searchDomain():
     domain = request.args.get('domain')
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
-    whois_json = whois_to_json(domain)
+    #whois_json = whois_to_json(domain)
     if not os.path.exists(theharvester_output_file):
         theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
         theharvester_thread.start()
@@ -37,6 +39,8 @@ def searchDomain():
 @login_required
 def theharvester_status():
     domain = request.args.get('domain')
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):
@@ -99,8 +103,7 @@ def search_shodan_route_gowitness():
                     total_low_vulns += result['lowVulns']
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
-    #stand by per testing linkedin
-    #gowitness(results,urls)
+    gowitness(results,urls)
     final_result = {
         "results": results,
         "total_ports_80": total_ports_80,
@@ -119,56 +122,19 @@ def search_shodan_route_gowitness():
 def linkedinDump():
     linkedinUrl = request.args.get('url')
     domain = request.args.get('domain')
-    #Commenti per non sprecare cpu e API
-    #linkedin = linkedinDumperTry()
-    #linkedin = linkedinDumper(linkedinUrl)
-    emails = [
-    {
-      "Email": "angelo.bernunzo@conad.it",
-      "Firstname": "Angelo",
-      "Lastname": "Bernunzo"
-    },
-    {
-      "Email": "maria.morena.castrianni@conad.it",
-      "Firstname": "Maria Morena",
-      "Lastname": "Castrianni"
-    },
-    {
-      "Email": "stefano.gadda@conad.it",
-      "Firstname": "Stefano",
-      "Lastname": "Gadda"
-    }
-    ]
-    #Commentate per non sprecare api
-    #verified_emails = domain_search(domain)
-    #pattern = verified_emails.get('pattern')
-    pattern = r"{first}.{last}"
-    #print("Pattern: ",pattern)
-    #linkedin = linkedinDumper(linkedinUrl)
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
+    if not validateLinkedInURL(linkedinUrl):
+        return render_template('home/sample-page.html',error="Errore: URL non valido")
+
+    verified_emails = domain_search(domain)
+    pattern = verified_emails.get('pattern')
+    linkedin = linkedinDumper(linkedinUrl)
     
-    #Da qui ricordati!
-    data = [
-    {None: ['Firstname', 'Lastname', 'Position', 'Gender', 'Location', 'Profile']},
-    {None: ['Mattia', 'Erroi', "Double Degree Master's Graduate | Energy and Nuclear Engineer | Politecnico di Torino | KTH Royal Institute of Technology", 'N/A', 'Greater Turin Metropolitan Area', 'https://www.linkedin.com/in/mattia-erroi']},
-    {None: ['Nicolo', 'Magnani', 'Edison S.p.a', 'N/A', 'Milan', 'https://www.linkedin.com/in/nicol%C3%B2-magnani-8a3527171']},
-    {None: ['Bellacicco', 'Silvana', 'impiegato presso Edison SpA', 'N/A', 'Milan', 'https://www.linkedin.com/in/bellacicco-silvana-02a891a4']},
-    {None: ['Alessio', 'Ramundo', 'Risk Mandate & Costing Analyst', 'N/A', 'Italy', 'https://www.linkedin.com/in/alessio-ramundo-298447185']},
-    {None: ['Noemi', 'Falchi', '#Creditanalyst helping @Arval Italia determine the financial risks evaluating the financial health of a loan supporting business strategy', 'N/A', 'Milan', 'https://www.linkedin.com/in/noemifalchi']}
-    ]
-    # Estrarre le intestazioni
-    headers = data[0][None]
-    
-    # Creare una lista di dizionari trasformati
-    linkedin = []
-    for entry in data[1:]:
-        details = entry[None]
-        transformed_entry = {headers[i]: details[i] for i in range(len(headers))}
-        linkedin.append(transformed_entry)
-    
-    # A qui da mettere in util linkedin dumper per transformed_data e poi togliere i commenti per non sprecare api
     emails = createEmail(pattern,domain,linkedin)
+
     combined_data = {
-    #"verified_emails": verified_emails,
+    "verified_emails": verified_emails,
     "guessable_emails": emails,
     "linkedinDump": linkedin
     }
@@ -184,6 +150,22 @@ def get_chart_data():
         "series": series
     }
     return data
+
+@blueprint.route('/gowitness_images')
+@login_required
+def show_images():
+    src_directory = '/tmp/'
+    #qua la dir si chiama proprio static-assets non static/assets
+    dst_directory = '/static/assets/gowitness'  # Percorso diretto alla directory statica
+
+    images = [f for f in os.listdir(src_directory) if f.endswith('.png')]
+
+    # Copia le immagini dalla directory temporanea alla directory statica
+    for image in images:
+        shutil.copy2(os.path.join(src_directory, image), dst_directory)
+    
+    # Passa la lista dei nomi di file al template
+    return render_template('home/sample-page.html', images=images)
 
 @blueprint.route('/<template>')
 @login_required

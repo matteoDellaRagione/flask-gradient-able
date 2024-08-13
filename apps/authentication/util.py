@@ -18,6 +18,19 @@ import requests
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
 
+def validateDomain(domain):
+    if domain and re.match(r'^[a-zA-Z0-9.-]+$', domain):
+        return True
+    else:
+         return False
+
+def validateLinkedInURL(url):
+    pattern = r'^https:\/\/www\.linkedin\.com\/company\/[a-zA-Z0-9-]+\/$'
+    if url and re.match(pattern, url):
+        return True
+    else:
+        return False
+
 def hash_pass(password):
     """Hash a password for storing."""
 
@@ -190,8 +203,14 @@ def merge_json(json1, json2,json3,json4):
     return rmDuplicati(translated_json)
 
 def run_theharvester(domain, output_file):
-    command = f"theHarvester -d {domain} -b anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo -f {output_file}"
-    subprocess.run(command, shell=True)
+    command = [
+        "theHarvester",
+        "-d", domain,
+        "-b", "anubis,baidu,bing,bingapi,certspotter,crtsh,dnsdumpster,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo",
+        "-f", output_file
+    ]
+    
+    subprocess.run(command, check=True)
 
 def searchShodan(IP):
     api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
@@ -295,30 +314,6 @@ def rmDuplicati(json):
     json['numIP'] = len(json['IP'])
     return json
 
-def eyewitness(results, urls):
-    url_set = set(urls)
-    for entry in results:
-        ip = entry["ip"]
-        for service in entry["services"]:
-            location = service.get("location", "")
-            banner = service.get("banner", "")
-            port = service.get("port", 80)
-
-        # Aggiungiamo l'URL dal campo location
-            if "/" in location and "200 OK" in banner:
-                url_set.add(create_url(ip, port))
-            else:
-                url_set.add(location)
-
-# Creiamo il nuovo JSON
-    output = {
-        "urls": list(url_set)
-    }
-    
-    with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [executor.submit(run_eyewitness, url) for url in output["urls"]]
-        concurrent.futures.wait(futures)
-
 def create_url(ip, port):
     if port == 443:
         return f"https://{ip}"
@@ -327,8 +322,16 @@ def create_url(ip, port):
 
 
 def run_gowitness(url):
-    command = f"gowitness -P /tmp/ --screenshot-filter 200 --disable-db single \"{url}\""
-    subprocess.run(command, shell=True)
+    command = [
+        "gowitness",
+        "-P", "/tmp/",
+        "--screenshot-filter", "200",
+        "--disable-db",
+        "single", url
+    ]
+    
+    # Esecuzione del comando senza shell=True
+    subprocess.run(command)
 
 def gowitness(results, urls):
     url_set = set(urls)
@@ -363,7 +366,6 @@ def linkedinDumper(linkedinUrl):
         '--quiet'
     ]
     result = subprocess.run(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, text=True)
-    #result = subprocess.run(command, stdout=sys.stdout, stderr=sys.stderr, text=True)
     
     
     if result.returncode != 0:
@@ -377,83 +379,17 @@ def linkedinDumper(linkedinUrl):
     reader = csv.DictReader(f, delimiter=';')
     data = [row for row in reader]
     print(data)
-    
-    headers = data[0]["null"]
 
-    # Creazione di un array di dizionari con i dati
-    true_data = []
-    for row in data[1:]:
-        row_data = row["null"]
-        entry = {headers[i]: row_data[i] for i in range(len(headers))}
-        data.append(entry)
-    return true_data
-
-def linkedinDumperTry():
-    # Output simulato ricevuto direttamente
-    simulated_output = [
-        {
-            "null": [
-                "Firstname",
-                "Lastname",
-                "Position",
-                "Gender",
-                "Location",
-                "Profile"
-            ]
-        },
-        {
-            "null": [
-                "Angelo",
-                "Bernunzo",
-                "Vice direttore presso Supermercato Conad Lodi",
-                "N/A",
-                "Lodi",
-                "https://www.linkedin.com/in/angelo-bernunzo-a97007ab"
-            ]
-        },
-        {
-            "null": [
-                "Maria Morena",
-                "Castrianni",
-                "conad",
-                "N/A",
-                "Milan",
-                "https://www.linkedin.com/in/maria-morena-castrianni-774441227"
-            ]
-        },
-        {
-            "null": [
-                "Stefano",
-                "Gadda",
-                "Store Manager Conad presso Cernuscostore s.r.l.",
-                "N/A",
-                "Cernusco sul Naviglio",
-                "https://www.linkedin.com/in/stefano-gadda-21569013b"
-            ]
-        },
-        {
-            "null": [
-                "Giuseppe",
-                "Zuliani",
-                "Store Manager Conad presso Cernuscostore s.r.l.",
-                "N/A",
-                "Cernusco sul Naviglio",
-                "https://www.linkedin.com/in/stefano-gadda-21569013b"
-            ]
-        }
-
-    ]
+    #DA PROVARE
+    headers = data[0][None]
     
-    # Estrazione delle intestazioni
-    headers = simulated_output[0]["null"]
-    
-    # Creazione di un array di dizionari con i dati
-    data = []
-    for row in simulated_output[1:]:
-        row_data = row["null"]
-        entry = {headers[i]: row_data[i] for i in range(len(headers))}
-        data.append(entry)
-    return data
+    # Creare una lista di dizionari trasformati
+    linkedin = []
+    for entry in data[1:]:
+        details = entry[None]
+        transformed_entry = {headers[i]: details[i] for i in range(len(headers))}
+        linkedin.append(transformed_entry)
+    return linkedin
 
 def domain_search(domain):
     api_key = '38efac4a66dbb53ea2ee81fa9dc60770fe57d4c4'  # Inserisci qui la tua API key di Hunter.io
@@ -538,7 +474,6 @@ def domainShodan(domain):
     api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
     api = shodan.Shodan(api_key)
     try:
-        # Fai la query a Shodan DA VERIFICARE SE VA
         query = f'hostname:*.{domain} country:"IT"'
         result = api.search(query)
         all_hostnames = []

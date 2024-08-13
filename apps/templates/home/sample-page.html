@@ -55,6 +55,19 @@
 								officia deserunt mollit anim id est laborum."
 							</p>
 						</div>
+						<strong>{{error}}</strong>
+						<div class="card">
+							<div class="card-header">
+								<h3>Gowitness Images</h3>
+							</div>
+							{% for image in images %}
+								<div class="card-body">
+									<h2>{{ image }}</h2>
+									<img src="{{ url_for('static', filename='images/' + image) }}" alt="{{ image }}" style="max-width: 100%; height: auto;">
+								</div>
+								</div>
+							{% endfor %}
+						</div>
 					</div>
 				</div>
 				<!-- [ sample-page ] end -->

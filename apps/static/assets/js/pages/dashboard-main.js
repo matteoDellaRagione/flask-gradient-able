@@ -450,16 +450,14 @@ $(document).ready(function() {
             event.preventDefault(); // Previene il submit di default del form
             var url = $('#linkedinUrl').val();
             var domain = window.domain;
-            $('#result').html('<p>Loading...</p>');
+            $('#loading-linkedin').show();
             $.ajax({
                 url: "/linkedinDump",
                 type: "GET",
                 data: { url: url, domain: domain},
                 success: function(response) {
-                    //$('#result').html('<pre>' + JSON.stringify(response, null, 2) + '</pre>');
+                    $('#loading-linkedin').hide();
                     $('#result').show();
-                    console.log(response);
-                    console.log(response.linkedinDump.length);
                     document.getElementById('worker-count').textContent = response.linkedinDump.length;
                     if (response.linkedinDump.length > 0) {
                         $('#download-workers-btn').show();
@@ -469,6 +467,10 @@ $(document).ready(function() {
                         $('#download-email-btn').show();
                         document.getElementById('download-email-btn').onclick = function() {
                             downloadJson("Guessable-Emails",response.guessable_emails);
+                        };
+                        $('#download-verified-email-btn').show();
+                        document.getElementById('download-verified-email-btn').onclick = function() {
+                            downloadJson("Verified-Emails",response.verified_emails);
                         };
                     }
                 },
@@ -490,7 +492,6 @@ $(document).ready(function() {
                 } else {
                     var IP = data.IP;
                     var urls = data.interesting_urls;
-                    $('.domIP pre').text(JSON.stringify(data, null, 2));
                     document.getElementById('total-domain').textContent = data.numDomini;;
                     document.getElementById('resolved-domain').textContent = data.numResolvedHosts;
                     document.getElementById('total-ip').textContent = data.numIP;
@@ -674,7 +675,6 @@ jsonResponse.forEach(item => {
                 $('#vuln-chart').show();
                 $('#pie-chart-1').show();
                 $('#table').show();
-                $('.shodan pre').text(JSON.stringify(data, null, 2));
                 
                 if (data.results.length > 0) {
                     $('#download-vuln-btn').show();

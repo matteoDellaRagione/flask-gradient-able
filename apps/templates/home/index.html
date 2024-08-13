@@ -39,8 +39,8 @@
                     </div>
                 </div>
                 <div class="container">
-                    <h1>Ricerca per il dominio:</h1>
-                    <pre>{{ domain }}</pre>
+                    <h3>Ricerca per il dominio:</h3>
+                    <strong>{{ domain }}</strong>
                 </div>
                 <div class="card">
                     <div class="card-header">
@@ -53,18 +53,14 @@
                             <div id="result">
                                 <strong>Number of Workers found: <span id="worker-count">0</span></strong>
                             </div>
+                            <div id="loading-linkedin" style="display: none;">
+                                <p>Loading...</p>
+                            </div>
                         </form>
-                        <button class="btn btn-light mt-3 w-100" id="download-workers-btn" style="display:none;">Download Workers</button>
-                        <button class="btn btn-light mt-3 w-100" id="download-email-btn" style="display:none;">Download Guessable Emails</button>
+                        <button class="btn-primary mt-3 w-30" id="download-workers-btn" style="display:none;">Download Workers</button>
+                        <button class="btn-primary mt-3 w-30" id="download-email-btn" style="display:none;">Download Guessable Emails</button>
+                        <button class="btn-primary mt-3 w-30" id="download-verified-email-btn" style="display:none;">Download Verified Emails</button>
                     </div>
-                </div>
-                <div class="domIP">
-                    <h1>Dominio e IP</h1>
-                    <pre>Loading...</pre>
-                </div>
-                <div class="shodan">
-                    <h1>Shodan</h1>
-                    <pre>Loading...</pre>
                 </div>
                 <div class="col-md-6 col-xl-3" id="urls">
                     <div class="card bg-c-yellow order-card">
@@ -132,6 +128,14 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="card">
+                    <div class="card-header">
+                        <h3>Gowitness Images</h3>
+                    </div>
+                    <form action="/gowitness_images" method="get">
+                        <button type="submit" class="btn btn-primary">Gowitness Images</button>
+                    </form>
                 </div>
                 <!-- Customer overview end -->
             </div>
