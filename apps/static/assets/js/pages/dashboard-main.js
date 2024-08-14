@@ -439,6 +439,7 @@ function floatchart() {
 $(document).ready(function() {
     $('#loading').show();
     $('#vulns').hide();
+    $('#gowitness').hide();
     $('#domain').hide();
     $('#result').hide();
     $('#pie-chart-1').hide();
@@ -675,6 +676,7 @@ jsonResponse.forEach(item => {
                 $('#vuln-chart').show();
                 $('#pie-chart-1').show();
                 $('#table').show();
+                $('#gowitness').show();
                 
                 if (data.results.length > 0) {
                     $('#download-vuln-btn').show();

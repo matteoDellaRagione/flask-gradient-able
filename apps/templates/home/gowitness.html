@@ -50,13 +50,25 @@
                      officia deserunt mollit anim id est laborum."
                   </p>
                </div>
-               <strong>{{error}}</strong>
+               <!-- Da provare -->
+               <div class="card px-5">
+                  <div class="card-header">
+                     <h3>Gowitness Images</h3>
+                  </div>
+                  {% for image in images %}
+                  <div class="card-body">
+                     <h2>{{ image }}</h2>
+                     <img src="{{ url_for('static', filename='assets/gowitness/' ~ image) }}" alt="{{ image }}" style="max-width: 100%; height: auto;">
+                  </div>
+               </div>
+               {% endfor %}
             </div>
          </div>
-         <!-- [ sample-page ] end -->
       </div>
-      <!-- [ Main Content ] end -->
+      <!-- [ sample-page ] end -->
    </div>
+   <!-- [ Main Content ] end -->
+</div>
 </div>
 <!-- [ Main Content ] end -->
 {% endblock content %}

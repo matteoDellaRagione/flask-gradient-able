@@ -1,162 +1,155 @@
 {% extends "layouts/base.html" %}
-
 {% block title %} Dashboard {% endblock %} 
-
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
-
 {% block content %}
-
-    <!-- [ Main Content ] start -->
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
-    <!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
-    <div class="pcoded-main-container">
-        <div class="pcoded-content">
-            <!-- [ Main Content ] start -->
-            <div class="row">
-                <!-- order-card start -->
-                <div class="col-md-6 col-xl-3" id="domain">
-                    <div class="card bg-c-blue order-card">
-                        <div class="card-body">
-                            <h6 class="text-white">Total domain found</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-loader float-start"></i><span id="total-domain">$0</span></h2>
-                            <p class="m-b-0">Resolved domain<span class="float-end" id="resolved-domain">$0</span></p>
-                            <button class="btn btn-light mt-3 w-100" id="download-domain-btn" style="display:none;">Download Domains</button>
-                            <button class="btn btn-light mt-3 w-100" id="download-resolved-domain-btn" style="display:none;">Download Resolved Domains</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-3" id="IP">
-                    <div class="card bg-c-green order-card">
-                        <div class="card-body">
-                            <h6 class="text-white">Total IP Found</h6>
-                            <h2 class="text-end text-white"><i class="feather icon-info float-start"></i><span id="total-ip">$0</span>
-                            </h2>
-                            <button class="btn btn-light mt-3 w-100" id="download-ip-btn" style="display:none;">Download IPs</button>
-                            <button class="btn btn-light mt-3 w-100" id="download-all-btn" style="display:none;">Download Complete Json</button>
-                        </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="container">
-                    <h3>Ricerca per il dominio:</h3>
-                    <strong>{{ domain }}</strong>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Digita sotto il link linkedin associato al dominio:</h3>
-                    </div>
-                    <div class="card-body">
-                        <form id="linkedinForm">
-                            <input type="text" id="linkedinUrl" name="url" placeholder="Formato 'https://www.linkedin.com/company/tuodominio/'">
-                            <button type="submit">Search</button>
-                            <div id="result">
-                                <strong>Number of Workers found: <span id="worker-count">0</span></strong>
-                            </div>
-                            <div id="loading-linkedin" style="display: none;">
-                                <p>Loading...</p>
-                            </div>
-                        </form>
-                        <button class="btn-primary mt-3 w-30" id="download-workers-btn" style="display:none;">Download Workers</button>
-                        <button class="btn-primary mt-3 w-30" id="download-email-btn" style="display:none;">Download Guessable Emails</button>
-                        <button class="btn-primary mt-3 w-30" id="download-verified-email-btn" style="display:none;">Download Verified Emails</button>
-                    </div>
-                </div>
-                <div class="col-md-6 col-xl-3" id="urls">
-                    <div class="card bg-c-yellow order-card">
-                        <div class="card-body">
-                            <h6 class="text-white">Total URLS Found</h6>
-                            <h2 class="text-end text-white"><i
-                                    class="feather icon-eye float-start"></i><span id="total-urls">$0</span></h2>
-                            <button class="btn btn-light mt-3 w-100" id="download-urls-btn" style="display:none;">Download URLs</button>
-                        </div>
-                    </div>
-                </div>
-                <div id="loading" style="display: none;">
-                    <p>Loading...</p>
-                </div>
-                
-                <div id="vulns" class="col-md-6 col-xl-3" style="display: none;">
-                    <div class="card bg-c-red order-card">
-                        <div class="card-body">
-                            <h6 class="text-white">Total Found Vulnerabilities</h6>
-                            <h2 class="text-end text-white">
-                                <i class="feather icon-alert-triangle float-start"></i>
-                                <span id="total-vulns">$0</span>
-                            </h2>
-                            <p class="m-b-0">Most critical IP<span class="float-end" id="most-critical-ip">$0</span></p>
-                            <button class="btn btn-light mt-3 w-100" id="download-vuln-btn" style="display:none;">Download Vulnerabilities</button>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-6">
-                    <div class="card" id="vuln-chart">
-                        <div class="card-header">
-                            <h5>Vulnerability Pie Chart</h5>
-                        </div>
-                        <div class="card-body">
-                            <div id="pie-chart-1" style="width:100%"></div>
-                        </div>
-                    </div>
-                </div>
-                <!-- Customer overview start -->
-                <div class="col-md-12">
-                    <div class="card table-card" id="table">
-                        <div class="card-header">
-                            <h5>Vulnerabilities Distribution</h5>
-                        <div class="card-body p-0">
-                            <div class="tab-content" id="pills-tabContent">
-                                <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
-                                    <div class="table-responsive">
-                                        <div class="customer-scroll" style="height:362px;position:relative;">
-                                            <table class="table table-hover m-b-0">
-                                                <thead>
-                                                    <tr>
-                                                        <th><span>IP</span></th>
-                                                        <th><span>Critical Vulnerabilities</span></th>
-                                                        <th><span>High Vulnerabilities</span></th>
-                                                        <th><span>Medium Vulnerabilities</span></th>
-                                                        <th><span>Low Vulnerabilities</span></th>
-                                                    </tr>
-                                                </thead>
-                                                <tbody id="table-body">
-                                                </tbody>
-                                            </table>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="card">
-                    <div class="card-header">
-                        <h3>Gowitness Images</h3>
-                    </div>
-                    <form action="/gowitness_images" method="get">
-                        <button type="submit" class="btn btn-primary">Gowitness Images</button>
-                    </form>
-                </div>
-                <!-- Customer overview end -->
+<!-- [ Main Content ] start -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<!-- <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script> -->
+<div class="pcoded-main-container">
+   <div class="pcoded-content">
+      <!-- [ Main Content ] start -->
+      <div class="row">
+         <div class="container">
+            <h3>Ricerca per il dominio:</h3>
+            <strong>{{ domain }}</strong>
+         </div>
+         <div class="card">
+            <div class="card-header">
+               <h3>Digita sotto il link linkedin associato al dominio:</h3>
             </div>
-            <!-- [ Main Content ] end -->
-        </div>
-    </div>
-    <!-- [ Main Content ] end -->
-
+            <div class="card-body">
+               <form id="linkedinForm">
+                  <input type="text" id="linkedinUrl" name="url" placeholder="Formato 'https://www.linkedin.com/company/tuodominio/'">
+                  <button type="submit">Search</button>
+                  <div id="result">
+                     <strong>Number of Workers found: <span id="worker-count">0</span></strong>
+                  </div>
+                  <div id="loading-linkedin" style="display: none;">
+                     <p>Loading...</p>
+                  </div>
+               </form>
+               <button class="btn-primary mt-3 w-30" id="download-workers-btn" style="display:none;">Download Workers</button>
+               <button class="btn-primary mt-3 w-30" id="download-email-btn" style="display:none;">Download Guessable Emails</button>
+               <button class="btn-primary mt-3 w-30" id="download-verified-email-btn" style="display:none;">Download Verified Emails</button>
+            </div>
+         </div>
+         <!-- order-card start -->
+         <div class="col-xl-3" id="domain">
+            <div class="card bg-c-blue order-card h-100">
+               <div class="card-body">
+                  <h6 class="text-white">Total domain found</h6>
+                  <h2 class="text-end text-white"><i class="feather icon-loader float-start"></i><span id="total-domain">$0</span></h2>
+                  <p class="m-b-0">Resolved domain<span class="float-end" id="resolved-domain">$0</span></p>
+                  <button class="btn btn-light mt-3 w-100" id="download-domain-btn" style="display:none;">Download Domains</button>
+                  <button class="btn btn-light mt-3 w-100" id="download-resolved-domain-btn" style="display:none;">Download Resolved Domains</button>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-3" id="IP">
+            <div class="card bg-c-green order-card h-100">
+               <div class="card-body">
+                  <h6 class="text-white">Total IP Found</h6>
+                  <h2 class="text-end text-white"><i class="feather icon-info float-start"></i><span id="total-ip">$0</span>
+                  </h2>
+                  <button class="btn btn-light mt-3 w-100" id="download-ip-btn" style="display:none;">Download IPs</button>
+                  <button class="btn btn-light mt-3 w-100" id="download-all-btn" style="display:none;">Download Complete Json</button>
+               </div>
+            </div>
+         </div>
+         <div class="col-xl-3" id="urls">
+            <div class="card bg-c-yellow order-card h-100">
+               <div class="card-body">
+                  <h6 class="text-white">Total URLS Found</h6>
+                  <h2 class="text-end text-white"><i
+                     class="feather icon-eye float-start"></i><span id="total-urls">$0</span></h2>
+                  <button class="btn btn-light mt-3 w-100" id="download-urls-btn" style="display:none;">Download URLs</button>
+               </div>
+            </div>
+         </div>
+         <div id="loading" style="display: none;">
+            <p>Loading...</p>
+         </div>
+         <div id="vulns" class="col-xl-3" style="display: none;">
+            <div class="card bg-c-red order-card h-100">
+               <div class="card-body">
+                  <h6 class="text-white">Total Found Vulnerabilities</h6>
+                  <h2 class="text-end text-white">
+                     <i class="feather icon-alert-triangle float-start"></i>
+                     <span id="total-vulns">$0</span>
+                  </h2>
+                  <p class="m-b-0">Most critical IP<span class="float-end" id="most-critical-ip">$0</span></p>
+                  <button class="btn btn-light mt-3 w-100" id="download-vuln-btn" style="display:none;">Download Vulnerabilities</button>
+               </div>
+            </div>
+         </div>
+      </div>
+      <div class="col-md-6">
+         <div class="card" id="vuln-chart">
+            <div class="card-header">
+               <h5>Vulnerability Pie Chart</h5>
+            </div>
+            <div class="card-body">
+               <div id="pie-chart-1" style="width:100%"></div>
+            </div>
+         </div>
+      </div>
+      <!-- Customer overview start -->
+      <div class="col-md-12">
+         <div class="card table-card" id="table">
+            <div class="card-header">
+               <h5>Vulnerabilities Distribution</h5>
+               <div class="card-body p-0">
+                  <div class="tab-content" id="pills-tabContent">
+                     <div class="tab-pane fade show active" id="pills-home" role="tabpanel" aria-labelledby="pills-home-tab">
+                        <div class="table-responsive">
+                           <div class="customer-scroll" style="height:362px;position:relative;">
+                              <table class="table table-hover m-b-0">
+                                 <thead>
+                                    <tr>
+                                       <th><span>IP</span></th>
+                                       <th><span>Critical Vulnerabilities</span></th>
+                                       <th><span>High Vulnerabilities</span></th>
+                                       <th><span>Medium Vulnerabilities</span></th>
+                                       <th><span>Low Vulnerabilities</span></th>
+                                    </tr>
+                                 </thead>
+                                 <tbody id="table-body">
+                                 </tbody>
+                              </table>
+                           </div>
+                        </div>
+                     </div>
+                  </div>
+               </div>
+            </div>
+         </div>
+         <div class="card" id="gowitness">
+            <div class="card-header">
+               <h3>Gowitness Images</h3>
+            </div>
+            <div class="=card-body">
+                Click here to see the Gowitness results
+            </div>
+            <form action="/gowitness_images" method="get">
+               <button type="submit" class="btn btn-primary">Gowitness Images</button>
+            </form>
+         </div>
+         <!-- Customer overview end -->
+      </div>
+      <!-- [ Main Content ] end -->
+   </div>
+</div>
+<!-- [ Main Content ] end -->
 {% endblock content %}
-
 <!-- Specific Page JS goes HERE  -->
 {% block javascripts %}
-
 <script>
-    // Passa il valore al JavaScript come una variabile globale
-    window.domain = "{{ domain }}";
+   // Passa il valore al JavaScript come una variabile globale
+   window.domain = "{{ domain }}";
 </script>
-    <!-- Apex Chart -->
-    <script src="/static/assets/js/plugins/apexcharts.min.js"></script>
-
-    <!-- custom-chart js -->
-    <script src="/static/assets/js/pages/dashboard-main.js"></script>
-
+<!-- Apex Chart -->
+<script src="/static/assets/js/plugins/apexcharts.min.js"></script>
+<!-- custom-chart js -->
+<script src="/static/assets/js/pages/dashboard-main.js"></script>
 {% endblock javascripts %}

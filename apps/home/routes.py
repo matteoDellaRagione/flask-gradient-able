@@ -4,7 +4,7 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from flask import render_template, request,jsonify,session
+from flask import render_template,request,jsonify,session,current_app
 from flask_login import login_required
 from jinja2 import TemplateNotFound
 from apps.authentication.util import *
@@ -155,8 +155,8 @@ def get_chart_data():
 @login_required
 def show_images():
     src_directory = '/tmp/'
-    #qua la dir si chiama proprio static-assets non static/assets
-    dst_directory = '/static/assets/gowitness'  # Percorso diretto alla directory statica
+    
+    dst_directory = os.path.join(current_app.root_path, 'static/assets/gowitness')
 
     images = [f for f in os.listdir(src_directory) if f.endswith('.png')]
 
@@ -164,8 +164,10 @@ def show_images():
     for image in images:
         shutil.copy2(os.path.join(src_directory, image), dst_directory)
     
-    # Passa la lista dei nomi di file al template
-    return render_template('home/sample-page.html', images=images)
+     # Passa la lista dei nomi di file al template
+    rendered_template = render_template('home/gowitness.html', images=images)
+    #Da fare un crontab che elimina le immagini da static/assets/gowitness
+    return rendered_template
 
 @blueprint.route('/<template>')
 @login_required
