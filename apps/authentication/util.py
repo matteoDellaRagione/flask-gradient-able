@@ -322,16 +322,15 @@ def create_url(ip, port):
 
 
 def run_gowitness(url):
-    command = [
-        "gowitness",
-        "-P", "/tmp/",
-        "--screenshot-filter", "200",
-        "--disable-db",
-        "single", url
-    ]
-    
-    # Esecuzione del comando senza shell=True
-    subprocess.run(command)
+    if not checkURLgowitness(url):
+        command = [
+            "gowitness",
+            "-P", "/tmp/",
+            "--screenshot-filter", "200",
+            "--disable-db",
+            "single", url
+        ]
+        subprocess.run(command)
 
 def gowitness(results, urls):
     url_set = set(urls)
@@ -493,3 +492,13 @@ def domainShodan(domain):
 def add_if_not_null(dictionary, key, value):
         if value is not None:
             dictionary[key] = value
+
+def checkURLgowitness(url):
+    # Sostituisci i caratteri non validi per i nomi dei file con "-"
+    filename = url.replace('/', '-').replace('.', '-').replace(':', '-')
+    filename = filename + '.png'
+
+    # Verifica se il file esiste
+    return os.path.isfile(filename)
+#url=https://dareboost.com:443/
+#https-dareboost.com-443-.png

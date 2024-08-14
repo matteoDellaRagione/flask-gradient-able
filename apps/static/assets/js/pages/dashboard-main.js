@@ -440,6 +440,7 @@ $(document).ready(function() {
     $('#loading').show();
     $('#vulns').hide();
     $('#gowitness').hide();
+    $('#report').hide();
     $('#domain').hide();
     $('#result').hide();
     $('#pie-chart-1').hide();
@@ -533,7 +534,7 @@ $(document).ready(function() {
                             downloadJson("Full_Json",data);
                         };
 
-                    shodan(IP,urls);
+                    shodan(data,domain);
                     
                 }
             },
@@ -665,27 +666,58 @@ jsonResponse.forEach(item => {
     );
     chart.render();
 }
-    function shodan(IP,urls) {
+
+function report(json1,json2) {
+    $.ajax({
+        url: '/generate-report',
+        type: 'POST',
+        contentType: 'application/json',
+        data: JSON.stringify({json1: json1, json2: json2}),
+        xhrFields: {
+            responseType: 'blob'  // per gestire la risposta binaria (PDF)
+        },
+        success: function(data) {
+            var blob = new Blob([data], { type: 'application/pdf' });
+            var url = window.URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url;
+            a.download = 'report.pdf';
+            document.body.appendChild(a);
+            a.click();
+            window.URL.revokeObjectURL(url);
+        },
+        error: function(error) {
+            console.error('Errore nella generazione del report:', error);
+        }
+    });
+}
+    function shodan(data,domain) {
+        var IP = data.IP;
+        var urls = data.interesting_urls;
         $.ajax({
             url: "/search_shodan",
             method: "GET",
-            data: { json: JSON.stringify({ IP: IP, urls: urls }) },
-            success: function(data) {
+            data: { json: JSON.stringify({ IP: IP, urls: urls }), domain:domain },
+            success: function(response) {
                 $('#loading').hide();
                 $('#vulns').show();
                 $('#vuln-chart').show();
                 $('#pie-chart-1').show();
                 $('#table').show();
-                $('#gowitness').show();
+                $('#report').show();
                 
-                if (data.results.length > 0) {
+                if (response.results.length > 0) {
                     $('#download-vuln-btn').show();
                     document.getElementById('download-vuln-btn').onclick = function() {
-                        downloadJson("Vulnerabilities",data);
+                        downloadJson("Vulnerabilities",response);
                     };
                 }
-                updateInfo(data);
-                populateTable(data.results);
+                updateInfo(response);
+                populateTable(response.results);
+
+                $('#generate-report-btn').off('click').on('click', function() {
+                    report(data,response);
+                });
             },
             error: function(jqXHR, textStatus, errorThrown) {
                 console.error("Errore durante la richiesta AJAX:", textStatus, errorThrown);

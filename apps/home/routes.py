@@ -4,9 +4,9 @@ Copyright (c) 2019 - present AppSeed.us
 """
 
 from apps.home import blueprint
-from flask import render_template,request,jsonify,session,current_app
+from flask import render_template,request,jsonify,session,current_app,send_file
 from flask_login import login_required
-from jinja2 import TemplateNotFound
+from jinja2 import TemplateNotFound,Template
 from apps.authentication.util import *
 from threading import Thread
 import os
@@ -27,9 +27,8 @@ def index():
 def searchDomain():
     domain = request.args.get('domain')
     if not validateDomain(domain):
-        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
+        return render_template('home/sample-page.html',error="Error: Domain not valid")
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
-    #whois_json = whois_to_json(domain)
     if not os.path.exists(theharvester_output_file):
         theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
         theharvester_thread.start()
@@ -40,7 +39,7 @@ def searchDomain():
 def theharvester_status():
     domain = request.args.get('domain')
     if not validateDomain(domain):
-        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
+        return render_template('home/sample-page.html',error="Error: Domain not valid")
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
 
     if os.path.exists(theharvester_output_file):
@@ -60,10 +59,20 @@ def theharvester_status():
 @login_required
 def search_shodan_route_gowitness():
     json_data = request.args.get('json')
+    domain = request.args.get('domain')
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Errore: Domain not valid")
     
     if not json_data:
-        return jsonify({"error": "No JSON data provided"}), 400
+        return render_template('home/sample-page.html',error="Error: Missing Json")
     
+    # Definire il nome del file, puoi personalizzarlo in base alle tue esigenze
+    filename = f"/tmp/{domain}_shodan.json"
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            shodan_json = json.load(f)
+            return shodan_json
+
     try:
         json_obj = json.loads(json_data)
         ips = json_obj.get('IP', [])
@@ -115,6 +124,10 @@ def search_shodan_route_gowitness():
         "total_low_vulns": total_low_vulns,
         "total_vulns": total_critical_vulns + total_high_vulns + total_medium_vulns +total_low_vulns
     }
+
+    # Scrivere il dizionario nel file JSON
+    with open(filename, 'w') as json_file:
+        json.dump(final_result, json_file, indent=4)
     return final_result
 
 @blueprint.route('/linkedinDump',methods=['GET'])
@@ -123,9 +136,9 @@ def linkedinDump():
     linkedinUrl = request.args.get('url')
     domain = request.args.get('domain')
     if not validateDomain(domain):
-        return render_template('home/sample-page.html',error="Errore: Dominio non valido")
+        return render_template('home/sample-page.html',error="Error: Domain not valid")
     if not validateLinkedInURL(linkedinUrl):
-        return render_template('home/sample-page.html',error="Errore: URL non valido")
+        return render_template('home/sample-page.html',error="Error: URL not valid")
 
     verified_emails = domain_search(domain)
     pattern = verified_emails.get('pattern')
@@ -168,6 +181,39 @@ def show_images():
     rendered_template = render_template('home/gowitness.html', images=images)
     #Da fare un crontab che elimina le immagini da static/assets/gowitness
     return rendered_template
+
+@blueprint.route('/generate-report', methods=['POST'])
+@login_required
+def generate_report():
+    # Ricevi i JSON dal client
+    theharvester_json = request.json.get('json1')
+    shodan_json = request.json.get('json2')
+
+    if not theharvester_json or not shodan_json:
+        return render_template('home/sample-page.html',error="Error: Missing Json")
+
+    # Genera il report LaTeX usando Jinja2
+    with open('templates/report_template.tex') as f:
+        template = Template(f.read())
+    
+    report_content = template.render(json1=theharvester_json, json2=shodan_json)
+    
+    # Scrivi il contenuto LaTeX in un file temporaneo
+    latex_file = 'report.tex'
+    with open(latex_file, 'w') as f:
+        f.write(report_content)
+    
+    # Compila il file LaTeX in PDF usando pdflatex
+    subprocess.run(['pdflatex', latex_file], check=True)
+
+    # Il file PDF risultante
+    pdf_file = 'report.pdf'
+    
+    # Restituisci il PDF al client
+    if os.path.exists(pdf_file):
+        return send_file(pdf_file, as_attachment=True)
+    else:
+        return render_template('home/sample-page.html',error="Errore: Generation of Report Failed")
 
 @blueprint.route('/<template>')
 @login_required
