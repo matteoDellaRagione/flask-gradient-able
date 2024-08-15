@@ -1,5 +1,6 @@
 \documentclass{article}
 \usepackage{graphicx}
+\usepackage{verbatim} % Per l'ambiente verbatim
 
 \title{Generated Report}
 \author{Flask Server}
@@ -10,12 +11,12 @@
 
 \section*{JSON 1 Data}
 \begin{verbatim}
-{{ json_data_1 }}
+{{ json1 | safe }}
 \end{verbatim}
 
 \section*{JSON 2 Data}
 \begin{verbatim}
-{{ json_data_2 }}
+{{ json2 | safe }}
 \end{verbatim}
 
 \end{document}

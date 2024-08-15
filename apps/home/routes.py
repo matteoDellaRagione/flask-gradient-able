@@ -182,38 +182,52 @@ def show_images():
     #Da fare un crontab che elimina le immagini da static/assets/gowitness
     return rendered_template
 
-@blueprint.route('/generate-report',methods=['POST'])
+@blueprint.route('/generateReport',methods=['POST'])
 @login_required
 def generate_report():
     # Ricevi i JSON dal client
     theharvester_json = request.json.get('json1')
     shodan_json = request.json.get('json2')
+    domain = request.json.get('domain')
+
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Errore: Domain not valid")
 
     if not theharvester_json or not shodan_json:
         return render_template('home/sample-page.html',error="Error: Missing Json")
     
+    output_directory = '/home/kali/flask-gradient-able/Reports'
+
+    # File LaTeX e PDF con nomi personalizzati
+    latex_file = os.path.join(output_directory, f'{domain}.tex')
+    pdf_file = os.path.join(output_directory, f'{domain}.pdf')
+
     # Genera il report LaTeX usando Jinja2
-    with open('templates/report_template.tex') as f:
+    with open('apps/templates/report_template.tex') as f:
         template = Template(f.read())
     
     report_content = template.render(json1=theharvester_json, json2=shodan_json)
     
     # Scrivi il contenuto LaTeX in un file temporaneo
-    latex_file = 'report.tex'
     with open(latex_file, 'w') as f:
         f.write(report_content)
     
     # Compila il file LaTeX in PDF usando pdflatex
-    subprocess.run(['pdflatex', latex_file], check=True)
-
-    # Il file PDF risultante
-    pdf_file = 'report.pdf'
+    # Compila il file LaTeX in PDF usando pdflatex
+    result = subprocess.run(
+        ['pdflatex', '-output-directory=' + output_directory, latex_file],
+        check=True,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.PIPE
+        )
+    print("stdout:", result.stdout.decode())
+    print("stderr:", result.stderr.decode())
     
     # Restituisci il PDF al client
     if os.path.exists(pdf_file):
         return send_file(pdf_file, as_attachment=True)
     else:
-        return render_template('home/sample-page.html',error="Errore: Generation of Report Failed")
+        return render_template('home/sample-page.html',error="Error: Generation of Report Failed")
 
 @blueprint.route('/<template>')
 @login_required

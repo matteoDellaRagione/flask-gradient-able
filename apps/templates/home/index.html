@@ -10,9 +10,13 @@
    <div class="pcoded-content">
       <!-- [ Main Content ] start -->
       <div class="row">
-         <div class="container">
-            <h3>Ricerca per il dominio:</h3>
-            <strong>{{ domain }}</strong>
+         <div class="card">
+            <div class="card-header">
+               <h3>Ricerca per il dominio:</h3>
+            </div>
+            <div class="card-body">
+               <strong>{{ domain }}</strong>
+            </div>
          </div>
          <div class="card">
             <div class="card-header">
@@ -142,9 +146,7 @@
             <div class="=card-body">
                 Click here to see the Discovery Report
             </div>
-            <form action="/report" method="get">
                <button id="generate-report-btn" class="btn btn-primary">Generate Report</button>
-            </form>
          </div>
          <!-- Customer overview end -->
       </div>

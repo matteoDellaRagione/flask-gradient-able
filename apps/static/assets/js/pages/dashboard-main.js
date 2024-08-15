@@ -436,7 +436,7 @@ function floatchart() {
     })();
     // [ unique-visitor-chart ] end
 }
-$(document).ready(function() {
+$(document).ready(function() {    
     $('#loading').show();
     $('#vulns').hide();
     $('#gowitness').hide();
@@ -667,14 +667,12 @@ jsonResponse.forEach(item => {
     chart.render();
 }
 
-function report(json1,json2) {
-    console.log(json1);
-    console.log(json2);
+function report(json1,json2,domain) {
     $.ajax({
-        url: '/generate-report',
+        url: '/generateReport',
         method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({ json1: json1, json2: json2 }),
+        data: JSON.stringify({ json1: json1, json2: json2, domain: domain}),
         xhrFields: {
             responseType: 'blob'  // per gestire la risposta binaria (PDF)
         },
@@ -683,19 +681,22 @@ function report(json1,json2) {
             var url = window.URL.createObjectURL(blob);
             var a = document.createElement('a');
             a.href = url;
-            a.download = 'report.pdf';
+            a.download = `${domain}.pdf`;
             document.body.appendChild(a);
             a.click();
             window.URL.revokeObjectURL(url);
         },
-        error: function(error) {
-            console.error('Errore nella generazione del report:', error);
+        error: function(jqXHR, textStatus, errorThrown) {
+            console.error('Errore nella generazione del report:', textStatus, errorThrown);
+            console.log(jqXHR.responseText);
         }
     });
 }
     function shodan(json1,domain) {
         var IP = json1.IP;
         var urls = json1.interesting_urls;
+        console.log("Prima della success shodan");
+        console.log(json1);
         $.ajax({
             url: "/search_shodan",
             method: "GET",
@@ -718,7 +719,9 @@ function report(json1,json2) {
                 populateTable(response.results);
 
                 $('#generate-report-btn').off('click').on('click', function() {
-                    report(json1,response);
+                    console.log("Dentro success shodan");
+                    console.log(json1);
+                    report(json1,response,domain);
                 });
             },
             error: function(jqXHR, textStatus, errorThrown) {
