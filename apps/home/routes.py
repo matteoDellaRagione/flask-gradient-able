@@ -13,7 +13,7 @@ import os
 import shutil
 import concurrent.futures
 import time
-
+import json
 
   
 
@@ -182,7 +182,7 @@ def show_images():
     #Da fare un crontab che elimina le immagini da static/assets/gowitness
     return rendered_template
 
-@blueprint.route('/generate-report', methods=['POST'])
+@blueprint.route('/generate-report',methods=['POST'])
 @login_required
 def generate_report():
     # Ricevi i JSON dal client
@@ -191,7 +191,7 @@ def generate_report():
 
     if not theharvester_json or not shodan_json:
         return render_template('home/sample-page.html',error="Error: Missing Json")
-
+    
     # Genera il report LaTeX usando Jinja2
     with open('templates/report_template.tex') as f:
         template = Template(f.read())

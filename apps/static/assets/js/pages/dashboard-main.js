@@ -668,11 +668,13 @@ jsonResponse.forEach(item => {
 }
 
 function report(json1,json2) {
+    console.log(json1);
+    console.log(json2);
     $.ajax({
         url: '/generate-report',
-        type: 'POST',
+        method: 'POST',
         contentType: 'application/json',
-        data: JSON.stringify({json1: json1, json2: json2}),
+        data: JSON.stringify({ json1: json1, json2: json2 }),
         xhrFields: {
             responseType: 'blob'  // per gestire la risposta binaria (PDF)
         },
@@ -691,9 +693,9 @@ function report(json1,json2) {
         }
     });
 }
-    function shodan(data,domain) {
-        var IP = data.IP;
-        var urls = data.interesting_urls;
+    function shodan(json1,domain) {
+        var IP = json1.IP;
+        var urls = json1.interesting_urls;
         $.ajax({
             url: "/search_shodan",
             method: "GET",
@@ -716,7 +718,7 @@ function report(json1,json2) {
                 populateTable(response.results);
 
                 $('#generate-report-btn').off('click').on('click', function() {
-                    report(data,response);
+                    report(json1,response);
                 });
             },
             error: function(jqXHR, textStatus, errorThrown) {
