@@ -206,22 +206,18 @@ def generate_report():
     with open('apps/templates/report_template.tex') as f:
         template = Template(f.read())
     
-    report_content = template.render(json1=theharvester_json, json2=shodan_json)
-    
+    #report_content = template.render(json1=theharvester_json, json2=shodan_json, domain=domain)
+    report_content = template.render(json1=theharvester_json, domain=domain)
+
     # Scrivi il contenuto LaTeX in un file temporaneo
     with open(latex_file, 'w') as f:
         f.write(report_content)
     
     # Compila il file LaTeX in PDF usando pdflatex
-    # Compila il file LaTeX in PDF usando pdflatex
     result = subprocess.run(
         ['pdflatex', '-output-directory=' + output_directory, latex_file],
-        check=True,
-        stdout=subprocess.PIPE,
-        stderr=subprocess.PIPE
+        check=True
         )
-    print("stdout:", result.stdout.decode())
-    print("stderr:", result.stderr.decode())
     
     # Restituisci il PDF al client
     if os.path.exists(pdf_file):
