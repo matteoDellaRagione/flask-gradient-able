@@ -1,8 +1,8 @@
 \documentclass{article}
-\usepackage{geometry}
-\geometry{a4paper, margin=1in}
+\usepackage[a4paper, margin=1in]{geometry} 
 \usepackage{hyperref}
 \usepackage{breakurl}
+\usepackage{xurl}
 \usepackage{amsmath}
 \usepackage{graphicx}
 
@@ -21,12 +21,12 @@
 Below are some key statistics from the data provided:
 
 \begin{itemize}
-    \item Number of IPs: {{ json1.numIP }}
-    \item Number of Domains: {{ json1.numDomini }}
-    \item Number of Emails: {{ json1.numEmail }}
-    \item Number of Resolved Hosts: {{ json1.numResolvedHosts }}
-    \item Number of Mail Servers: {{ json1.numServerMail }}
-    \item Number of URLs: {{ json1.numUrls }}
+    \item \textbf{Number of IPs}: {{ json1.numIP }}
+    \item \textbf{Number of Domains}: {{ json1.numDomini }}
+    \item \textbf{Number of Emails}: {{ json1.numEmail }}
+    \item \textbf{Number of Resolved Hosts}: {{ json1.numResolvedHosts }}
+    \item \textbf{Number of Mail Servers}: {{ json1.numServerMail }}
+    \item \textbf{Number of URLs}: {{ json1.numUrls }}
 \end{itemize}
 
 \section*{IP Addresses found}
@@ -45,12 +45,13 @@ Below is the list of IP addresses found:
 
 Below is the list of Domain found:
 
-
+\scriptsize
 \begin{itemize}
     {% for domain in json1.domini %}
         \item {{ domain }}
     {% endfor %}
 \end{itemize}
+\normalsize
 
 
 \section*{URLs found}
@@ -61,7 +62,7 @@ Below is the list of URLs found:
     {% for url in json1.interesting_urls %}
         {% set url_escaped = url|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') %}
         {% set url_parts = url.split('/')[2] %}
-        \item \href{{ url_escaped }}{{ url_parts }}
+        \item \href{ {{ url_escaped }} }{ {{ url_parts }} }
     {% endfor %}
 \end{itemize}
 
@@ -82,7 +83,7 @@ Below is a list of resolved hosts with their corresponding IP addresses:
 
 \begin{itemize}
     {% for host, ip in json1.resolved_hosts.items() %}
-        \item \textbf{{ host }}: {{ ip }}
+        \item \textbf{ {{ host }} }: {{ ip }}
     {% endfor %}
 \end{itemize}
 
@@ -96,8 +97,56 @@ Below is the list of Server Mail found:
     {% endfor %}
 \end{itemize}
 
-\section*{Additional Information from Shodan}
+\section*{Shodan Results for IP Addresses}
 
-Here you can add additional details from the Shodan JSON or any other relevant data.
+Below is the detailed report of vulnerabilities and services for each IP address:
+
+{% for result in json2.results %}
+
+\subsection*{IP Address: {{ result.ip }}}
+
+\begin{itemize}
+    \item \textbf{Organization}: {{ result.organization }}
+    \item \textbf{Operating System}: {% if result.os %} {{ result.os }} {% else %} N/A {% endif %}
+    \item \textbf{Critical Vulnerabilities}: {{ result.criticalVulns }}
+    \item \textbf{High Vulnerabilities}: {{ result.highVulns }}
+    \item \textbf{Medium Vulnerabilities}: {{ result.mediumVulns }}
+    \item \textbf{Low Vulnerabilities}: {{ result.lowVulns }}
+    \item \textbf{Total Vulnerabilities}: {{ result.totalVulns }}
+\end{itemize}
+
+\subsubsection*{Services Running on IP Address}
+
+\begin{itemize}
+    {% for service in result.services %}
+        \item \textbf{Service}: {{ service.service }}
+        \begin{itemize}
+            \item \textbf{Port}: {{ service.port }}
+            \item \textbf{Version}: {% if service.version %} {{ service.version }} {% else %} N/A {% endif %}
+            \item \textbf{Banner}: \texttt{ {{ service.banner|replace('_', '\_')|replace('&', '\&')|replace('%', '\%')|replace('#', '\#')|replace('^', '\^{}')|replace('\\', '\textbackslash ') }} }
+            \item \textbf{Location}: \href{ {{ service.location|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') }} }{ {{ service.location }} }
+        \end{itemize}
+    {% endfor %}
+\end{itemize}
+
+{% if result.vulnerabilities %}
+\subsubsection*{Vulnerabilities Found}
+
+\begin{itemize}
+    {% for vuln in result.vulnerabilities %}
+        \item \textbf{Vulnerability}: {{ vuln.vulnerability }}
+        \begin{itemize}
+            \item \textbf{CVSS Score}: {% if vuln.cvss %} {{ vuln.cvss }} {% else %} N/A {% endif %}
+            \item \textbf{Description}: \parbox{\linewidth}{\texttt{ {{ vuln.description|replace('_', '\_')|replace('&', '\&')|replace('%', '\%')|replace('#', '\#')|replace('^', '\^{}')|replace('\\', '\textbackslash ') }} }}
+        \end{itemize}
+    {% endfor %}
+\end{itemize}
+{% else %}
+\textbf{No vulnerabilities found for this IP address.}
+{% endif %}
+
+\clearpage
+
+{% endfor %}
 
 \end{document}
