@@ -207,7 +207,16 @@ def generate_report():
         template = Template(f.read())
     
     escaped_shodan_json = escape_json_list(shodan_json)
-    print(escaped_shodan_json)
+    ip_to_find = "109.168.115.125"
+    vulnerabilities = []
+
+    for result in escaped_shodan_json['results']:
+        if result['ip'] == ip_to_find:
+            vulnerabilities = result['vulnerabilities']
+            break
+
+    # Stampa le vulnerabilità trovate
+    print(json.dumps(vulnerabilities, indent=2))
     
     report_content = template.render(json1=theharvester_json, json2=escaped_shodan_json, domain=domain)
     #report_content = template.render(json1=theharvester_json, domain=domain)

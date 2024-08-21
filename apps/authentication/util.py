@@ -504,22 +504,35 @@ def checkURLgowitness(url):
 #https-dareboost.com-443-.png
 
 def escape_latex(text):
-    """
-    Escape special LaTeX characters in a given string.
-    """
     if not isinstance(text, str):
         return text
-    # Escaping backslash first
-    text = text.replace('\\', r'\textbackslash{}')
-    # Escaping other special characters
-    text = re.sub(r'([&%$#_{}~^])', r'\\\1', text)
+    
+    text = re.sub(r'[^\x20-\x7E]', '', text)  # Rimuove tutti i caratteri non stampabili
+
+    # Sostituzione dei caratteri speciali con le loro versioni LaTeX escapate
+    replacements = {
+        '\\': r'\textbackslash{}',
+        '&': r'\&',
+        '%': r'\%',
+        '$': r'\$',
+        '#': r'\#',
+        '_': r'\_',
+        '{': r'\{',
+        '}': r'\}',
+        '~': r'\~{}',
+        '^': r'\^'
+    }
+    
+    
+    for original, replacement in replacements.items():
+        text = text.replace(original, replacement)
+    
     return text
 
 def escape_json(data):
     """
     Escape special LaTeX characters in the specific JSON structure you provided.
     """
-    # Escaping for the root level fields
     if "organization" in data:
         data["organization"] = escape_latex(data["organization"])
     
