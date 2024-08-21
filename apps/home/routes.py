@@ -206,7 +206,10 @@ def generate_report():
     with open('apps/templates/report_template.tex') as f:
         template = Template(f.read())
     
-    report_content = template.render(json1=theharvester_json, json2=shodan_json, domain=domain)
+    escaped_shodan_json = escape_json_list(shodan_json)
+    print(escaped_shodan_json)
+    
+    report_content = template.render(json1=theharvester_json, json2=escaped_shodan_json, domain=domain)
     #report_content = template.render(json1=theharvester_json, domain=domain)
 
     # Scrivi il contenuto LaTeX in un file temporaneo

@@ -502,3 +502,51 @@ def checkURLgowitness(url):
     return os.path.isfile(filename)
 #url=https://dareboost.com:443/
 #https-dareboost.com-443-.png
+
+def escape_latex(text):
+    """
+    Escape special LaTeX characters in a given string.
+    """
+    if not isinstance(text, str):
+        return text
+    # Escaping backslash first
+    text = text.replace('\\', r'\textbackslash{}')
+    # Escaping other special characters
+    text = re.sub(r'([&%$#_{}~^])', r'\\\1', text)
+    return text
+
+def escape_json(data):
+    """
+    Escape special LaTeX characters in the specific JSON structure you provided.
+    """
+    # Escaping for the root level fields
+    if "organization" in data:
+        data["organization"] = escape_latex(data["organization"])
+    
+    if "services" in data:
+        for service in data["services"]:
+            if "banner" in service:
+                service["banner"] = escape_latex(service["banner"])
+            if "location" in service:
+                service["location"] = escape_latex(service["location"])
+            if "service" in service:
+                service["service"] = escape_latex(service["service"])
+            if "version" in service:
+                service["version"] = escape_latex(service["version"])
+    
+    if "vulnerabilities" in data:
+        for vuln in data["vulnerabilities"]:
+            if "description" in vuln:
+                vuln["description"] = escape_latex(vuln["description"])
+            if "vulnerability" in vuln:
+                vuln["vulnerability"] = escape_latex(vuln["vulnerability"])
+    
+    return data
+
+def escape_json_list(json_data):
+    """
+    Escape the entire structure of JSON objects provided.
+    """
+    if "results" in json_data:
+        json_data["results"] = [escape_json(item) for item in json_data["results"]]
+    return json_data

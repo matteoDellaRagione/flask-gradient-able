@@ -5,7 +5,17 @@
 \usepackage{xurl}
 \usepackage{amsmath}
 \usepackage{graphicx}
+\usepackage{listings}
+\usepackage{xcolor}
+\newcommand{\textttbackslash}{\texttt{\char`\\}}
 
+
+\lstset{
+    breaklines=true,        % Permette di spezzare le righe lunghe
+    breakatwhitespace=true  % Spezza le righe solo sugli spazi bianchi
+    prebreak=\mbox{$\hookleftarrow$},
+    postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}}
+}
 
 
 \title{Report for Domain: {{ domain }}}
@@ -123,8 +133,10 @@ Below is the detailed report of vulnerabilities and services for each IP address
         \begin{itemize}
             \item \textbf{Port}: {{ service.port }}
             \item \textbf{Version}: {% if service.version %} {{ service.version }} {% else %} N/A {% endif %}
-            \item \textbf{Banner}: \texttt{ {{ service.banner|replace('_', '\_')|replace('&', '\&')|replace('%', '\%')|replace('#', '\#')|replace('^', '\^{}')|replace('\\', '\textbackslash ') }} }
-            \item \textbf{Location}: \href{ {{ service.location|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') }} }{ {{ service.location }} }
+            \item \textbf{Banner}: \texttt{
+                {{ service.banner }}
+            }
+            \item \textbf{Location}: \href{ {{ service.location }} }{ {{ service.location }} }
         \end{itemize}
     {% endfor %}
 \end{itemize}
@@ -137,13 +149,18 @@ Below is the detailed report of vulnerabilities and services for each IP address
         \item \textbf{Vulnerability}: {{ vuln.vulnerability }}
         \begin{itemize}
             \item \textbf{CVSS Score}: {% if vuln.cvss %} {{ vuln.cvss }} {% else %} N/A {% endif %}
-            \item \textbf{Description}: \parbox{\linewidth}{\texttt{ {{ vuln.description|replace('_', '\_')|replace('&', '\&')|replace('%', '\%')|replace('#', '\#')|replace('^', '\^{}')|replace('\\', '\textbackslash ') }} }}
+            \item \textbf{Description}:
+            \parbox[t]{0.9\linewidth}{
+                \verb|{{ vuln.description|replace('_', '\_')|escape }}|
+            }
         \end{itemize}
     {% endfor %}
 \end{itemize}
 {% else %}
 \textbf{No vulnerabilities found for this IP address.}
 {% endif %}
+
+
 
 \clearpage
 
