@@ -45,6 +45,7 @@ def theharvester_status():
     if os.path.exists(theharvester_output_file):
         with open(theharvester_output_file, 'r') as f:
             theharvester_json = json.load(f)
+        theharvester_json['hosts'] = clean_hosts(theharvester_json['hosts'])
         dnsrecon_json = dnsrecon(domain)
         host_json = host(domain)
         shodan_json = domainShodan(domain)  

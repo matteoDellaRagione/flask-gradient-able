@@ -1,5 +1,5 @@
 {% extends "layouts/base.html" %}
-{% block title %} Sample page {% endblock %} 
+{% block title %} Gowitness Results {% endblock %} 
 <!-- Specific Page CSS goes HERE  -->
 {% block stylesheets %}{% endblock stylesheets %}
 {% block content %}
@@ -12,11 +12,11 @@
             <div class="row align-items-center">
                <div class="col-md-12">
                   <div class="page-header-title">
-                     <h5 class="m-b-10">Sample Page</h5>
+                     <h5 class="m-b-10">Gowitness Results</h5>
                   </div>
                   <ul class="breadcrumb">
                      <li class="breadcrumb-item"><a href="/"><i class="feather icon-home"></i></a></li>
-                     <li class="breadcrumb-item"><a href="#">Sample Page</a></li>
+                     <li class="breadcrumb-item"><a href="#">Gowitness Results</a></li>
                   </ul>
                </div>
             </div>
@@ -29,7 +29,7 @@
          <div class="col-sm-12">
             <div class="card">
                <div class="card-header">
-                  <h5>Apollo Web App</h5>
+                  <h3>Apollo Web App</h3>
                   <div class="card-header-right">
                      <div class="btn-group card-option">
                         <button type="button" class="btn dropdown-toggle btn-icon" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -55,13 +55,15 @@
                   <div class="card-header">
                      <h3>Gowitness Images</h3>
                   </div>
-                  {% for image in images %}
                   <div class="card-body">
-                     <h2>{{ image }}</h2>
-                     <img src="{{ url_for('static', filename='assets/gowitness/' ~ image) }}" alt="{{ image }}" style="max-width: 100%; height: auto;">
+                     {% for image in images %}
+                     <div class="image-container" style="margin-top: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
+                        <h2>{{ image }}</h2>
+                        <img src="{{ url_for('static', filename='assets/gowitness/' ~ image) }}" alt="{{ image }}" style="max-width: 100%; height: auto;">
+                     </div>
+                     {% endfor %}
                   </div>
                </div>
-               {% endfor %}
             </div>
          </div>
       </div>

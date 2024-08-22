@@ -708,6 +708,7 @@ function report(json1,json2,domain) {
                 $('#pie-chart-1').show();
                 $('#table').show();
                 $('#report').show();
+                $('#gowitness').show();
                 
                 if (response.results.length > 0) {
                     $('#download-vuln-btn').show();

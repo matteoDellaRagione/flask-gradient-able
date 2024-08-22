@@ -148,7 +148,7 @@ def resolve_host(host):
         return host, f"Error: {str(e)}"
 
 def domain2IP(json_data):
-    hosts = [host_entry.split(':')[0] for host_entry in json_data['domini']]  # Prendi solo l'host prima dei due punti
+    hosts = [host_entry for host_entry in json_data['domini']]  
     resolved_hosts = {}
 
     with concurrent.futures.ThreadPoolExecutor() as executor:
@@ -166,7 +166,7 @@ def domain2IP(json_data):
     json_data['numResolvedHosts'] = len(resolved_hosts)
     return json_data
 
-def merge_json(json1, json2,json3,json4):
+def merge_json(json1, json2, json3, json4):
     merged = {}
 
     # Unisci indirizzi
@@ -563,3 +563,10 @@ def escape_json_list(json_data):
     if "results" in json_data:
         json_data["results"] = [escape_json(item) for item in json_data["results"]]
     return json_data
+
+def clean_hosts(hosts_list):
+    cleaned_hosts = []
+    for host in hosts_list:
+        cleaned_host = host.split(':')[0]  # Mantieni solo la parte prima dei due punti
+        cleaned_hosts.append(cleaned_host)
+    return cleaned_hosts

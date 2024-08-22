@@ -7,7 +7,23 @@
 \usepackage{graphicx}
 \usepackage{listings}
 \usepackage{xcolor}
+\usepackage{pgf-pie}
+\usepackage{float}
+\usepackage{booktabs}
+\usepackage{longtable} % Per tabelle che si estendono su più pagine
+\usepackage{array}     % Per allineamento avanzato delle colonne
+\usepackage{tabularx}  % Per tabelle che si adattano alla larghezza della pagina
+\usepackage{caption}
+\usepackage{colortbl} % Per colorare le righe della tabella
 
+% Configura la distanza tra tabella e didascalia
+\captionsetup{belowskip=12pt} % Imposta uno spazio di 12pt sotto la tabella
+
+\definecolor{darkgreen}{rgb}{0.0, 0.5, 0.0} % Verde più scuro
+\definecolor{darkviolet}{rgb}{0.58, 0.0, 0.83} % Viola più intenso
+\definecolor{lightred}{rgb}{1.0, 0.8, 0.8}
+\definecolor{lightyellow}{rgb}{1.0, 1.0, 0.8}
+\definecolor{lightgreen}{rgb}{0.8, 1.0, 0.8}
 
 
 \title{Report for Domain: {{ domain }}}
@@ -47,13 +63,12 @@ Below is the list of IP addresses found:
 
 Below is the list of Domain found:
 
-\scriptsize
 \begin{itemize}
     {% for domain in json1.domini %}
         \item {{ domain }}
     {% endfor %}
 \end{itemize}
-\normalsize
+
 
 
 \section*{URLs found}
@@ -98,6 +113,59 @@ Below is the list of Server Mail found:
         \item {{ server_mail }}
     {% endfor %}
 \end{itemize}
+
+\section*{Pie Chart of Vulnerabilities}
+
+\noindent Pie chart showing the distribution of vulnerabilities for the domain \texttt{conad.it}:
+
+\begin{figure}[H]
+    \centering
+    \begin{tikzpicture}
+        \pie[
+            color={darkviolet, red, yellow, darkgreen},
+            text=legend,
+            radius=3,
+            sum={{ json2.total_vulns }}
+        ]
+        {
+            {{ json2.total_critical_vulns }}/Critical,
+            {{ json2.total_high_vulns }}/High,
+            {{ json2.total_medium_vulns }}/Medium,
+            {{ json2.total_low_vulns }}/Low
+        }
+    \end{tikzpicture}
+\end{figure}
+
+\section*{Vulnerability Summary per IP}
+
+\noindent The table below shows the number of critical, high, medium, and low vulnerabilities for each IP, ordered by the number of vulnerabilities (first by critical, then high, medium, and low):
+
+\begin{longtable}{|>{\raggedright\arraybackslash}p{3cm}|c|c|c|c|}
+    \hline
+    \textbf{IP Address} & \textbf{Critical} & \textbf{High} & \textbf{Medium} & \textbf{Low} \\
+    \hline
+    \endfirsthead
+    \hline
+    \textbf{IP Address} & \textbf{Critical} & \textbf{High} & \textbf{Medium} & \textbf{Low} \\
+    \hline
+    \endhead
+    \hline
+    \endfoot
+    \endlastfoot
+    {% set sorted_results = json2.results | sort(attribute='lowVulns', reverse=True) | sort(attribute='mediumVulns', reverse=True) | sort(attribute='highVulns', reverse=True) | sort(attribute='criticalVulns', reverse=True) %}
+    {% for result in sorted_results %}
+    {% if result.criticalVulns > 0 or result.highVulns > 0 %}
+    \rowcolor{lightred} % Righe con critical o high evidenziate in rosso
+    {% elif result.mediumVulns > 0 or result.lowVulns > 0 %}
+    \rowcolor{lightyellow} % Righe con medium o low evidenziate in giallo
+    {% else %}
+    \rowcolor{lightgreen} % Righe senza vulnerabilità evidenziate in verde
+    {% endif %}
+    {{ result.ip }} & {{ result.criticalVulns }} & {{ result.highVulns }} & {{ result.mediumVulns }} & {{ result.lowVulns }} \\
+    \hline
+    {% endfor %}
+    \caption{Number of vulnerabilities per IP, sorted by severity.} \\
+\end{longtable}
 
 \section*{Shodan Results for IP Addresses}
 

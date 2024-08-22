@@ -5166,8 +5166,18 @@ textarea.form-control-lg {
 }
 
 .card-body {
-    flex: 1 1 auto;
-    padding: 25px 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%; /* Assicurati che le card riempiano tutta l'altezza disponibile */
+}
+
+.card-body h2 {
+    margin-bottom: auto; /* Assicura che lo spazio sotto l'h2 sia il massimo possibile */
+}
+
+.card-body button {
+    margin-top: 10px; /* Spazio sopra il pulsante per non essere troppo vicino agli altri elementi */
 }
 
 .card-title {
