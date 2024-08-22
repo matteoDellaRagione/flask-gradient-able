@@ -33,8 +33,13 @@
 \begin{document}
 
 \maketitle
+\clearpage
 
-\section*{Summary of Findings}
+\tableofcontents  % Generates the table of contents
+
+\clearpage
+
+\section{Summary of Findings}
 
 Below are some key statistics from the data provided:
 
@@ -47,77 +52,113 @@ Below are some key statistics from the data provided:
     \item \textbf{Number of URLs}: {{ json1.numUrls }}
 \end{itemize}
 
-\section*{IP Addresses found}
+\clearpage
+
+\section{IP Addresses found}
 
 Below is the list of IP addresses found:
 
 
 \begin{itemize}
-    {% for ip in json1.IP %}
-        \item {{ ip }}
-    {% endfor %}
+    {% if json1.IP %}
+        {% for ip in json1.IP %}
+            \item {{ ip }}
+        {% endfor %}
+    {% else %}
+    \item No IPs found
+    {% endif %}
 \end{itemize}
 
+\clearpage
 
-\section*{Domain found}
+\section{Domain found}
 
 Below is the list of Domain found:
 
 \begin{itemize}
-    {% for domain in json1.domini %}
-        \item {{ domain }}
-    {% endfor %}
+    {% if json1.domini %}
+        {% for domain in json1.domini %}
+            \item {{ domain }}
+        {% endfor %}
+    {% else %}
+        \item No Domains found
+    {% endif %}
 \end{itemize}
 
+\clearpage
 
 
-\section*{URLs found}
+\section{URLs found}
 
 Below is the list of URLs found:
 
 \begin{itemize}
-    {% for url in json1.interesting_urls %}
-        {% set url_escaped = url|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') %}
-        {% set url_parts = url.split('/')[2] %}
-        \item \href{ {{ url_escaped }} }{ {{ url_parts }} }
-    {% endfor %}
+    {% if json1.interesting_urls %}
+        {% for url in json1.interesting_urls %}
+            {% set url_escaped = url|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') %}
+            {% set url_parts = url.split('/')[2] %}
+            \item \href{ {{ url_escaped }} }{ {{ url_parts }} }
+        {% endfor %}
+    {% else %}
+        \item No URLs found
+    {% endif %}
 \end{itemize}
 
+\clearpage
 
-\section*{Emails found}
+\section{Emails found}
 
 Below is the list of Emails found:
 
 \begin{itemize}
-    {% for email in json1.emails %}
-        \item {{ email }}
-    {% endfor %}
+    {% if json1.emails %}
+        {% for email in json1.emails %}
+            \item {{ email }}
+        {% endfor %}
+    {% else %}
+        \item No Emails found
+    {% endif %}
 \end{itemize}
 
-\section*{Resolved Hosts}
+\clearpage
+
+\section{Resolved Hosts}
 
 Below is a list of resolved hosts with their corresponding IP addresses:
 
 \begin{itemize}
-    {% for host, ip in json1.resolved_hosts.items() %}
-        \item \textbf{ {{ host }} }: {{ ip }}
-    {% endfor %}
+    {% if json1.resolved_hosts %}
+        {% for host, ip in json1.resolved_hosts.items() %}
+            \item \textbf{ {{ host }} }: {{ ip }}
+        {% endfor %}
+    {% else %}
+        \item No Resolved Hosts found
+    {% endif %}
 \end{itemize}
 
-\section*{Server Mail found}
+\clearpage
 
-Below is the list of Server Mail found:
+\section{Server Mail found}
+
+Below is the list of Mail Server found:
 
 \begin{itemize}
-    {% for server_mail in json1['server mail'] %}
-        \item {{ server_mail }}
-    {% endfor %}
+    {% if json1['server mail'] %}
+        {% for server_mail in json1['server mail'] %}
+            \item {{ server_mail }}
+        {% endfor %}
+    {% else %}
+        \item No Mail Server found
+    {% endif %}
 \end{itemize}
 
-\section*{Pie Chart of Vulnerabilities}
+\clearpage
 
-\noindent Pie chart showing the distribution of vulnerabilities for the domain \texttt{conad.it}:
+\section{Pie Chart of Vulnerabilities}
 
+\noindent Pie chart showing the distribution of vulnerabilities for the domain \ttfamily {{ domain | safe }}:
+
+{% if json2.total_critical_vulns > 0 or json2.total_high_vulns > 0 or json2.total_medium_vulns > 0 or json2.total_low_vulns > 0 %}
 \begin{figure}[H]
     \centering
     \begin{tikzpicture}
@@ -135,8 +176,13 @@ Below is the list of Server Mail found:
         }
     \end{tikzpicture}
 \end{figure}
+{% else %}
+\noindent \textbf{No vulnerabilities were found, so the pie chart is not displayed.}
+{% endif %}
 
-\section*{Vulnerability Summary per IP}
+\clearpage
+
+\section{Vulnerability Summary per IP}
 
 \noindent The table below shows the number of critical, high, medium, and low vulnerabilities for each IP, ordered by the number of vulnerabilities (first by critical, then high, medium, and low):
 
@@ -167,13 +213,15 @@ Below is the list of Server Mail found:
     \caption{Number of vulnerabilities per IP, sorted by severity.} \\
 \end{longtable}
 
-\section*{Shodan Results for IP Addresses}
+\clearpage
+
+\section{Shodan Results for IP Addresses}
 
 Below is the detailed report of vulnerabilities and services for each IP address:
 
 {% for result in json2.results %}
 
-\subsection*{IP Address: {{ result.ip }}}
+\subsection{IP Address: {{ result.ip }}}
 
 \begin{itemize}
     \item \textbf{Organization}: {{ result.organization }}

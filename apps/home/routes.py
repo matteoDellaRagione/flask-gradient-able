@@ -113,7 +113,7 @@ def search_shodan_route_gowitness():
                     total_low_vulns += result['lowVulns']
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
-    gowitness(results,urls)
+    gowitness(results,urls,domain)
     final_result = {
         "results": results,
         "total_ports_80": total_ports_80,
@@ -165,10 +165,13 @@ def get_chart_data():
     }
     return data
 
-@blueprint.route('/gowitness_images')
+@blueprint.route('/gowitness_images',methods=['GET'])
 @login_required
 def show_images():
-    src_directory = '/tmp/'
+    domain = request.args.get('domain')
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Error: Domain not valid")
+    src_directory = f"/tmp/{domain}"
     
     dst_directory = os.path.join(current_app.root_path, 'static/assets/gowitness')
 
@@ -207,30 +210,26 @@ def generate_report():
     with open('apps/templates/report_template.tex') as f:
         template = Template(f.read())
     
-    escaped_shodan_json = escape_json_list(shodan_json)
-    ip_to_find = "109.168.115.125"
-    vulnerabilities = []
-
-    for result in escaped_shodan_json['results']:
-        if result['ip'] == ip_to_find:
-            vulnerabilities = result['vulnerabilities']
-            break
-
-    # Stampa le vulnerabilità trovate
-    print(json.dumps(vulnerabilities, indent=2))
+    escaped_shodan_json = escape_latex_in_json(shodan_json)
+    escaped_theharvester_json = escape_latex_in_json(theharvester_json)
+    escaped_domain = escape_latex(domain)
     
-    report_content = template.render(json1=theharvester_json, json2=escaped_shodan_json, domain=domain)
-    #report_content = template.render(json1=theharvester_json, domain=domain)
+    report_content = template.render(json1=escaped_theharvester_json, json2=escaped_shodan_json, domain=escaped_domain)
 
     # Scrivi il contenuto LaTeX in un file temporaneo
     with open(latex_file, 'w') as f:
         f.write(report_content)
     
-    # Compila il file LaTeX in PDF usando pdflatex
-    result = subprocess.run(
-        ['pdflatex', '-output-directory=' + output_directory, latex_file],
-        check=True
-        )
+    # Compila il file LaTeX in PDF usando pdflatex due volte
+    try:
+        for _ in range(2):  # Esegui pdflatex due volte
+            result = subprocess.run(
+                ['pdflatex', '-output-directory=' + output_directory, latex_file],
+                check=True
+            )
+    except subprocess.CalledProcessError as e:
+        # Se c'è un errore durante la compilazione, lo gestisci qui
+        return render_template('home/sample-page.html', error="Error: LaTeX compilation failed")
     
     # Restituisci il PDF al client
     if os.path.exists(pdf_file):

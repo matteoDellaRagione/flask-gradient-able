@@ -1,0 +1,15 @@
+\contentsline {section}{\numberline {1}Summary of Findings}{3}{section.1}%
+\contentsline {section}{\numberline {2}IP Addresses found}{4}{section.2}%
+\contentsline {section}{\numberline {3}Domain found}{5}{section.3}%
+\contentsline {section}{\numberline {4}URLs found}{6}{section.4}%
+\contentsline {section}{\numberline {5}Emails found}{7}{section.5}%
+\contentsline {section}{\numberline {6}Resolved Hosts}{8}{section.6}%
+\contentsline {section}{\numberline {7}Server Mail found}{9}{section.7}%
+\contentsline {section}{\numberline {8}Pie Chart of Vulnerabilities}{10}{section.8}%
+\contentsline {section}{\numberline {9}Vulnerability Summary per IP}{11}{section.9}%
+\contentsline {section}{\numberline {10}Shodan Results for IP Addresses}{12}{section.10}%
+\contentsline {subsection}{\numberline {10.1}IP Address: 23.227.38.65}{12}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}IP Address: 62.196.37.39}{13}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}IP Address: 23.227.38.74}{14}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}IP Address: 212.239.121.148}{15}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}IP Address: 62.196.37.46}{16}{subsection.10.5}%

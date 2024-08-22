@@ -321,18 +321,23 @@ def create_url(ip, port):
         return f"http://{ip}:{port}"
 
 
-def run_gowitness(url):
+def run_gowitness(url,domain):
     if not checkURLgowitness(url):
+        directory = f"/tmp/{domain}"
+        if not os.path.exists(directory):
+            os.makedirs(directory)
         command = [
             "gowitness",
-            "-P", "/tmp/",
+            "-P", directory,
             "--screenshot-filter", "200",
             "--disable-db",
             "single", url
         ]
         subprocess.run(command)
 
-def gowitness(results, urls):
+def gowitness(results, urls, domain):
+    if not validateDomain(domain):
+        return render_template('home/sample-page.html',error="Error: Domain not valid")
     url_set = set(urls)
     for entry in results:
         ip = entry["ip"]
@@ -353,7 +358,7 @@ def gowitness(results, urls):
     }
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
-        futures = [executor.submit(run_gowitness, url) for url in output["urls"]]
+        futures = [executor.submit(run_gowitness, url, domain) for url in output["urls"]]
         concurrent.futures.wait(futures)
 
 def linkedinDumper(linkedinUrl):
@@ -529,44 +534,19 @@ def escape_latex(text):
     
     return text
 
-def escape_json(data):
-    """
-    Escape special LaTeX characters in the specific JSON structure you provided.
-    """
-    if "organization" in data:
-        data["organization"] = escape_latex(data["organization"])
-    
-    if "services" in data:
-        for service in data["services"]:
-            if "banner" in service:
-                service["banner"] = escape_latex(service["banner"])
-            if "location" in service:
-                service["location"] = escape_latex(service["location"])
-            if "service" in service:
-                service["service"] = escape_latex(service["service"])
-            if "version" in service:
-                service["version"] = escape_latex(service["version"])
-    
-    if "vulnerabilities" in data:
-        for vuln in data["vulnerabilities"]:
-            if "description" in vuln:
-                vuln["description"] = escape_latex(vuln["description"])
-            if "vulnerability" in vuln:
-                vuln["vulnerability"] = escape_latex(vuln["vulnerability"])
-    
-    return data
-
-def escape_json_list(json_data):
-    """
-    Escape the entire structure of JSON objects provided.
-    """
-    if "results" in json_data:
-        json_data["results"] = [escape_json(item) for item in json_data["results"]]
-    return json_data
-
 def clean_hosts(hosts_list):
     cleaned_hosts = []
     for host in hosts_list:
         cleaned_host = host.split(':')[0]  # Mantieni solo la parte prima dei due punti
         cleaned_hosts.append(cleaned_host)
     return cleaned_hosts
+
+def escape_latex_in_json(data):
+    if isinstance(data, dict):
+        return {key: escape_latex_in_json(value) for key, value in data.items()}
+    elif isinstance(data, list):
+        return [escape_latex_in_json(item) for item in data]
+    elif isinstance(data, str):
+        return escape_latex(data)
+    else:
+        return data

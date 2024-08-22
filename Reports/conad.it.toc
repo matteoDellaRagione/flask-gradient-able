@@ -1,0 +1,83 @@
+\contentsline {section}{\numberline {1}Summary of Findings}{3}{section.1}%
+\contentsline {section}{\numberline {2}IP Addresses found}{4}{section.2}%
+\contentsline {section}{\numberline {3}Domain found}{8}{section.3}%
+\contentsline {section}{\numberline {4}URLs found}{11}{section.4}%
+\contentsline {section}{\numberline {5}Emails found}{12}{section.5}%
+\contentsline {section}{\numberline {6}Resolved Hosts}{13}{section.6}%
+\contentsline {section}{\numberline {7}Server Mail found}{15}{section.7}%
+\contentsline {section}{\numberline {8}Pie Chart of Vulnerabilities}{16}{section.8}%
+\contentsline {section}{\numberline {9}Vulnerability Summary per IP}{17}{section.9}%
+\contentsline {section}{\numberline {10}Shodan Results for IP Addresses}{19}{section.10}%
+\contentsline {subsection}{\numberline {10.1}IP Address: 79.125.61.213}{19}{subsection.10.1}%
+\contentsline {subsection}{\numberline {10.2}IP Address: 109.68.26.97}{20}{subsection.10.2}%
+\contentsline {subsection}{\numberline {10.3}IP Address: 151.11.251.108}{21}{subsection.10.3}%
+\contentsline {subsection}{\numberline {10.4}IP Address: 52.210.230.161}{22}{subsection.10.4}%
+\contentsline {subsection}{\numberline {10.5}IP Address: 35.233.86.30}{23}{subsection.10.5}%
+\contentsline {subsection}{\numberline {10.6}IP Address: 54.72.34.250}{24}{subsection.10.6}%
+\contentsline {subsection}{\numberline {10.7}IP Address: 52.213.201.198}{25}{subsection.10.7}%
+\contentsline {subsection}{\numberline {10.8}IP Address: 151.11.251.115}{26}{subsection.10.8}%
+\contentsline {subsection}{\numberline {10.9}IP Address: 151.101.131.10}{27}{subsection.10.9}%
+\contentsline {subsection}{\numberline {10.10}IP Address: 34.250.105.197}{28}{subsection.10.10}%
+\contentsline {subsection}{\numberline {10.11}IP Address: 109.68.24.219}{29}{subsection.10.11}%
+\contentsline {subsection}{\numberline {10.12}IP Address: 151.101.3.10}{30}{subsection.10.12}%
+\contentsline {subsection}{\numberline {10.13}IP Address: 52.49.3.128}{31}{subsection.10.13}%
+\contentsline {subsection}{\numberline {10.14}IP Address: 99.80.6.39}{32}{subsection.10.14}%
+\contentsline {subsection}{\numberline {10.15}IP Address: 52.18.240.201}{33}{subsection.10.15}%
+\contentsline {subsection}{\numberline {10.16}IP Address: 34.242.149.90}{34}{subsection.10.16}%
+\contentsline {subsection}{\numberline {10.17}IP Address: 52.16.137.238}{35}{subsection.10.17}%
+\contentsline {subsection}{\numberline {10.18}IP Address: 116.203.32.52}{45}{subsection.10.18}%
+\contentsline {subsection}{\numberline {10.19}IP Address: 52.101.68.25}{46}{subsection.10.19}%
+\contentsline {subsection}{\numberline {10.20}IP Address: 52.50.88.161}{47}{subsection.10.20}%
+\contentsline {subsection}{\numberline {10.21}IP Address: 54.220.187.182}{48}{subsection.10.21}%
+\contentsline {subsection}{\numberline {10.22}IP Address: 46.51.207.138}{49}{subsection.10.22}%
+\contentsline {subsection}{\numberline {10.23}IP Address: 52.31.208.124}{50}{subsection.10.23}%
+\contentsline {subsection}{\numberline {10.24}IP Address: 63.140.62.222}{52}{subsection.10.24}%
+\contentsline {subsection}{\numberline {10.25}IP Address: 185.127.134.97}{53}{subsection.10.25}%
+\contentsline {subsection}{\numberline {10.26}IP Address: 3.248.134.241}{54}{subsection.10.26}%
+\contentsline {subsection}{\numberline {10.27}IP Address: 52.101.68.3}{55}{subsection.10.27}%
+\contentsline {subsection}{\numberline {10.28}IP Address: 212.35.217.197}{56}{subsection.10.28}%
+\contentsline {subsection}{\numberline {10.29}IP Address: 52.51.238.226}{60}{subsection.10.29}%
+\contentsline {subsection}{\numberline {10.30}IP Address: 52.211.9.207}{61}{subsection.10.30}%
+\contentsline {subsection}{\numberline {10.31}IP Address: 54.170.100.107}{62}{subsection.10.31}%
+\contentsline {subsection}{\numberline {10.32}IP Address: 151.101.195.10}{63}{subsection.10.32}%
+\contentsline {subsection}{\numberline {10.33}IP Address: 213.171.166.88}{64}{subsection.10.33}%
+\contentsline {subsection}{\numberline {10.34}IP Address: 52.213.125.100}{67}{subsection.10.34}%
+\contentsline {subsection}{\numberline {10.35}IP Address: 52.210.127.205}{68}{subsection.10.35}%
+\contentsline {subsection}{\numberline {10.36}IP Address: 54.194.42.165}{69}{subsection.10.36}%
+\contentsline {subsection}{\numberline {10.37}IP Address: 146.75.55.10}{70}{subsection.10.37}%
+\contentsline {subsection}{\numberline {10.38}IP Address: 80.211.62.104}{71}{subsection.10.38}%
+\contentsline {subsection}{\numberline {10.39}IP Address: 34.247.223.243}{93}{subsection.10.39}%
+\contentsline {subsection}{\numberline {10.40}IP Address: 34.254.16.163}{94}{subsection.10.40}%
+\contentsline {subsection}{\numberline {10.41}IP Address: 63.32.7.7}{95}{subsection.10.41}%
+\contentsline {subsection}{\numberline {10.42}IP Address: 217.29.160.31}{96}{subsection.10.42}%
+\contentsline {subsection}{\numberline {10.43}IP Address: 193.240.211.109}{97}{subsection.10.43}%
+\contentsline {subsection}{\numberline {10.44}IP Address: 54.171.29.175}{98}{subsection.10.44}%
+\contentsline {subsection}{\numberline {10.45}IP Address: 54.76.88.210}{103}{subsection.10.45}%
+\contentsline {subsection}{\numberline {10.46}IP Address: 52.101.68.18}{104}{subsection.10.46}%
+\contentsline {subsection}{\numberline {10.47}IP Address: 159.65.113.205}{105}{subsection.10.47}%
+\contentsline {subsection}{\numberline {10.48}IP Address: 52.211.37.138}{106}{subsection.10.48}%
+\contentsline {subsection}{\numberline {10.49}IP Address: 52.50.84.159}{107}{subsection.10.49}%
+\contentsline {subsection}{\numberline {10.50}IP Address: 34.240.71.165}{108}{subsection.10.50}%
+\contentsline {subsection}{\numberline {10.51}IP Address: 151.101.67.10}{110}{subsection.10.51}%
+\contentsline {subsection}{\numberline {10.52}IP Address: 63.33.34.226}{111}{subsection.10.52}%
+\contentsline {subsection}{\numberline {10.53}IP Address: 109.68.26.86}{114}{subsection.10.53}%
+\contentsline {subsection}{\numberline {10.54}IP Address: 34.252.201.201}{115}{subsection.10.54}%
+\contentsline {subsection}{\numberline {10.55}IP Address: 52.48.201.30}{124}{subsection.10.55}%
+\contentsline {subsection}{\numberline {10.56}IP Address: 52.18.0.64}{125}{subsection.10.56}%
+\contentsline {subsection}{\numberline {10.57}IP Address: 63.32.160.121}{126}{subsection.10.57}%
+\contentsline {subsection}{\numberline {10.58}IP Address: 52.210.221.125}{127}{subsection.10.58}%
+\contentsline {subsection}{\numberline {10.59}IP Address: 52.101.68.27}{128}{subsection.10.59}%
+\contentsline {subsection}{\numberline {10.60}IP Address: 54.220.186.7}{129}{subsection.10.60}%
+\contentsline {subsection}{\numberline {10.61}IP Address: 34.250.129.210}{136}{subsection.10.61}%
+\contentsline {subsection}{\numberline {10.62}IP Address: 35.152.71.96}{137}{subsection.10.62}%
+\contentsline {subsection}{\numberline {10.63}IP Address: 52.210.69.61}{138}{subsection.10.63}%
+\contentsline {subsection}{\numberline {10.64}IP Address: 52.213.192.243}{140}{subsection.10.64}%
+\contentsline {subsection}{\numberline {10.65}IP Address: 54.220.116.192}{141}{subsection.10.65}%
+\contentsline {subsection}{\numberline {10.66}IP Address: 52.31.137.103}{142}{subsection.10.66}%
+\contentsline {subsection}{\numberline {10.67}IP Address: 99.81.195.173}{143}{subsection.10.67}%
+\contentsline {subsection}{\numberline {10.68}IP Address: 52.215.27.44}{144}{subsection.10.68}%
+\contentsline {subsection}{\numberline {10.69}IP Address: 151.0.185.49}{145}{subsection.10.69}%
+\contentsline {subsection}{\numberline {10.70}IP Address: 109.168.115.125}{146}{subsection.10.70}%
+\contentsline {subsection}{\numberline {10.71}IP Address: 54.78.116.130}{159}{subsection.10.71}%
+\contentsline {subsection}{\numberline {10.72}IP Address: 3.127.103.86}{160}{subsection.10.72}%
+\contentsline {subsection}{\numberline {10.73}IP Address: 165.22.20.19}{161}{subsection.10.73}%
