@@ -85,22 +85,6 @@ def host(domain):
     result = subprocess.run(['host', domain], capture_output=True, text=True)
     return parse_host_output(result.stdout)  
 
-def whois_to_json(domain):
-    # Esegui il comando whois
-    result = subprocess.run(['whois', domain], capture_output=True, text=True)
-    whois_output = result.stdout
-    
-    # Parso l'output di whois
-    whois_data = {}
-    for line in whois_output.splitlines():
-        match = re.match(r"^(.*?):\s*(.*)$", line)
-        if match:
-            key, value = match.groups()
-            whois_data[key.strip()] = value.strip()
-    
-    # Converti in JSON
-    return json.dumps(whois_data, indent=4)
-
 def dnsrecon(domain):
     # Esegui il comando dnsrecon per il dominio specificato
     result = subprocess.run(['dnsrecon', '-d', domain], capture_output=True, text=True)
@@ -138,7 +122,6 @@ def resolve_host(host):
 
         # Trova tutte le linee che contengono l'indirizzo IP
         ip_addresses = re.findall(r'Address: (\d+\.\d+\.\d+\.\d+)', output)
-        #valid_ip_addresses = [ip for ip in ip_addresses if ip != "127.0.0.53"]
         
         if ip_addresses:
             return host, ip_addresses[-1]  # Prendi l'ultimo indirizzo IP valido trovato
@@ -241,7 +224,6 @@ def searchShodan(IP):
                     
             else:
                 filtered_services.append(service_info)
-        #DA PROVARE e sistemare
         # Costruisci il dizionario dei risultati
         result = {
             "ip": informations['ip_str'],
@@ -537,7 +519,7 @@ def escape_latex(text):
 def clean_hosts(hosts_list):
     cleaned_hosts = []
     for host in hosts_list:
-        cleaned_host = host.split(':')[0]  # Mantieni solo la parte prima dei due punti
+        cleaned_host = host.split(':')[0]  
         cleaned_hosts.append(cleaned_host)
     return cleaned_hosts
 

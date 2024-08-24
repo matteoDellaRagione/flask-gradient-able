@@ -50,7 +50,7 @@ def theharvester_status():
         host_json = host(domain)
         shodan_json = domainShodan(domain)  
         # Unisci i JSON
-        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json,shodan_json)
+        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json)
         return (combined_json)
 
     else:
