@@ -94,7 +94,7 @@ def search_shodan_route_gowitness():
         futures = []
         for ip in ips:
             # Aggiungi un ritardo di 1 secondo prima di ogni richiesta
-            time.sleep(1)
+            time.sleep(1.5)
             futures.append(executor.submit(searchShodan, ip))
 
         for future in concurrent.futures.as_completed(futures):
@@ -200,7 +200,8 @@ def generate_report():
     if not theharvester_json or not shodan_json:
         return render_template('home/sample-page.html',error="Error: Missing Json")
     
-    output_directory = '/home/kali/flask-gradient-able/Reports'
+    #output_directory = '/home/kali/flask-gradient-able/Reports'
+    output_directory = '/home/kali/Apollo/flask-gradient-able/Reports'
 
     # File LaTeX e PDF con nomi personalizzati
     latex_file = os.path.join(output_directory, f'{domain}.tex')

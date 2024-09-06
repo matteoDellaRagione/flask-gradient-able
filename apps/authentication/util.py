@@ -181,6 +181,13 @@ def merge_json(json1, json2, json3, json4):
     merged['interesting_urls'] = list(urls_set)
     merged['numUrls'] = len(merged['interesting_urls'])
 
+    merged['domain_urls'] = {}
+    for domain in merged['domini']:
+        # Filtra gli URL che contengono il dominio corrente
+        matching_urls = [url for url in merged['interesting_urls'] if domain in url]
+        if matching_urls:
+            merged['domain_urls'][domain] = matching_urls
+    merged['numDomain_urls'] = len(merged['domain_urls'])
     
     translated_json = domain2IP(merged)
     return rmDuplicati(translated_json)
@@ -196,7 +203,8 @@ def run_theharvester(domain, output_file):
     subprocess.run(command, check=True)
 
 def searchShodan(IP):
-    api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
+    with open('/home/kali/ApiKeys/shodan.txt', 'r') as file:
+        api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     try:
     # Esegui una ricerca host su Shodan
@@ -378,7 +386,8 @@ def linkedinDumper(linkedinUrl):
     return linkedin
 
 def domain_search(domain):
-    api_key = '38efac4a66dbb53ea2ee81fa9dc60770fe57d4c4'  # Inserisci qui la tua API key di Hunter.io
+    with open('/home/kali/ApiKeys/hunterio.txt', 'r') as file:
+        api_key = file.read().strip()
     
     # URL dell'API di Hunter.io
     url = f'https://api.hunter.io/v2/domain-search?domain={domain}&api_key={api_key}'

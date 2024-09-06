@@ -1,0 +1,108 @@
+\contentsline {section}{\numberline {1}Summary of Findings}{5}{section.1}%
+\contentsline {section}{\numberline {2}IP Addresses found}{6}{section.2}%
+\contentsline {section}{\numberline {3}Domain found}{10}{section.3}%
+\contentsline {section}{\numberline {4}URLs found}{16}{section.4}%
+\contentsline {section}{\numberline {5}Domain Related to URLs Found}{18}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Domain: 140anni.edison.it}{18}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Domain: adt-temp.edison.it}{18}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Domain: cbc.edison.it}{18}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Domain: cbcmobile.edison.it}{18}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Domain: centralesimeri.edison.it}{18}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Domain: centraleterni.edison.it}{18}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Domain: commission-qa.edison.it}{18}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Domain: cpq-service-qa.edison.it}{18}{subsection.5.8}%
+\contentsline {subsection}{\numberline {5.9}Domain: cpq-service.edison.it}{18}{subsection.5.9}%
+\contentsline {subsection}{\numberline {5.10}Domain: crm.free.edison.it}{18}{subsection.5.10}%
+\contentsline {subsection}{\numberline {5.11}Domain: dev-resource-edisonmysun.edison.it}{18}{subsection.5.11}%
+\contentsline {subsection}{\numberline {5.12}Domain: dnf-qa.edison.it}{18}{subsection.5.12}%
+\contentsline {subsection}{\numberline {5.13}Domain: dnf.edison.it}{18}{subsection.5.13}%
+\contentsline {subsection}{\numberline {5.14}Domain: documentali-pandora.edison.it}{18}{subsection.5.14}%
+\contentsline {subsection}{\numberline {5.15}Domain: documentali-synergy-synvendors.edison.it}{19}{subsection.5.15}%
+\contentsline {subsection}{\numberline {5.16}Domain: ediema.edison.it}{19}{subsection.5.16}%
+\contentsline {subsection}{\numberline {5.17}Domain: edison.it}{19}{subsection.5.17}%
+\contentsline {subsection}{\numberline {5.18}Domain: efficienzaenergetica.edison.it}{20}{subsection.5.18}%
+\contentsline {subsection}{\numberline {5.19}Domain: elearning.edison.it}{20}{subsection.5.19}%
+\contentsline {subsection}{\numberline {5.20}Domain: ema.edison.it}{20}{subsection.5.20}%
+\contentsline {subsection}{\numberline {5.21}Domain: energybrain-efs.edison.it}{21}{subsection.5.21}%
+\contentsline {subsection}{\numberline {5.22}Domain: epm.edison.it}{21}{subsection.5.22}%
+\contentsline {subsection}{\numberline {5.23}Domain: er-fa.edison.it}{21}{subsection.5.23}%
+\contentsline {subsection}{\numberline {5.24}Domain: er.edison.it}{21}{subsection.5.24}%
+\contentsline {subsection}{\numberline {5.25}Domain: escomas-qa.edison.it}{21}{subsection.5.25}%
+\contentsline {subsection}{\numberline {5.26}Domain: flooratrieste.edison.it}{21}{subsection.5.26}%
+\contentsline {subsection}{\numberline {5.27}Domain: free.edison.it}{21}{subsection.5.27}%
+\contentsline {subsection}{\numberline {5.28}Domain: gatewayfr.edison.it}{21}{subsection.5.28}%
+\contentsline {subsection}{\numberline {5.29}Domain: gatewaymi.edison.it}{21}{subsection.5.29}%
+\contentsline {subsection}{\numberline {5.30}Domain: hub.edison.it}{21}{subsection.5.30}%
+\contentsline {subsection}{\numberline {5.31}Domain: iotprosumer-b2b-dev.edison.it}{21}{subsection.5.31}%
+\contentsline {subsection}{\numberline {5.32}Domain: lead-prospect-qa.edison.it}{21}{subsection.5.32}%
+\contentsline {subsection}{\numberline {5.33}Domain: lead-qa.edison.it}{21}{subsection.5.33}%
+\contentsline {subsection}{\numberline {5.34}Domain: ocr-test.edison.it}{21}{subsection.5.34}%
+\contentsline {subsection}{\numberline {5.35}Domain: ocr.edison.it}{22}{subsection.5.35}%
+\contentsline {subsection}{\numberline {5.36}Domain: phishingalert.edison.it}{22}{subsection.5.36}%
+\contentsline {subsection}{\numberline {5.37}Domain: portale.edison.it}{22}{subsection.5.37}%
+\contentsline {subsection}{\numberline {5.38}Domain: portaleproduttori-qa.edison.it}{22}{subsection.5.38}%
+\contentsline {subsection}{\numberline {5.39}Domain: portaleproduttori.edison.it}{22}{subsection.5.39}%
+\contentsline {subsection}{\numberline {5.40}Domain: powerpro.edison.it}{22}{subsection.5.40}%
+\contentsline {subsection}{\numberline {5.41}Domain: sancarlo.edison.it}{22}{subsection.5.41}%
+\contentsline {subsection}{\numberline {5.42}Domain: smtppub.edison.it}{22}{subsection.5.42}%
+\contentsline {subsection}{\numberline {5.43}Domain: srm.edison.it}{22}{subsection.5.43}%
+\contentsline {subsection}{\numberline {5.44}Domain: storage-hub.edison.it}{22}{subsection.5.44}%
+\contentsline {subsection}{\numberline {5.45}Domain: tagmanager-140.edison.it}{22}{subsection.5.45}%
+\contentsline {subsection}{\numberline {5.46}Domain: tagmanager-dnf.edison.it}{22}{subsection.5.46}%
+\contentsline {subsection}{\numberline {5.47}Domain: tagmanager-frendy.edison.it}{22}{subsection.5.47}%
+\contentsline {subsection}{\numberline {5.48}Domain: tagmanager.edison.it}{22}{subsection.5.48}%
+\contentsline {subsection}{\numberline {5.49}Domain: ty-dev.edison.it}{22}{subsection.5.49}%
+\contentsline {subsection}{\numberline {5.50}Domain: ty-qa.edison.it}{23}{subsection.5.50}%
+\contentsline {subsection}{\numberline {5.51}Domain: ty.edison.it}{23}{subsection.5.51}%
+\contentsline {subsection}{\numberline {5.52}Domain: visitatori.edison.it}{23}{subsection.5.52}%
+\contentsline {subsection}{\numberline {5.53}Domain: vpnbackup.edison.it}{23}{subsection.5.53}%
+\contentsline {subsection}{\numberline {5.54}Domain: wicket.edison.it}{23}{subsection.5.54}%
+\contentsline {section}{\numberline {6}Emails found}{24}{section.6}%
+\contentsline {section}{\numberline {7}Resolved Hosts}{25}{section.7}%
+\contentsline {section}{\numberline {8}Server Mail found}{28}{section.8}%
+\contentsline {section}{\numberline {9}Pie Chart of Vulnerabilities}{29}{section.9}%
+\contentsline {section}{\numberline {10}Vulnerability Summary per IP}{30}{section.10}%
+\contentsline {section}{\numberline {11}Shodan Results for IP Addresses}{31}{section.11}%
+\contentsline {subsection}{\numberline {11.1}IP Address: 151.22.39.163}{31}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}IP Address: 109.168.22.85}{44}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}IP Address: 54.76.95.70}{63}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}IP Address: 212.35.216.126}{88}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}IP Address: 109.168.22.86}{95}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}IP Address: 151.22.38.133}{96}{subsection.11.6}%
+\contentsline {subsection}{\numberline {11.7}IP Address: 3.126.233.235}{97}{subsection.11.7}%
+\contentsline {subsection}{\numberline {11.8}IP Address: 3.127.90.246}{98}{subsection.11.8}%
+\contentsline {subsection}{\numberline {11.9}IP Address: 62.94.137.201}{99}{subsection.11.9}%
+\contentsline {subsection}{\numberline {11.10}IP Address: 151.22.38.14}{100}{subsection.11.10}%
+\contentsline {subsection}{\numberline {11.11}IP Address: 108.156.91.85}{101}{subsection.11.11}%
+\contentsline {subsection}{\numberline {11.12}IP Address: 35.156.181.89}{102}{subsection.11.12}%
+\contentsline {subsection}{\numberline {11.13}IP Address: 3.64.78.167}{103}{subsection.11.13}%
+\contentsline {subsection}{\numberline {11.14}IP Address: 151.22.38.252}{104}{subsection.11.14}%
+\contentsline {subsection}{\numberline {11.15}IP Address: 213.217.29.85}{105}{subsection.11.15}%
+\contentsline {subsection}{\numberline {11.16}IP Address: 151.22.38.13}{106}{subsection.11.16}%
+\contentsline {subsection}{\numberline {11.17}IP Address: 151.22.39.24}{107}{subsection.11.17}%
+\contentsline {subsection}{\numberline {11.18}IP Address: 3.126.218.72}{108}{subsection.11.18}%
+\contentsline {subsection}{\numberline {11.19}IP Address: 3.120.219.35}{109}{subsection.11.19}%
+\contentsline {subsection}{\numberline {11.20}IP Address: 18.202.92.68}{110}{subsection.11.20}%
+\contentsline {subsection}{\numberline {11.21}IP Address: 3.66.39.13}{111}{subsection.11.21}%
+\contentsline {subsection}{\numberline {11.22}IP Address: 3.121.156.227}{112}{subsection.11.22}%
+\contentsline {subsection}{\numberline {11.23}IP Address: 62.94.137.206}{113}{subsection.11.23}%
+\contentsline {subsection}{\numberline {11.24}IP Address: 3.65.111.227}{114}{subsection.11.24}%
+\contentsline {subsection}{\numberline {11.25}IP Address: 52.98.243.152}{115}{subsection.11.25}%
+\contentsline {subsection}{\numberline {11.26}IP Address: 89.197.73.20}{116}{subsection.11.26}%
+\contentsline {subsection}{\numberline {11.27}IP Address: 151.22.39.122}{117}{subsection.11.27}%
+\contentsline {subsection}{\numberline {11.28}IP Address: 3.160.212.76}{118}{subsection.11.28}%
+\contentsline {subsection}{\numberline {11.29}IP Address: 185.91.71.118}{119}{subsection.11.29}%
+\contentsline {subsection}{\numberline {11.30}IP Address: 62.94.137.182}{120}{subsection.11.30}%
+\contentsline {subsection}{\numberline {11.31}IP Address: 3.125.77.225}{121}{subsection.11.31}%
+\contentsline {subsection}{\numberline {11.32}IP Address: 94.124.69.67}{122}{subsection.11.32}%
+\contentsline {subsection}{\numberline {11.33}IP Address: 52.50.23.25}{123}{subsection.11.33}%
+\contentsline {subsection}{\numberline {11.34}IP Address: 151.101.1.195}{124}{subsection.11.34}%
+\contentsline {subsection}{\numberline {11.35}IP Address: 46.28.2.183}{125}{subsection.11.35}%
+\contentsline {subsection}{\numberline {11.36}IP Address: 52.211.124.234}{126}{subsection.11.36}%
+\contentsline {subsection}{\numberline {11.37}IP Address: 156.54.148.62}{127}{subsection.11.37}%
+\contentsline {subsection}{\numberline {11.38}IP Address: 37.72.32.244}{128}{subsection.11.38}%
+\contentsline {subsection}{\numberline {11.39}IP Address: 151.101.65.195}{129}{subsection.11.39}%
+\contentsline {subsection}{\numberline {11.40}IP Address: 93.186.242.241}{130}{subsection.11.40}%
+\contentsline {subsection}{\numberline {11.41}IP Address: 51.178.13.239}{131}{subsection.11.41}%
+\contentsline {subsection}{\numberline {11.42}IP Address: 37.72.32.255}{132}{subsection.11.42}%
+\contentsline {subsection}{\numberline {11.43}IP Address: 37.72.32.222}{133}{subsection.11.43}%

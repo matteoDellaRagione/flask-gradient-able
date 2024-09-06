@@ -15,6 +15,10 @@
 \usepackage{tabularx}  % Per tabelle che si adattano alla larghezza della pagina
 \usepackage{caption}
 \usepackage{colortbl} % Per colorare le righe della tabella
+\usepackage{morewrites}
+\usepackage{etex}
+
+
 
 % Configura la distanza tra tabella e didascalia
 \captionsetup{belowskip=12pt} % Imposta uno spazio di 12pt sotto la tabella
@@ -91,18 +95,40 @@ Below is the list of Domain found:
 \section{URLs found}
 
 Below is the list of URLs found:
-
 \begin{itemize}
     {% if json1.interesting_urls %}
         {% for url in json1.interesting_urls %}
-            {% set url_escaped = url|replace('&', '\&')|replace('%', '\%')|replace('_', '\_') %}
             {% set url_parts = url.split('/')[2] %}
-            \item \href{ {{ url_escaped }} }{ {{ url_parts }} }
+            \item \href{ {{ url }} }{ {{ url_parts }} }
         {% endfor %}
     {% else %}
         \item No URLs found
     {% endif %}
 \end{itemize}
+
+\clearpage
+
+\section{Domain Related to URLs Found}
+
+{% if json1.domain_urls %}
+    {% for domain, urls in json1.domain_urls.items() %}
+    \subsection{Domain: {{ domain }}}
+    \begin{itemize}
+        {% if urls %}
+            {% for url in urls %}
+                {% set url_parts = url.split('/')[2] %}
+                \item \href{ {{ url }}}{ {{ url_parts }} }
+            {% endfor %}
+        {% else %}
+            \item No URLs found
+        {% endif %}
+    \end{itemize}
+{% endfor %}
+{% else %}
+\begin{itemize}
+    \item No Domains or URLs found
+\end{itemize}
+{% endif %}
 
 \clearpage
 
@@ -219,7 +245,10 @@ Below is the list of Mail Server found:
 
 Below is the detailed report of vulnerabilities and services for each IP address:
 
-{% for result in json2.results %}
+{% set sorted_results = json2.results|sort(attribute='lowVulns', reverse=True)|sort(attribute='mediumVulns', reverse=True)|sort(attribute='highVulns', reverse=True)|sort(attribute='criticalVulns', reverse=True) %}
+
+
+{% for result in sorted_results %}
 
 \subsection{IP Address: {{ result.ip }}}
 

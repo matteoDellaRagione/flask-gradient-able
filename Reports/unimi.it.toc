@@ -1,0 +1,203 @@
+\contentsline {section}{\numberline {1}Summary of Findings}{6}{section.1}%
+\contentsline {section}{\numberline {2}IP Addresses found}{7}{section.2}%
+\contentsline {section}{\numberline {3}Domain found}{32}{section.3}%
+\contentsline {section}{\numberline {4}URLs found}{76}{section.4}%
+\contentsline {section}{\numberline {5}Domain Related to URLs Found}{78}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Domain: accounts.di.unimi.it}{78}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Domain: accountstest.di.unimi.it}{78}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Domain: adminer.studenti.di.unimi.it}{78}{subsection.5.3}%
+\contentsline {subsection}{\numberline {5.4}Domain: algofeed.unimi.it}{78}{subsection.5.4}%
+\contentsline {subsection}{\numberline {5.5}Domain: anacleto.di.unimi.it}{78}{subsection.5.5}%
+\contentsline {subsection}{\numberline {5.6}Domain: anomalie.unimi.it}{78}{subsection.5.6}%
+\contentsline {subsection}{\numberline {5.7}Domain: ariel.ctu.unimi.it}{78}{subsection.5.7}%
+\contentsline {subsection}{\numberline {5.8}Domain: ariel.unimi.it}{78}{subsection.5.8}%
+\contentsline {subsection}{\numberline {5.9}Domain: audioplugins.lim.di.unimi.it}{78}{subsection.5.9}%
+\contentsline {subsection}{\numberline {5.10}Domain: auth.di.unimi.it}{78}{subsection.5.10}%
+\contentsline {subsection}{\numberline {5.11}Domain: auth.unimi.it}{78}{subsection.5.11}%
+\contentsline {subsection}{\numberline {5.12}Domain: authentik.ricerca.sesar.di.unimi.it}{78}{subsection.5.12}%
+\contentsline {subsection}{\numberline {5.13}Domain: bibliotecamattioli.unimi.it}{78}{subsection.5.13}%
+\contentsline {subsection}{\numberline {5.14}Domain: cas.unimi.it}{79}{subsection.5.14}%
+\contentsline {subsection}{\numberline {5.15}Domain: cdl.unimi.it}{79}{subsection.5.15}%
+\contentsline {subsection}{\numberline {5.16}Domain: centrorusso.unimi.it}{79}{subsection.5.16}%
+\contentsline {subsection}{\numberline {5.17}Domain: convegnodipchi.unimi.it}{79}{subsection.5.17}%
+\contentsline {subsection}{\numberline {5.18}Domain: ctu.unimi.it}{79}{subsection.5.18}%
+\contentsline {subsection}{\numberline {5.19}Domain: delletto.fisica.unimi.it}{79}{subsection.5.19}%
+\contentsline {subsection}{\numberline {5.20}Domain: di.unimi.it}{79}{subsection.5.20}%
+\contentsline {subsection}{\numberline {5.21}Domain: ecare.unimi.it}{80}{subsection.5.21}%
+\contentsline {subsection}{\numberline {5.22}Domain: elearning.unimi.it}{80}{subsection.5.22}%
+\contentsline {subsection}{\numberline {5.23}Domain: fastutil.di.unimi.it}{80}{subsection.5.23}%
+\contentsline {subsection}{\numberline {5.24}Domain: filibusta.crema.unimi.it}{80}{subsection.5.24}%
+\contentsline {subsection}{\numberline {5.25}Domain: fisica.unimi.it}{80}{subsection.5.25}%
+\contentsline {subsection}{\numberline {5.26}Domain: gatus.ricerca.sesar.di.unimi.it}{80}{subsection.5.26}%
+\contentsline {subsection}{\numberline {5.27}Domain: glossarioinclusione.unimi.it}{80}{subsection.5.27}%
+\contentsline {subsection}{\numberline {5.28}Domain: gpu.di.unimi.it}{80}{subsection.5.28}%
+\contentsline {subsection}{\numberline {5.29}Domain: grafana.ricerca.sesar.di.unimi.it}{80}{subsection.5.29}%
+\contentsline {subsection}{\numberline {5.30}Domain: harmopicta.unimi.it}{80}{subsection.5.30}%
+\contentsline {subsection}{\numberline {5.31}Domain: ines.unimi.it}{80}{subsection.5.31}%
+\contentsline {subsection}{\numberline {5.32}Domain: islab.di.unimi.it}{80}{subsection.5.32}%
+\contentsline {subsection}{\numberline {5.33}Domain: lam.cdl.unimi.it}{81}{subsection.5.33}%
+\contentsline {subsection}{\numberline {5.34}Domain: laser.di.unimi.it}{81}{subsection.5.34}%
+\contentsline {subsection}{\numberline {5.35}Domain: liste.unimi.it}{81}{subsection.5.35}%
+\contentsline {subsection}{\numberline {5.36}Domain: marchi.ricerca.di.unimi.it}{81}{subsection.5.36}%
+\contentsline {subsection}{\numberline {5.37}Domain: matematica.unimi.it}{81}{subsection.5.37}%
+\contentsline {subsection}{\numberline {5.38}Domain: mediacomm.unimi.it}{81}{subsection.5.38}%
+\contentsline {subsection}{\numberline {5.39}Domain: minerva.unimi.it}{81}{subsection.5.39}%
+\contentsline {subsection}{\numberline {5.40}Domain: myariel.unimi.it}{81}{subsection.5.40}%
+\contentsline {subsection}{\numberline {5.41}Domain: orari-be.divsi.unimi.it}{81}{subsection.5.41}%
+\contentsline {subsection}{\numberline {5.42}Domain: pong.di.unimi.it}{81}{subsection.5.42}%
+\contentsline {subsection}{\numberline {5.43}Domain: postlaurea.myariel.unimi.it}{81}{subsection.5.43}%
+\contentsline {subsection}{\numberline {5.44}Domain: postlaureaonline.unimi.it}{81}{subsection.5.44}%
+\contentsline {subsection}{\numberline {5.45}Domain: prenotazione-new.di.unimi.it}{81}{subsection.5.45}%
+\contentsline {subsection}{\numberline {5.46}Domain: pros1.lib.unimi.it}{81}{subsection.5.46}%
+\contentsline {subsection}{\numberline {5.47}Domain: registrazione.unimi.it}{81}{subsection.5.47}%
+\contentsline {subsection}{\numberline {5.48}Domain: ricesmart.unimi.it}{82}{subsection.5.48}%
+\contentsline {subsection}{\numberline {5.49}Domain: rnakgview.anacleto.di.unimi.it}{82}{subsection.5.49}%
+\contentsline {subsection}{\numberline {5.50}Domain: rustdesk.di.unimi.it}{82}{subsection.5.50}%
+\contentsline {subsection}{\numberline {5.51}Domain: security.di.unimi.it}{82}{subsection.5.51}%
+\contentsline {subsection}{\numberline {5.52}Domain: sesar.di.unimi.it}{82}{subsection.5.52}%
+\contentsline {subsection}{\numberline {5.53}Domain: sites.unimi.it}{82}{subsection.5.53}%
+\contentsline {subsection}{\numberline {5.54}Domain: sp-ex-pwn-1-dhf84ba.laser.di.unimi.it}{82}{subsection.5.54}%
+\contentsline {subsection}{\numberline {5.55}Domain: textgen.ricerca.sesar.di.unimi.it}{82}{subsection.5.55}%
+\contentsline {subsection}{\numberline {5.56}Domain: timelapse.unimi.it}{82}{subsection.5.56}%
+\contentsline {subsection}{\numberline {5.57}Domain: tutoraggio.di.unimi.it}{82}{subsection.5.57}%
+\contentsline {subsection}{\numberline {5.58}Domain: unistem.unimi.it}{82}{subsection.5.58}%
+\contentsline {subsection}{\numberline {5.59}Domain: vbellandipwm.ariel.ctu.unimi.it}{82}{subsection.5.59}%
+\contentsline {subsection}{\numberline {5.60}Domain: wikirank-2017.di.unimi.it}{82}{subsection.5.60}%
+\contentsline {subsection}{\numberline {5.61}Domain: wikirank-2020.di.unimi.it}{83}{subsection.5.61}%
+\contentsline {subsection}{\numberline {5.62}Domain: wikirank-2023.di.unimi.it}{83}{subsection.5.62}%
+\contentsline {subsection}{\numberline {5.63}Domain: wizardunicloud.unimi.it}{83}{subsection.5.63}%
+\contentsline {section}{\numberline {6}Emails found}{84}{section.6}%
+\contentsline {section}{\numberline {7}Resolved Hosts}{87}{section.7}%
+\contentsline {section}{\numberline {8}Server Mail found}{126}{section.8}%
+\contentsline {section}{\numberline {9}Pie Chart of Vulnerabilities}{127}{section.9}%
+\contentsline {section}{\numberline {10}Vulnerability Summary per IP}{128}{section.10}%
+\contentsline {section}{\numberline {11}Shodan Results for IP Addresses}{131}{section.11}%
+\contentsline {subsection}{\numberline {11.1}IP Address: 18.195.28.187}{131}{subsection.11.1}%
+\contentsline {subsection}{\numberline {11.2}IP Address: 159.149.15.69}{133}{subsection.11.2}%
+\contentsline {subsection}{\numberline {11.3}IP Address: 159.149.47.128}{159}{subsection.11.3}%
+\contentsline {subsection}{\numberline {11.4}IP Address: 159.149.15.66}{160}{subsection.11.4}%
+\contentsline {subsection}{\numberline {11.5}IP Address: 159.149.10.20}{161}{subsection.11.5}%
+\contentsline {subsection}{\numberline {11.6}IP Address: 159.149.130.120}{162}{subsection.11.6}%
+\contentsline {subsection}{\numberline {11.7}IP Address: 159.149.102.162}{174}{subsection.11.7}%
+\contentsline {subsection}{\numberline {11.8}IP Address: 3.72.140.173}{227}{subsection.11.8}%
+\contentsline {subsection}{\numberline {11.9}IP Address: 159.149.53.164}{228}{subsection.11.9}%
+\contentsline {subsection}{\numberline {11.10}IP Address: 159.149.53.242}{271}{subsection.11.10}%
+\contentsline {subsection}{\numberline {11.11}IP Address: 159.149.53.172}{273}{subsection.11.11}%
+\contentsline {subsection}{\numberline {11.12}IP Address: 159.149.129.248}{316}{subsection.11.12}%
+\contentsline {subsection}{\numberline {11.13}IP Address: 159.149.30.18}{326}{subsection.11.13}%
+\contentsline {subsection}{\numberline {11.14}IP Address: 159.149.45.8}{332}{subsection.11.14}%
+\contentsline {subsection}{\numberline {11.15}IP Address: 159.149.53.196}{337}{subsection.11.15}%
+\contentsline {subsection}{\numberline {11.16}IP Address: 159.149.53.140}{338}{subsection.11.16}%
+\contentsline {subsection}{\numberline {11.17}IP Address: 159.149.106.194}{391}{subsection.11.17}%
+\contentsline {subsection}{\numberline {11.18}IP Address: 159.149.53.217}{392}{subsection.11.18}%
+\contentsline {subsection}{\numberline {11.19}IP Address: 159.149.53.27}{414}{subsection.11.19}%
+\contentsline {subsection}{\numberline {11.20}IP Address: 159.149.147.195}{453}{subsection.11.20}%
+\contentsline {subsection}{\numberline {11.21}IP Address: 34.252.50.82}{467}{subsection.11.21}%
+\contentsline {subsection}{\numberline {11.22}IP Address: 159.149.103.29}{478}{subsection.11.22}%
+\contentsline {subsection}{\numberline {11.23}IP Address: 159.149.145.148}{531}{subsection.11.23}%
+\contentsline {subsection}{\numberline {11.24}IP Address: 52.101.68.29}{532}{subsection.11.24}%
+\contentsline {subsection}{\numberline {11.25}IP Address: 159.149.129.222}{533}{subsection.11.25}%
+\contentsline {subsection}{\numberline {11.26}IP Address: 50.18.215.94}{534}{subsection.11.26}%
+\contentsline {subsection}{\numberline {11.27}IP Address: 159.149.133.208}{535}{subsection.11.27}%
+\contentsline {subsection}{\numberline {11.28}IP Address: 159.149.45.44}{578}{subsection.11.28}%
+\contentsline {subsection}{\numberline {11.29}IP Address: 159.149.133.34}{631}{subsection.11.29}%
+\contentsline {subsection}{\numberline {11.30}IP Address: 159.149.147.185}{649}{subsection.11.30}%
+\contentsline {subsection}{\numberline {11.31}IP Address: 159.149.10.1}{650}{subsection.11.31}%
+\contentsline {subsection}{\numberline {11.32}IP Address: 159.149.45.27}{651}{subsection.11.32}%
+\contentsline {subsection}{\numberline {11.33}IP Address: 159.149.130.110}{704}{subsection.11.33}%
+\contentsline {subsection}{\numberline {11.34}IP Address: 159.149.136.2}{753}{subsection.11.34}%
+\contentsline {subsection}{\numberline {11.35}IP Address: 159.149.96.86}{757}{subsection.11.35}%
+\contentsline {subsection}{\numberline {11.36}IP Address: 159.149.147.98}{758}{subsection.11.36}%
+\contentsline {subsection}{\numberline {11.37}IP Address: 35.156.224.161}{762}{subsection.11.37}%
+\contentsline {subsection}{\numberline {11.38}IP Address: 159.149.53.33}{763}{subsection.11.38}%
+\contentsline {subsection}{\numberline {11.39}IP Address: 159.149.133.149}{764}{subsection.11.39}%
+\contentsline {subsection}{\numberline {11.40}IP Address: 159.149.53.16}{818}{subsection.11.40}%
+\contentsline {subsection}{\numberline {11.41}IP Address: 159.149.130.129}{883}{subsection.11.41}%
+\contentsline {subsection}{\numberline {11.42}IP Address: 159.149.44.139}{911}{subsection.11.42}%
+\contentsline {subsection}{\numberline {11.43}IP Address: 159.149.47.225}{915}{subsection.11.43}%
+\contentsline {subsection}{\numberline {11.44}IP Address: 159.149.116.203}{916}{subsection.11.44}%
+\contentsline {subsection}{\numberline {11.45}IP Address: 104.18.36.224}{917}{subsection.11.45}%
+\contentsline {subsection}{\numberline {11.46}IP Address: 159.149.30.3}{918}{subsection.11.46}%
+\contentsline {subsection}{\numberline {11.47}IP Address: 159.149.47.56}{930}{subsection.11.47}%
+\contentsline {subsection}{\numberline {11.48}IP Address: 159.149.145.56}{932}{subsection.11.48}%
+\contentsline {subsection}{\numberline {11.49}IP Address: 159.149.129.169}{937}{subsection.11.49}%
+\contentsline {subsection}{\numberline {11.50}IP Address: 159.149.105.12}{938}{subsection.11.50}%
+\contentsline {subsection}{\numberline {11.51}IP Address: 159.149.10.103}{991}{subsection.11.51}%
+\contentsline {subsection}{\numberline {11.52}IP Address: 159.149.105.179}{992}{subsection.11.52}%
+\contentsline {subsection}{\numberline {11.53}IP Address: 159.149.133.42}{993}{subsection.11.53}%
+\contentsline {subsection}{\numberline {11.54}IP Address: 159.149.45.25}{1015}{subsection.11.54}%
+\contentsline {subsection}{\numberline {11.55}IP Address: 159.149.53.248}{1074}{subsection.11.55}%
+\contentsline {subsection}{\numberline {11.56}IP Address: 159.149.133.67}{1075}{subsection.11.56}%
+\contentsline {subsection}{\numberline {11.57}IP Address: 159.149.10.82}{1077}{subsection.11.57}%
+\contentsline {subsection}{\numberline {11.58}IP Address: 159.149.10.102}{1078}{subsection.11.58}%
+\contentsline {subsection}{\numberline {11.59}IP Address: 159.149.116.206}{1079}{subsection.11.59}%
+\contentsline {subsection}{\numberline {11.60}IP Address: 159.149.130.130}{1080}{subsection.11.60}%
+\contentsline {subsection}{\numberline {11.61}IP Address: 159.149.53.252}{1108}{subsection.11.61}%
+\contentsline {subsection}{\numberline {11.62}IP Address: 159.149.53.239}{1109}{subsection.11.62}%
+\contentsline {subsection}{\numberline {11.63}IP Address: 52.101.68.12}{1110}{subsection.11.63}%
+\contentsline {subsection}{\numberline {11.64}IP Address: 159.149.104.132}{1111}{subsection.11.64}%
+\contentsline {subsection}{\numberline {11.65}IP Address: 159.149.53.247}{1112}{subsection.11.65}%
+\contentsline {subsection}{\numberline {11.66}IP Address: 159.149.129.239}{1113}{subsection.11.66}%
+\contentsline {subsection}{\numberline {11.67}IP Address: 18.192.231.252}{1144}{subsection.11.67}%
+\contentsline {subsection}{\numberline {11.68}IP Address: 104.18.10.29}{1145}{subsection.11.68}%
+\contentsline {subsection}{\numberline {11.69}IP Address: 159.149.53.186}{1146}{subsection.11.69}%
+\contentsline {subsection}{\numberline {11.70}IP Address: 52.101.73.4}{1199}{subsection.11.70}%
+\contentsline {subsection}{\numberline {11.71}IP Address: 159.149.129.232}{1200}{subsection.11.71}%
+\contentsline {subsection}{\numberline {11.72}IP Address: 3.126.205.183}{1203}{subsection.11.72}%
+\contentsline {subsection}{\numberline {11.73}IP Address: 159.149.45.133}{1204}{subsection.11.73}%
+\contentsline {subsection}{\numberline {11.74}IP Address: 159.149.133.45}{1257}{subsection.11.74}%
+\contentsline {subsection}{\numberline {11.75}IP Address: 159.149.129.236}{1269}{subsection.11.75}%
+\contentsline {subsection}{\numberline {11.76}IP Address: 193.205.78.171}{1293}{subsection.11.76}%
+\contentsline {subsection}{\numberline {11.77}IP Address: 159.149.103.62}{1335}{subsection.11.77}%
+\contentsline {subsection}{\numberline {11.78}IP Address: 159.149.147.136}{1346}{subsection.11.78}%
+\contentsline {subsection}{\numberline {11.79}IP Address: 104.18.11.29}{1350}{subsection.11.79}%
+\contentsline {subsection}{\numberline {11.80}IP Address: 35.185.199.199}{1351}{subsection.11.80}%
+\contentsline {subsection}{\numberline {11.81}IP Address: 159.149.129.101}{1362}{subsection.11.81}%
+\contentsline {subsection}{\numberline {11.82}IP Address: 159.149.129.224}{1363}{subsection.11.82}%
+\contentsline {subsection}{\numberline {11.83}IP Address: 159.149.53.90}{1378}{subsection.11.83}%
+\contentsline {subsection}{\numberline {11.84}IP Address: 159.149.130.138}{1379}{subsection.11.84}%
+\contentsline {subsection}{\numberline {11.85}IP Address: 159.149.145.162}{1385}{subsection.11.85}%
+\contentsline {subsection}{\numberline {11.86}IP Address: 159.149.104.130}{1386}{subsection.11.86}%
+\contentsline {subsection}{\numberline {11.87}IP Address: 159.149.53.241}{1387}{subsection.11.87}%
+\contentsline {subsection}{\numberline {11.88}IP Address: 52.59.135.101}{1388}{subsection.11.88}%
+\contentsline {subsection}{\numberline {11.89}IP Address: 159.149.15.70}{1389}{subsection.11.89}%
+\contentsline {subsection}{\numberline {11.90}IP Address: 159.149.119.18}{1403}{subsection.11.90}%
+\contentsline {subsection}{\numberline {11.91}IP Address: 159.149.53.34}{1420}{subsection.11.91}%
+\contentsline {subsection}{\numberline {11.92}IP Address: 159.149.136.4}{1421}{subsection.11.92}%
+\contentsline {subsection}{\numberline {11.93}IP Address: 159.149.145.2}{1439}{subsection.11.93}%
+\contentsline {subsection}{\numberline {11.94}IP Address: 159.149.47.77}{1445}{subsection.11.94}%
+\contentsline {subsection}{\numberline {11.95}IP Address: 159.149.136.3}{1446}{subsection.11.95}%
+\contentsline {subsection}{\numberline {11.96}IP Address: 159.149.15.22}{1451}{subsection.11.96}%
+\contentsline {subsection}{\numberline {11.97}IP Address: 159.149.104.138}{1476}{subsection.11.97}%
+\contentsline {subsection}{\numberline {11.98}IP Address: 159.149.53.207}{1477}{subsection.11.98}%
+\contentsline {subsection}{\numberline {11.99}IP Address: 159.149.53.132}{1530}{subsection.11.99}%
+\contentsline {subsection}{\numberline {11.100}IP Address: 159.149.132.36}{1532}{subsection.11.100}%
+\contentsline {subsection}{\numberline {11.101}IP Address: 159.149.45.65}{1546}{subsection.11.101}%
+\contentsline {subsection}{\numberline {11.102}IP Address: 51.116.169.26}{1599}{subsection.11.102}%
+\contentsline {subsection}{\numberline {11.103}IP Address: 159.149.130.90}{1600}{subsection.11.103}%
+\contentsline {subsection}{\numberline {11.104}IP Address: 172.64.151.32}{1618}{subsection.11.104}%
+\contentsline {subsection}{\numberline {11.105}IP Address: 159.149.130.182}{1619}{subsection.11.105}%
+\contentsline {subsection}{\numberline {11.106}IP Address: 185.221.216.115}{1624}{subsection.11.106}%
+\contentsline {subsection}{\numberline {11.107}IP Address: 159.149.10.81}{1630}{subsection.11.107}%
+\contentsline {subsection}{\numberline {11.108}IP Address: 159.149.47.69}{1631}{subsection.11.108}%
+\contentsline {subsection}{\numberline {11.109}IP Address: 2606:4700::6812:a1d}{1637}{subsection.11.109}%
+\contentsline {subsection}{\numberline {11.110}IP Address: 159.149.129.228}{1638}{subsection.11.110}%
+\contentsline {subsection}{\numberline {11.111}IP Address: 159.149.129.197}{1681}{subsection.11.111}%
+\contentsline {subsection}{\numberline {11.112}IP Address: 159.149.53.224}{1692}{subsection.11.112}%
+\contentsline {subsection}{\numberline {11.113}IP Address: 159.149.133.61}{1751}{subsection.11.113}%
+\contentsline {subsection}{\numberline {11.114}IP Address: 88.99.2.212}{1774}{subsection.11.114}%
+\contentsline {subsection}{\numberline {11.115}IP Address: 159.149.130.136}{1775}{subsection.11.115}%
+\contentsline {subsection}{\numberline {11.116}IP Address: 159.149.53.250}{1782}{subsection.11.116}%
+\contentsline {subsection}{\numberline {11.117}IP Address: 159.149.104.139}{1783}{subsection.11.117}%
+\contentsline {subsection}{\numberline {11.118}IP Address: 159.149.147.179}{1784}{subsection.11.118}%
+\contentsline {subsection}{\numberline {11.119}IP Address: 159.149.104.164}{1785}{subsection.11.119}%
+\contentsline {subsection}{\numberline {11.120}IP Address: 159.149.147.194}{1786}{subsection.11.120}%
+\contentsline {subsection}{\numberline {11.121}IP Address: 159.149.105.156}{1790}{subsection.11.121}%
+\contentsline {subsection}{\numberline {11.122}IP Address: 90.147.167.18}{1844}{subsection.11.122}%
+\contentsline {subsection}{\numberline {11.123}IP Address: 159.149.145.216}{1845}{subsection.11.123}%
+\contentsline {subsection}{\numberline {11.124}IP Address: 2606:4700::6812:b1d}{1846}{subsection.11.124}%
+\contentsline {subsection}{\numberline {11.125}IP Address: 159.149.145.130}{1849}{subsection.11.125}%
+\contentsline {subsection}{\numberline {11.126}IP Address: 159.149.30.17}{1853}{subsection.11.126}%
+\contentsline {subsection}{\numberline {11.127}IP Address: 159.149.53.144}{1871}{subsection.11.127}%
+\contentsline {subsection}{\numberline {11.128}IP Address: 159.149.145.228}{1872}{subsection.11.128}%
+\contentsline {subsection}{\numberline {11.129}IP Address: 185.199.109.153}{1873}{subsection.11.129}%

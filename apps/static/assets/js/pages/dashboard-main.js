@@ -529,6 +529,14 @@ $(document).ready(function() {
                             downloadJson("URLs",urls);
                         };
                     }
+
+                    if (Object.keys(data.domain_urls).length > 0) {
+                        $('#download-domain-url-btn').show();
+                        document.getElementById('download-domain-url-btn').onclick = function() {
+                            downloadJson("Domain_URLs",data.domain_urls);
+                        };
+                    }
+
                     $('#download-all-btn').show();
                         document.getElementById('download-all-btn').onclick = function() {
                             downloadJson("Full_Json",data);
