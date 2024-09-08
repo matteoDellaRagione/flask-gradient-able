@@ -353,7 +353,9 @@ def gowitness(results, urls, domain):
 
 def linkedinDumper(linkedinUrl):
     os.chdir("LinkedInDumper-main")
-    li_at = 'AQEDAS4TeJYEgzKGAAABhlmefTcAAAGQ2b-mUU4AEhi3cbC5_OCVjENtJhHSPaa9DzAt2CNeP8UH7lU_1XGsZkDg7pHQlZaq_Sa6-sBSp7cy_kehJoq234tB7RUXgHN4VCMfzf_ApwL5DY9ZIOF08rZO'
+    with open('/home/kali/ApiKeys/linkedin.txt', 'r') as file:
+        li_at = file.read().strip()
+    #li_at = 'AQEDAS4TeJYEgzKGAAABhlmefTcAAAGQ2b-mUU4AEhi3cbC5_OCVjENtJhHSPaa9DzAt2CNeP8UH7lU_1XGsZkDg7pHQlZaq_Sa6-sBSp7cy_kehJoq234tB7RUXgHN4VCMfzf_ApwL5DY9ZIOF08rZO'
     command = [
         'python3', 'linkedindumper.py', '--url', linkedinUrl, 
         '--cookie', li_at, 
@@ -466,10 +468,11 @@ def createEmail(pattern,domain,json):
     return emails
 
 def domainShodan(domain):
-    api_key = '9h1GRXYcYIWVhxr9bqk3aXCfkCvnMxAE'
+    with open('/home/kali/ApiKeys/shodan.txt', 'r') as file:
+        api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     try:
-        query = f'hostname:*.{domain} country:"IT"'
+        query = f'hostname:*.{domain}'
         result = api.search(query)
         all_hostnames = []
         matches = result.get("matches", [])
