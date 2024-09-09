@@ -703,8 +703,6 @@ function report(json1,json2,domain) {
     function shodan(json1,domain) {
         var IP = json1.IP;
         var urls = json1.interesting_urls;
-        console.log("Prima della success shodan");
-        console.log(json1);
         $.ajax({
             url: "/search_shodan",
             method: "GET",
