@@ -478,7 +478,7 @@ $(document).ready(function() {
                 },
                 error: function(error) {
                     console.error(error);
-                    $('#result').html('<p>Si è verificato un errore durante la richiesta.</p>');
+                    $('#result').html('<p>Error in the request</p>');
                 }
             });
         });
@@ -726,8 +726,6 @@ function report(json1,json2,domain) {
                 populateTable(response.results);
 
                 $('#generate-report-btn').off('click').on('click', function() {
-                    console.log("Dentro success shodan");
-                    console.log(json1);
                     report(json1,response,domain);
                 });
             },
