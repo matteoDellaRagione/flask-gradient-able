@@ -471,8 +471,10 @@ def domainShodan(domain):
     with open('/home/kali/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
+    info = api.info()
+    print(info)
     try:
-        query = f'hostname:*.{domain}'
+        query = f'hostname:"*.{domain}"'
         result = api.search(query)
         all_hostnames = []
         matches = result.get("matches", [])
