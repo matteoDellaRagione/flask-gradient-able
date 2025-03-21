@@ -32,5 +32,11 @@ RUN /usr/local/bin/pip3.9 install --no-cache-dir -r requirements.txt
 # Copia il resto del codice
 COPY . .
 
+# Crea la directory ApiKeys e i file .txt
+RUN mkdir -p ApiKeys && \
+    touch ApiKeys/shodan.txt && \
+    touch ApiKeys/hunterio.txt && \
+    touch ApiKeys/linkedin.txt
+
 # Comando di default per avviare Gunicorn e Flask
 CMD ["/usr/local/bin/gunicorn", "--config", "gunicorn-cfg.py", "run:app"]
