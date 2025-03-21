@@ -353,7 +353,7 @@ def gowitness(results, urls, domain):
 
 def linkedinDumper(linkedinUrl):
     os.chdir("LinkedInDumper-main")
-    with open('/home/kali/ApiKeys/linkedin.txt', 'r') as file:
+    with open('/ApiKeys/linkedin.txt', 'r') as file:
         li_at = file.read().strip()
     #li_at = 'AQEDAS4TeJYEgzKGAAABhlmefTcAAAGQ2b-mUU4AEhi3cbC5_OCVjENtJhHSPaa9DzAt2CNeP8UH7lU_1XGsZkDg7pHQlZaq_Sa6-sBSp7cy_kehJoq234tB7RUXgHN4VCMfzf_ApwL5DY9ZIOF08rZO'
     command = [
@@ -388,7 +388,7 @@ def linkedinDumper(linkedinUrl):
     return linkedin
 
 def domain_search(domain):
-    with open('/home/kali/ApiKeys/hunterio.txt', 'r') as file:
+    with open('/ApiKeys/hunterio.txt', 'r') as file:
         api_key = file.read().strip()
     
     # URL dell'API di Hunter.io
@@ -468,7 +468,7 @@ def createEmail(pattern,domain,json):
     return emails
 
 def domainShodan(domain):
-    with open('/home/kali/ApiKeys/shodan.txt', 'r') as file:
+    with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     info = api.info()
