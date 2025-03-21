@@ -201,7 +201,7 @@ def generate_report():
         return render_template('home/sample-page.html',error="Error: Missing Json")
     
     #output_directory = '/home/kali/flask-gradient-able/Reports'
-    output_directory = '/home/kali/Apollo/flask-gradient-able/Reports'
+    output_directory = '/Reports'
 
     # File LaTeX e PDF con nomi personalizzati
     latex_file = os.path.join(output_directory, f'{domain}.tex')
