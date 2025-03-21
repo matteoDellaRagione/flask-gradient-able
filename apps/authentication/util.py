@@ -203,7 +203,7 @@ def run_theharvester(domain, output_file):
     subprocess.run(command, check=True)
 
 def searchShodan(IP):
-    with open('/home/kali/ApiKeys/shodan.txt', 'r') as file:
+    with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     try:
