@@ -318,10 +318,12 @@ def run_gowitness(url,domain):
             os.makedirs(directory)
         command = [
             "gowitness",
-            "-P", directory,
-            "--screenshot-filter", "200",
-            "--disable-db",
-            "single", url
+            "scan",
+            "single",
+            "-s", directory,
+            "--screenshot-format", "png",
+            "-u",
+            url
         ]
         subprocess.run(command)
 
