@@ -16,15 +16,7 @@ RUN cd Python-3.9.0 && ./configure --enable-optimizations && make altinstall
 ENV PATH="/usr/local/bin:$PATH"
 
 # Installa i tool specifici
-RUN apt-get install -y theharvester dnsrecon host dnsutils gowitness texlive python3.13-venv texlive-full \
-    texlive-latex-extra \
-    texlive-fonts-recommended \
-    texlive-fonts-extra \
-    texlive-science \
-    wget
-
-# Installa il pacchetto breakurl
-RUN tlmgr init-usertree && tlmgr install breakurl
+RUN apt-get install -y theharvester dnsrecon host dnsutils gowitness texlive python3.13-venv texlive-full
 
 # Imposta le variabili d'ambiente
 ENV PYTHONDONTWRITEBYTECODE 1
