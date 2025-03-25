@@ -45,10 +45,12 @@
                   </div>
                </div>
                <div class="card-body">
-                  <p>"Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut
-                     aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui
-                     officia deserunt mollit anim id est laborum."
-                  </p>
+                   <p>Apollo is an Open Source Intelligence (OSINT) tool aimed at supporting Red Teaming activities. The tool allows: </p>
+                  <ul>
+                     <li>To perform automatic searches on domains and subdomains related to a specific target;</li>
+                     <li>To identify URLs and vulnerable access points through databases of known vulnerabilities;</li>
+                     <li>To obtain mailing lists of email addresses associated with an organization's employees, potentially useful for simulating phishing attacks within Red Teaming operations.</li>
+                   </ul>
                </div>
                <!-- Da provare -->
                <div class="card px-5">
@@ -56,10 +58,10 @@
                      <h3>Gowitness Images</h3>
                   </div>
                   <div class="card-body">
-                     {% for image in images %}
+                     {% for url, image in image_urls %}
                      <div class="image-container" style="margin-top: 30px; padding: 15px; border: 1px solid #ddd; border-radius: 8px;">
-                        <h2>{{ image }}</h2>
-                        <img src="{{ url_for('static', filename='assets/gowitness/' ~ image) }}" alt="{{ image }}" style="max-width: 100%; height: auto;">
+                        <h2>{{ url }}</h2>
+                        <img src="{{ url_for('static', filename='assets/gowitness/' ~ image) }}" alt="{{ url }}" style="max-width: 100%; height: auto;">
                      </div>
                      {% endfor %}
                   </div>
