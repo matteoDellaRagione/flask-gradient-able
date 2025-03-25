@@ -190,6 +190,14 @@ def merge_json(json1, json2, json3, json4):
     merged['numDomain_urls'] = len(merged['domain_urls'])
     
     translated_json = domain2IP(merged)
+
+    # Aggiungi i dati da resolved_host a interesting_urls
+    if 'resolved_hosts' in translated_json:
+        resolved_urls = list(translated_json['resolved_hosts'].keys())
+        translated_json['interesting_urls'].extend(resolved_urls)
+        translated_json['interesting_urls'] = list(set(translated_json['interesting_urls']))
+        translated_json['numUrls'] = len(translated_json['interesting_urls'])
+    
     return rmDuplicati(translated_json)
 
 def run_theharvester(domain, output_file):
