@@ -180,9 +180,15 @@ def show_images():
     # Copia le immagini dalla directory temporanea alla directory statica
     for image in images:
         shutil.copy2(os.path.join(src_directory, image), dst_directory)
-    
+
+    # Estrai l'URL dall'immagine rimuovendo i trattini e sostituendo con simboli corretti
+    image_urls = []
+    for image in images:
+        url = image.replace('https---', 'https://').replace('http---', 'http://').replace('.png', '').replace('-', '.')
+        image_urls.append((url, image))    
+  
      # Passa la lista dei nomi di file al template
-    rendered_template = render_template('home/gowitness.html', images=images)
+    rendered_template = render_template('home/gowitness.html', image_url=image_url)
     #Da fare un crontab che elimina le immagini da static/assets/gowitness
     return rendered_template
 
