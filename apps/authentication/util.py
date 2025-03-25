@@ -356,6 +356,17 @@ def gowitness(results, urls, domain):
     output = {
         "urls": list(url_set)
     }
+
+    # Controlla e modifica gli URL se necessario
+    updated_urls = set()
+    for url in output["urls"]:
+        if not url.startswith("http://") and not url.startswith("https://"):
+            updated_urls.add(f"http://{url}")
+            updated_urls.add(f"https://{url}")
+        else:
+            updated_urls.add(url)
+
+    output["urls"] = list(updated_urls)
     
     with concurrent.futures.ThreadPoolExecutor() as executor:
         futures = [executor.submit(run_gowitness, url, domain) for url in output["urls"]]
@@ -365,7 +376,6 @@ def linkedinDumper(linkedinUrl):
     os.chdir("LinkedInDumper-main")
     with open('/ApiKeys/linkedin.txt', 'r') as file:
         li_at = file.read().strip()
-    #li_at = 'AQEDAS4TeJYEgzKGAAABhlmefTcAAAGQ2b-mUU4AEhi3cbC5_OCVjENtJhHSPaa9DzAt2CNeP8UH7lU_1XGsZkDg7pHQlZaq_Sa6-sBSp7cy_kehJoq234tB7RUXgHN4VCMfzf_ApwL5DY9ZIOF08rZO'
     command = [
         'python3', 'linkedindumper.py', '--url', linkedinUrl, 
         '--cookie', li_at, 
