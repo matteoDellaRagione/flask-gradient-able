@@ -187,30 +187,30 @@ def show_images():
          # Rimuove l'estensione .png
         filename = image.replace('.png', '')
 
-        # Ricostruisce il protocollo
+        # Aggiungi il protocollo
         if filename.startswith('http---'):
             url = 'http://' + filename[len('http---'):]
         elif filename.startswith('https---'):
             url = 'https://' + filename[len('https---'):]
         else:
-            url = filename  # Nel caso di nomi strani
+            url = filename  # Caso nel caso di URL strani
 
-        # Separazione tra dominio e percorso
-        url_parts = url.split('/', 1)
-        domain_part = url_parts[0]  # Dominio (parte prima dello slash)
-        path_part = url_parts[1] if len(url_parts) > 1 else ''  # Percorso (parte dopo lo slash)
+        # Separiamo il dominio dal percorso
+        protocol_end = url.find('://') + 3  # Troviamo la fine del protocollo (http:// o https://)
+        domain_part = url[protocol_end:].split('.', 1)[0]  # Prendiamo il dominio prima del primo punto
+        path_part = url[protocol_end + len(domain_part):]  # Il resto è il percorso
 
-        # Sostituisci i trattini nel percorso con gli slash
+        # Sostituisci i trattini nel percorso con gli slash, ma lascia il dominio invariato
         path_part = path_part.replace('-', '/')
 
         # Ricostruisci l'URL finale
-        # Mantieni i trattini nel dominio prima del primo punto (dominio non viene cambiato)
-        url = domain_part + '/' + path_part
+        url = 'http://' + domain_part + path_part if url.startswith('http://') else 'https://' + domain_part + path_part
 
         # Gestisci i casi con la porta
         if url.count('.') > 2 and url.split('/')[-1].isdigit():
             parts = url.rsplit('/', 1)
-            url = f"{parts[0]}:{parts[1]}"  # Aggiungi la porta
+            url = f"{parts[0]}:{parts[1]}"  # Aggiungi la porta se presente
+  
         
         image_urls.append((url, image))    
   
