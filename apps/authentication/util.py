@@ -515,18 +515,16 @@ def add_if_not_null(dictionary, key, value):
             dictionary[key] = value
 
 def checkURLgowitness(url):
-    # Sostituisci i caratteri non validi per i nomi dei file con "-"
+     # Sostituzione per seguire lo schema di GoWitness
     filename = (
-        url.replace('/', '__SL__')    # Slash
-           .replace('.', '__DT__')    # Punto
-           .replace(':', '__CL__')    # Due punti
+        url.replace('://', '---')  # Sostituisce il protocollo con ---
+           .replace(':', '-')      # Sostituisce i due punti con -
+           .replace('/', '-')      # Sostituisce gli slash con -
     )
-    filename = filename + '.png'
+    filename += '.png'
 
     # Verifica se il file esiste
     return os.path.isfile(filename)
-#url=https://dareboost.com:443/
-#https-dareboost.com-443-.png
 
 def escape_latex(text):
     if not isinstance(text, str):
