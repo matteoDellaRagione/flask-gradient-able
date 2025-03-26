@@ -185,10 +185,20 @@ def show_images():
     image_urls = []
     for image in images:
         url = image.replace('https---', 'https://').replace('http---', 'http://').replace('.png', '').replace('-', '.')
+
+        # Controlla se c'è una porta (numeri dopo l'ultimo '-')
+        # Esempio: "http---10-10-10-1-8080.png"
+        parts = image.replace('.png', '').split('-')
+        
+        if parts[-1].isdigit():  # Se l'ultima parte è un numero, rappresenta una porta
+            # Sostituisci l'ultimo punto con ":"
+            last_dot = url.rfind('.')
+            url = url[:last_dot] + ':' + url[last_dot + 1:]
+        
         image_urls.append((url, image))    
   
      # Passa la lista dei nomi di file al template
-    rendered_template = render_template('home/gowitness.html', image_url=image_url)
+    rendered_template = render_template('home/gowitness.html', image_urls=image_urls)
     #Da fare un crontab che elimina le immagini da static/assets/gowitness
     return rendered_template
 
