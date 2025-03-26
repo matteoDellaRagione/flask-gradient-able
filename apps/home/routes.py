@@ -184,29 +184,33 @@ def show_images():
     # Estrai l'URL dall'immagine rimuovendo i trattini e sostituendo con simboli corretti
     image_urls = []
     for image in images:
-        # Rimuove l'estensione
-        url = image.replace('.png', '')
-        
-        # Decodifica il protocollo
-        if url.startswith('http---'):
-            url = url.replace('http---', 'http://', 1)
-        elif url.startswith('https---'):
-            url = url.replace('https---', 'https://', 1)
+         # Rimuove l'estensione .png
+        filename = image.replace('.png', '')
 
-        # Sostituisci i trattini con i simboli corretti
-        url = url.replace('-', '.')
+        # Ricostruisce il protocollo
+        if filename.startswith('http---'):
+            url = 'http://' + filename[len('http---'):]
+        elif filename.startswith('https---'):
+            url = 'https://' + filename[len('https---'):]
+        else:
+            url = filename  # Nel caso di nomi strani
+
+        # Separazione tra dominio e percorso
+        url_parts = url.split('/', 1)
+        domain_part = url_parts[0]  # Dominio (parte prima dello slash)
+        path_part = url_parts[1] if len(url_parts) > 1 else ''  # Percorso (parte dopo lo slash)
+
+        # Non sostituire i punti nel dominio
+        # Sostituisci i trattini nel percorso con gli slash
+        path_part = path_part.replace('-', '/')
+
+        # Ricostruisci l'URL finale
+        url = domain_part + '/' + path_part
 
         # Gestisci i casi con la porta
-        if url.count('.') > 2 and url.split('.')[-1].isdigit():
-            parts = url.rsplit('.', 1)
-            url = f"{parts[0]}:{parts[1]}"
-
-        # Sostituisci i punti dopo il dominio con slash
-        url_parts = url.split('.')
-        if len(url_parts) > 2:
-            domain_part = '.'.join(url_parts[:2])
-            path_part = '/'.join(url_parts[2:])
-            url = f"{domain_part}/{path_part}"
+        if url.count('.') > 2 and url.split('/')[-1].isdigit():
+            parts = url.rsplit('/', 1)
+            url = f"{parts[0]}:{parts[1]}"  # Aggiungi la porta
         
         image_urls.append((url, image))    
   
