@@ -516,7 +516,11 @@ def add_if_not_null(dictionary, key, value):
 
 def checkURLgowitness(url):
     # Sostituisci i caratteri non validi per i nomi dei file con "-"
-    filename = url.replace('/', '-').replace('.', '-').replace(':', '-')
+    filename = (
+        url.replace('/', '__SL__')    # Slash
+           .replace('.', '__DT__')    # Punto
+           .replace(':', '__CL__')    # Due punti
+    )
     filename = filename + '.png'
 
     # Verifica se il file esiste
