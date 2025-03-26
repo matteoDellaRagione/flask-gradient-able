@@ -184,16 +184,15 @@ def show_images():
     # Estrai l'URL dall'immagine rimuovendo i trattini e sostituendo con simboli corretti
     image_urls = []
     for image in images:
-        url = image.replace('https---', 'https://').replace('http---', 'http://').replace('.png', '').replace('-', '.')
-
-        # Controlla se c'è una porta (numeri dopo l'ultimo '-')
-        # Esempio: "http---10-10-10-1-8080.png"
-        parts = image.replace('.png', '').split('-')
+        # Rimuove l'estensione
+        url = image.replace('.png', '')
         
-        if parts[-1].isdigit():  # Se l'ultima parte è un numero, rappresenta una porta
-            # Sostituisci l'ultimo punto con ":"
-            last_dot = url.rfind('.')
-            url = url[:last_dot] + ':' + url[last_dot + 1:]
+        # Decodifica i caratteri speciali
+        url = (
+            url.replace('__SL__', '/')    # Slash
+               .replace('__DT__', '.')    # Punto
+               .replace('__CL__', ':')    # Due punti
+        )
         
         image_urls.append((url, image))    
   
