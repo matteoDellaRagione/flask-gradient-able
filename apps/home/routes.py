@@ -200,11 +200,11 @@ def show_images():
         domain_part = url_parts[0]  # Dominio (parte prima dello slash)
         path_part = url_parts[1] if len(url_parts) > 1 else ''  # Percorso (parte dopo lo slash)
 
-        # Non sostituire i punti nel dominio
         # Sostituisci i trattini nel percorso con gli slash
         path_part = path_part.replace('-', '/')
 
         # Ricostruisci l'URL finale
+        # Mantieni i trattini nel dominio prima del primo punto (dominio non viene cambiato)
         url = domain_part + '/' + path_part
 
         # Gestisci i casi con la porta
