@@ -197,7 +197,7 @@ def show_images():
 
         # Separiamo il dominio dal percorso
         protocol_end = url.find('://') + 3  # Troviamo la fine del protocollo (http:// o https://)
-        domain_part = url[protocol_end:].split('.', 1)[0]  # Prendiamo il dominio prima del primo punto
+        domain_part = url[protocol_end:url.rfind('.')]  # Prendiamo il dominio fino all'ultimo punto
         path_part = url[protocol_end + len(domain_part):]  # Il resto è il percorso
 
         # Sostituisci i trattini nel percorso con gli slash, ma lascia il dominio invariato
