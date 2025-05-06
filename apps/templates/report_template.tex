@@ -99,7 +99,7 @@ Below is the list of URLs found:
     {% if json1.interesting_urls %}
         {% for url in json1.interesting_urls %}
             {% set url_parts = url.split('/')[2] %}
-            \item \href{ {{ url }} }{ {{ url_parts }} }
+            \item \href{ {{ url }} }{\url{ {{ url }} }}
         {% endfor %}
     {% else %}
         \item No URLs found
@@ -117,7 +117,7 @@ Below is the list of URLs found:
         {% if urls %}
             {% for url in urls %}
                 {% set url_parts = url.split('/')[2] %}
-                \item \href{ {{ url }}}{ {{ url_parts }} }
+                \item \href{ {{ url }}}{\url{ {{ url }} }}
             {% endfor %}
         {% else %}
             \item No URLs found
