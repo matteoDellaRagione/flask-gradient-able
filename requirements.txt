@@ -21,4 +21,6 @@ Levenshtein==0.25.1
 # flask_mysqldb
 # psycopg2-binary
 shodan
+requests # da provare in caso manualmente
+unidecode # da provare in caso manualmente
 Unidecode=1.3.8
