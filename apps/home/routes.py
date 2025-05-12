@@ -144,8 +144,20 @@ def linkedinDump():
     verified_emails = domain_search(domain)
     pattern = verified_emails.get('pattern')
     linkedin = linkedinDumper(linkedinUrl)
+
+    #DA PROVARE, IN CASO METTERE SOLO emails = createEmail(pattern,domain,linkedin)   
     
-    emails = createEmail(pattern,domain,linkedin)
+    # Estrai la prima email verificata
+    emails_list = verified_emails.get('emails', [])
+    if emails_list:
+      first_email = emails_list[0].get('value')  
+      if first_email and '@' in first_email:
+          extracted_domain = first_email.split('@')[1]  
+          emails = createEmail(pattern, extracted_domain, linkedin)
+      else:
+          createEmail(pattern,domain,linkedin)  
+    else:
+      createEmail(pattern,domain,linkedin)  
 
     combined_data = {
     "verified_emails": verified_emails,
