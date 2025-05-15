@@ -705,7 +705,8 @@ function report(json1,json2,domain) {
         var urls = json1.interesting_urls;
         $.ajax({
             url: "/search_shodan",
-            method: "GET",
+            method: "POST",
+            contentType: "application/json",
             data: { json: JSON.stringify({ IP: IP, urls: urls }), domain:domain },
             success: function(response) {
                 $('#loading').hide();
