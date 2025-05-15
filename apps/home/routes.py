@@ -59,28 +59,24 @@ def theharvester_status():
 @blueprint.route('/search_shodan', methods=['POST'])
 @login_required
 def search_shodan_route_gowitness():
-    data = request.get_json()  # Assumendo che la richiesta sia in formato JSON
-    json_data = data.get('json')
+    data = request.get_json()  # riceve direttamente JSON come oggetto Python
+    
+    if not data:
+        return render_template('home/sample-page.html', error="Error: Missing JSON")
+
     domain = data.get('domain')
-    if not validateDomain(domain):
-        return render_template('home/sample-page.html',error="Errore: Domain not valid")
-    
-    if not json_data:
-        return render_template('home/sample-page.html',error="Error: Missing Json")
-    
-    # Definire il nome del file, puoi personalizzarlo in base alle tue esigenze
+    if not domain or not validateDomain(domain):
+        return render_template('home/sample-page.html', error="Error: Domain not valid")
+
+    ips = data.get('IP', [])
+    urls = data.get('urls', [])
+
+    # Se vuoi caricare un file JSON associato al dominio
     filename = f"/tmp/{domain}_shodan.json"
     if os.path.isfile(filename):
         with open(filename, 'r') as f:
             shodan_json = json.load(f)
-            return shodan_json
-
-    try:
-        json_obj = json.loads(json_data)
-        ips = json_obj.get('IP', [])
-        urls = json_obj.get('urls', [])
-    except json.JSONDecodeError:
-        return jsonify({"error": "Invalid JSON data"}), 400
+        return jsonify(shodan_json)
 
     results = []
     total_ports_80 = 0
@@ -130,7 +126,7 @@ def search_shodan_route_gowitness():
     # Scrivere il dizionario nel file JSON
     with open(filename, 'w') as json_file:
         json.dump(final_result, json_file, indent=4)
-    return final_result
+    return jsonify(final_result)
 
 @blueprint.route('/linkedinDump',methods=['GET'])
 @login_required
