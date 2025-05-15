@@ -707,7 +707,7 @@ function report(json1,json2,domain) {
             url: "/search_shodan",
             method: "POST",
             contentType: "application/json",
-            data: { JSON.stringify({ IP: IP, urls: urls }), domain:domain },
+            data: JSON.stringify({ IP: IP, urls: urls, domain: domain }),
             success: function(response) {
                 $('#loading').hide();
                 $('#vulns').show();
