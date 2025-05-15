@@ -56,11 +56,12 @@ def theharvester_status():
     else:
         return jsonify({"status": "processing"})
 
-@blueprint.route('/search_shodan', methods=['GET'])
+@blueprint.route('/search_shodan', methods=['POST'])
 @login_required
 def search_shodan_route_gowitness():
-    json_data = request.args.get('json')
-    domain = request.args.get('domain')
+    data = request.get_json()  # Assumendo che la richiesta sia in formato JSON
+    json_data = data.get('json')
+    domain = data.get('domain')
     if not validateDomain(domain):
         return render_template('home/sample-page.html',error="Errore: Domain not valid")
     
