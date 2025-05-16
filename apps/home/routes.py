@@ -48,8 +48,13 @@ def theharvester_status():
         theharvester_json['hosts'] = clean_hosts(theharvester_json['hosts'])
         dnsrecon_json = dnsrecon(domain)
         host_json = host(domain)
-        shodan_json = domainShodan(domain)  
-        # Unisci i JSON
+        
+        base_domain = extract_base_domain(domain)        
+        org_name = extract_org_name(domain)
+    
+        shodan_json = domainShodan(base_domain)
+        shodanOrg_json = shodanOrg(org_name)
+
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json)
         return (combined_json)
 
