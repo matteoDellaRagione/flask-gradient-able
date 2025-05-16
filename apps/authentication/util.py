@@ -493,20 +493,30 @@ def domainShodan(domain):
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     info = api.info()
-    print(info)
     try:
         query = f'hostname:"*.{domain}"'
         result = api.search(query)
         all_hostnames = []
+        all_ips = []
+        print(result)
         matches = result.get("matches", [])
         if matches:       
             for match in matches:
             # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
                 hostnames = match.get("hostnames", [])
+                ip = match.get("ip_str")
+                if ip:
+                    all_ips.append(ip)
             # Stampa gli hostnames per ogni elemento di "matches"
-            for hostname in hostnames:
-                all_hostnames.append(hostname)
-            json = {"hostnames": all_hostnames}
+                for hostname in hostnames:
+                    all_hostnames.append(hostname)
+
+            json = {
+            "ips": all_ips,
+            "hostnames": all_hostnames
+            }
+            print("Domain:")
+            print(json)
             return json
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
@@ -516,7 +526,6 @@ def shodanOrg(org):
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
     info = api.info()
-    print(info)
     try:
         query = f'org:"{org}"'
         result = api.search(query)
@@ -526,17 +535,16 @@ def shodanOrg(org):
         if matches:
             for match in matches:
                 hostnames = match.get("hostnames", [])
-                for hostname in hostnames:
-                    all_hostnames.append(hostname)
-        if matches:
-            for match in matches:
                 ip = match.get("ip_str")
                 if ip:
                     all_ips.append(ip)
+                for hostname in hostnames:
+                    all_hostnames.append(hostname)
             json = {
             "ips": all_ips,
             "hostnames": all_hostnames
             }
+            print(json)
             return json
         else:
             return jsonify({'error': 'No informations found from shodanOrg'})
