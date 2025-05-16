@@ -16,8 +16,19 @@ import io
 import time
 import sys
 import requests
+from urllib.parse import urlparse
+import tldextract
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
 
+def extract_base_domain(domain):
+    # Usa tldextract per separare subdomain, domain e suffix
+    extracted = tldextract.extract(domain)
+    return extracted.domain + "." + extracted.suffix
+
+def extract_org_name(domain):
+    # Restituisce solo il nome del dominio, es: "juventus"
+    extracted = tldextract.extract(domain)
+    return extracted.domain
 
 def validateDomain(domain):
     if domain and re.match(r'^[a-zA-Z0-9.-]+$', domain):
