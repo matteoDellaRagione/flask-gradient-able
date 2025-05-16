@@ -13,6 +13,7 @@ import shodan
 import concurrent.futures
 import csv
 import io
+import time
 import sys
 import requests
 # Inspiration -> https://www.vitoshacademy.com/hashing-passwords-in-python/
@@ -519,18 +520,26 @@ def shodanOrg(org):
     try:
         query = f'org:"{org}"'
         result = api.search(query)
+        all_ips = []
         all_hostnames = []
         matches = result.get("matches", [])
-        print(matches)
         if matches:
             for match in matches:
-            # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
                 hostnames = match.get("hostnames", [])
-            # Stampa gli hostnames per ogni elemento di "matches"
-            for hostname in hostnames:
-                all_hostnames.append(hostname)
-            json = {"hostnames": all_hostnames}
+                for hostname in hostnames:
+                    all_hostnames.append(hostname)
+        if matches:
+            for match in matches:
+                ip = match.get("ip_str")
+                if ip:
+                    all_ips.append(ip)
+            json = {
+            "ips": all_ips,
+            "hostnames": all_hostnames
+            }
             return json
+        else:
+            return jsonify({'error': 'No informations found from shodanOrg'})
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
 
