@@ -515,8 +515,6 @@ def domainShodan(domain):
             "ips": all_ips,
             "hostnames": all_hostnames
             }
-            print("Domain:")
-            print(json)
             return json
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
@@ -544,7 +542,6 @@ def shodanOrg(org):
             "ips": all_ips,
             "hostnames": all_hostnames
             }
-            print(json)
             return json
         else:
             return jsonify({'error': 'No informations found from shodanOrg'})
