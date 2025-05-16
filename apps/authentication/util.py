@@ -510,6 +510,30 @@ def domainShodan(domain):
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
 
+def shodanOrg(org):
+    with open('/ApiKeys/shodan.txt', 'r') as file:
+        api_key = file.read().strip()
+    api = shodan.Shodan(api_key)
+    info = api.info()
+    print(info)
+    try:
+        query = f'org:"{org}"'
+        result = api.search(query)
+        all_hostnames = []
+        matches = result.get("matches", [])
+        print(matches)
+        if matches:
+            for match in matches:
+            # Accedi alla lista di hostnames all'interno di ciascun elemento di "matches"
+                hostnames = match.get("hostnames", [])
+            # Stampa gli hostnames per ogni elemento di "matches"
+            for hostname in hostnames:
+                all_hostnames.append(hostname)
+            json = {"hostnames": all_hostnames}
+            return json
+    except shodan.APIError as e:
+        return jsonify({'error': str(e)}), 500
+
 def add_if_not_null(dictionary, key, value):
         if value is not None:
             dictionary[key] = value
