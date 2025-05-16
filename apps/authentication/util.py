@@ -161,11 +161,11 @@ def domain2IP(json_data):
     json_data['numResolvedHosts'] = len(resolved_hosts)
     return json_data
 
-def merge_json(json1, json2, json3, json4):
+def merge_json(json1, json2, json3, json4, json5):
     merged = {}
 
     # Unisci indirizzi
-    indirizzi_set = set(json1.get('IP', [])) | set(json2.get('IP', [])) | set(json3.get('ips', [])) | set(json1.get('mail server', []))
+    indirizzi_set = set(json1.get('IP', [])) | set(json2.get('IP', [])) | set(json3.get('ips', [])) | set(json1.get('mail server', [])) | set(json5.get('ips', [])) | set(json4.get('ips', []))
     merged['IP'] = list(indirizzi_set)
 
     # Unisci server mail
@@ -176,8 +176,8 @@ def merge_json(json1, json2, json3, json4):
     conf_set = set(json1.get('conf', []))
     merged['conf'] = list(conf_set)
     
-    if json3 is not None and json4 is not None:
-        hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', []))
+    if json3 is not None and json4 is not None and json5 is not None:
+        hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', [])) | set(json5.get('hostnames', []))
         merged['domini'] = list(hosts_set)
         merged['numDomini'] = len(merged['domini'])
     elif json4 is None:
