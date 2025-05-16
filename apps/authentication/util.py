@@ -395,7 +395,6 @@ def linkedinDumper(linkedinUrl):
     f = io.StringIO('\n'.join(csv_lines))
     reader = csv.DictReader(f, delimiter=';')
     data = [row for row in reader]
-    print(data)
 
     #DA PROVARE
     headers = data[0][None]
@@ -498,7 +497,6 @@ def domainShodan(domain):
         result = api.search(query)
         all_hostnames = []
         all_ips = []
-        print(result)
         matches = result.get("matches", [])
         if matches:       
             for match in matches:
