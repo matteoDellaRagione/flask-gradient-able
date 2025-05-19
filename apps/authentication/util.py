@@ -222,6 +222,18 @@ def run_theharvester(domain, output_file):
     
     subprocess.run(command, check=True)
 
+def reverseDNSshodan(IP):
+    with open('/ApiKeys/shodan.txt', 'r') as file:
+        api_key = file.read().strip()
+    api = shodan.Shodan(api_key)
+    try:
+    # Esegui una ricerca host su Shodan
+        host = api.host(IP)
+        return host.get('hostnames', [])
+    except shodan.APIError as e:
+        print(f"Errore API Shodan: {e}")
+        return []
+
 def searchShodan(IP):
     with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
