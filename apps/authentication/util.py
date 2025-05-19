@@ -244,7 +244,7 @@ def fileDNSall(domain, json_data):
     ips = json_data.get("IP", [])
 
     results = []
-     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+    with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
         futures = []
         for ip in ips:
             # Aggiungi un ritardo di 1 secondo prima di ogni richiesta
