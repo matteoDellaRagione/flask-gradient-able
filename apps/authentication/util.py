@@ -234,6 +234,47 @@ def reverseDNSshodan(IP):
         print(f"Errore API Shodan: {e}")
         return []
 
+def fileDNSall(domain, json_data):
+    filename = f"/tmp/{domain}_reverseDNS.json"
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            reverse_json = json.load(f)
+        return jsonify(reverse_json)
+
+    ips = json_data.get("IP", [])
+
+    results = []
+     with concurrent.futures.ThreadPoolExecutor(max_workers=5) as executor:
+        futures = []
+        for ip in ips:
+            # Aggiungi un ritardo di 1 secondo prima di ogni richiesta
+            time.sleep(1.5)
+            futures.append(executor.submit(reverseDNSshodan, ip))
+
+        for future in concurrent.futures.as_completed(futures):
+            try:
+                result = future.result()
+                if result is not None:
+                    results.append(result)
+            except Exception as e:
+                print({"ip": ip, "error": str(e)})
+
+    # Rimuovi duplicati
+    new_domains = list(set(results))
+
+    # Aggiungili al campo 'domini' del JSON iniziale
+    if 'domini' not in json_data:
+        json_data['domini'] = []
+
+    json_data['domini'] = list(set(json_data['domini']) | set(new_domains))
+    json_data['numDomini'] = len(json_data['domini'])
+
+    # Salva il risultato per usi futuri
+    with open(filename, 'w') as f:
+        json.dump(json_data, f, indent=4)
+
+    return json_data
+
 def searchShodan(IP):
     with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
