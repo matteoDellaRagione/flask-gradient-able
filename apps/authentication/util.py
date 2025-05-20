@@ -239,7 +239,7 @@ def fileDNSall(domain, json_data):
     if os.path.isfile(filename):
         with open(filename, 'r') as f:
             reverse_json = json.load(f)
-        return jsonify(reverse_json)
+        return reverse_json
 
     ips = json_data.get("IP", [])
 
@@ -254,8 +254,8 @@ def fileDNSall(domain, json_data):
         for future in concurrent.futures.as_completed(futures):
             try:
                 result = future.result()
-                if result is not None:
-                    results.append(result)
+                if result:
+                    results.extend(result)
             except Exception as e:
                 print({"ip": ip, "error": str(e)})
 
@@ -268,12 +268,36 @@ def fileDNSall(domain, json_data):
 
     json_data['domini'] = list(set(json_data['domini']) | set(new_domains))
     json_data['numDomini'] = len(json_data['domini'])
+    
+    # Aggiungi eventuali nuovi domini a 'interesting_urls' se presenti lì
+    if 'interesting_urls' not in json_data:
+        json_data['interesting_urls'] = []
+
+    for domain in new_domains:
+        for url in json_data['interesting_urls']:
+            if domain in url:
+                break  # già presente
+        else:
+            # Se nessun URL lo contiene, prova ad aggiarne uno "generico"
+            json_data['interesting_urls'].append(f"https://{domain}")
+
+    json_data['interesting_urls'] = list(set(json_data['interesting_urls']))
+    json_data['numUrls'] = len(json_data['interesting_urls'])
+
+    # Ricostruisci il mapping dominio → URL
+    json_data['domain_urls'] = {}
+    for domain in json_data['domini']:
+        matching_urls = [url for url in json_data['interesting_urls'] if domain in url]
+        if matching_urls:
+            json_data['domain_urls'][domain] = matching_urls
+    json_data['numDomain_urls'] = len(json_data['domain_urls'])
 
     # Salva il risultato per usi futuri
     with open(filename, 'w') as f:
         json.dump(json_data, f, indent=4)
 
     return json_data
+
 
 def searchShodan(IP):
     with open('/ApiKeys/shodan.txt', 'r') as file:
@@ -581,7 +605,12 @@ def domainShodan(domain):
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
 
-def shodanOrg(org):
+def shodanOrg(org, domain):
+    filename = f"/tmp/{domain}_shodanOrg.json"
+    if os.path.isfile(filename):
+        with open(filename, 'r') as f:
+            reverse_json = json.load(f)
+        return reverse_json
     with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
     api = shodan.Shodan(api_key)
@@ -600,19 +629,17 @@ def shodanOrg(org):
                     all_ips.append(ip)
                 for hostname in hostnames:
                     all_hostnames.append(hostname)
-            json = {
+            jsons = {
             "ips": all_ips,
             "hostnames": all_hostnames
             }
-            return json
+            with open(filename, 'w') as f:
+                json.dump(jsons, f, indent=4)
+            return jsons
         else:
             return jsonify({'error': 'No informations found from shodanOrg'})
     except shodan.APIError as e:
         return jsonify({'error': str(e)}), 500
-
-def add_if_not_null(dictionary, key, value):
-        if value is not None:
-            dictionary[key] = value
 
 def checkURLgowitness(url):
      # Sostituzione per seguire lo schema di GoWitness
