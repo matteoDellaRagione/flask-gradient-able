@@ -33,9 +33,10 @@ def searchDomain():
     if not os.path.exists(theharvester_output_file):
         theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
         theharvester_thread.start()
+    base_domain = extract_base_domain(domain)
     if not os.path.exists(amass_output_file):
         print("non trovo amass file")
-        amass_thread = Thread(target=run_amass, args=(domain, amass_output_file))
+        amass_thread = Thread(target=run_amass, args=(base_domain, amass_output_file))
         amass_thread.start()
     return render_template('home/index.html', segment='index', domain=domain)
 
@@ -57,7 +58,6 @@ def theharvester_status():
 
         base_domain = extract_base_domain(domain)        
         org_name = extract_org_name(domain)
-        print(org_name+base_domain)
 
         shodan_json = domainShodan(base_domain)
         shodanOrg_json = shodanOrg(org_name, domain)
@@ -68,7 +68,7 @@ def theharvester_status():
         amass_output_file = f"/tmp/{domain}_amass.txt"
         if os.path.exists(amass_output_file):
             print("combino con amass")
-            amass = amass_json(amass_output_file, domain)
+            amass = amass_json(amass_output_file, base_domain)
             combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json, amass)
             combined_json = fileDNSall(domain, combined_json)
         return (combined_json)
