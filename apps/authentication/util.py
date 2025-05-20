@@ -222,6 +222,44 @@ def run_theharvester(domain, output_file):
     
     subprocess.run(command, check=True)
 
+def run_amass(domain, output_file):
+    command = [
+        "amass",
+        "enum", "-passive",
+        "-d", domain,
+        "-o", output_file
+    ]
+    
+    subprocess.run(command, check=True)
+
+def amass_json(file_path, base_domain):
+    domains = set()
+    ips = set()
+
+    with open(file_path, 'r', encoding='utf-8') as f:
+        content = f.read().lower()
+
+        # Estrai IP
+        ips.update(re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", content))
+
+        # Estrai tutti i domini
+        domain_pattern = r"\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b"
+        found_domains = re.findall(domain_pattern, content)
+
+        # Filtro dei domini affiliati
+        base = base_domain.lower()
+        for domain in found_domains:
+            if base in domain:
+                domains.add(domain)
+
+    output = {
+        "domains": sorted(domains),
+        "ips": sorted(ips)
+    }
+
+    return output
+
+
 def reverseDNSshodan(IP):
     with open('/ApiKeys/shodan.txt', 'r') as file:
         api_key = file.read().strip()
