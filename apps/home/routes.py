@@ -29,9 +29,14 @@ def searchDomain():
     if not validateDomain(domain):
         return render_template('home/sample-page.html',error="Error: Domain not valid")
     theharvester_output_file = f"/tmp/{domain}_theharvester.json"
+    amass_output_file = f"/tmp/{domain}_amass.txt"
     if not os.path.exists(theharvester_output_file):
         theharvester_thread = Thread(target=run_theharvester, args=(domain, theharvester_output_file))
         theharvester_thread.start()
+    if not os.path.exists(amass_output_file):
+        print("non trovo amass file")
+        amass_thread = Thread(target=run_amass, args=(domain, amass_output_file))
+        amass_thread.start()
     return render_template('home/index.html', segment='index', domain=domain)
 
 @blueprint.route('/theharvester_status',methods=['GET'])
@@ -48,19 +53,28 @@ def theharvester_status():
         theharvester_json['hosts'] = clean_hosts(theharvester_json['hosts'])
         dnsrecon_json = dnsrecon(domain)
         host_json = host(domain)
-        
+       #shodan_json = domainShodan(domain)
+
         base_domain = extract_base_domain(domain)        
         org_name = extract_org_name(domain)
-    
-        shodan_json = domainShodan(base_domain)
-        shodanOrg_json = shodanOrg(org_name)
+        print(org_name+base_domain)
 
+        shodan_json = domainShodan(base_domain)
+        shodanOrg_json = shodanOrg(org_name, domain)
+        # Unisci i JSON
         combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json)
+        combined_json = fileDNSall(domain, combined_json)
+        print("combino i file normali")
+        amass_output_file = f"/tmp/{domain}_amass.txt"
+        if os.path.exists(amass_output_file):
+            print("combino con amass")
+            amass = amass_json(amass_output_file, domain)
+            combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json, amass)
+            combined_json = fileDNSall(domain, combined_json)
         return (combined_json)
 
     else:
         return jsonify({"status": "processing"})
-
 @blueprint.route('/search_shodan', methods=['POST'])
 @login_required
 def search_shodan_route_gowitness():
