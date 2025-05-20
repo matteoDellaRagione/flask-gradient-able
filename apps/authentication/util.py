@@ -161,56 +161,74 @@ def domain2IP(json_data):
     json_data['numResolvedHosts'] = len(resolved_hosts)
     return json_data
 
-def merge_json(json1, json2, json3, json4, json5):
+def merge_json(json1, json2, json3, json4, json5, json6=None):
     merged = {}
 
-    # Unisci indirizzi
-    indirizzi_set = set(json1.get('IP', [])) | set(json2.get('IP', [])) | set(json3.get('ips', [])) | set(json1.get('mail server', [])) | set(json5.get('ips', [])) | set(json4.get('ips', []))
+    # Unisci indirizzi IP
+    indirizzi_set = set(json1.get('IP', [])) \
+        | set(json2.get('IP', [])) \
+        | set(json3.get('ips', [])) \
+        | set(json1.get('mail server', [])) \
+        | set(json5.get('ips', [])) \
+        | set(json4.get('ips', []))
+    
+    if json6:
+        indirizzi_set |= set(json6.get('ips', []))
+    
     merged['IP'] = list(indirizzi_set)
 
-    # Unisci server mail
+    # Unisci mail server
     mail_set = set(json1.get('mail server', [])) | set(json2.get('mail server', []))
     merged['server mail'] = list(mail_set)
     merged['numServerMail'] = len(merged['server mail'])
 
+    # Configurazioni
     conf_set = set(json1.get('conf', []))
     merged['conf'] = list(conf_set)
     
-    if json3 is not None and json4 is not None and json5 is not None:
-        hosts_set = set(json3.get('hosts', [])) | set(json4.get('hostnames', [])) | set(json5.get('hostnames', []))
-        merged['domini'] = list(hosts_set)
-        merged['numDomini'] = len(merged['domini'])
-    elif json4 is None:
-        hosts_set = set(json3.get('hosts', []))
-        merged['domini'] = list(hosts_set)
-    #aggiungi altra condizione e le numeriche del caso
+    # Domini
+    hosts_set = set()
+    if json3:
+        hosts_set |= set(json3.get('hosts', []))
+    if json4:
+        hosts_set |= set(json4.get('hostnames', []))
+    if json5:
+        hosts_set |= set(json5.get('hostnames', []))
+    if json6:
+        hosts_set |= set(json6.get('domains', []))
     
-    emails_set = set(json3.get('emails', []))
+    merged['domini'] = list(hosts_set)
+    merged['numDomini'] = len(merged['domini'])
+
+    # Email
+    emails_set = set(json3.get('emails', [])) if json3 else set()
     merged['emails'] = list(emails_set)
     merged['numEmail'] = len(merged['emails'])
-    
-    urls_set = set(json3.get('interesting_urls', []))
+
+    # URL interessanti
+    urls_set = set(json3.get('interesting_urls', [])) if json3 else set()
     merged['interesting_urls'] = list(urls_set)
     merged['numUrls'] = len(merged['interesting_urls'])
 
-    merged['domain_urls'] = {}
-    for domain in merged['domini']:
-        # Filtra gli URL che contengono il dominio corrente
-        matching_urls = [url for url in merged['interesting_urls'] if domain in url]
-        if matching_urls:
-            merged['domain_urls'][domain] = matching_urls
-    merged['numDomain_urls'] = len(merged['domain_urls'])
-    
     translated_json = domain2IP(merged)
 
-    # Aggiungi i dati da resolved_host a interesting_urls
+    # Aggiungi i resolved_hosts come URL
     if 'resolved_hosts' in translated_json:
-        resolved_urls = list(translated_json['resolved_hosts'].keys())
+        resolved_urls = [f"https://{host}" for host in translated_json['resolved_hosts'].keys()]
         translated_json['interesting_urls'].extend(resolved_urls)
         translated_json['interesting_urls'] = list(set(translated_json['interesting_urls']))
         translated_json['numUrls'] = len(translated_json['interesting_urls'])
-    
+
+    # Costruisci domain_urls
+    translated_json['domain_urls'] = {}
+    for domain in translated_json['domini']:
+        matching_urls = [url for url in translated_json['interesting_urls'] if domain in url]
+        if matching_urls:
+            translated_json['domain_urls'][domain] = matching_urls
+    translated_json['numDomain_urls'] = len(translated_json['domain_urls'])
+
     return rmDuplicati(translated_json)
+
 
 def run_theharvester(domain, output_file):
     command = [
