@@ -61,20 +61,26 @@ def theharvester_status():
 
         shodan_json = domainShodan(base_domain)
         shodanOrg_json = shodanOrg(org_name, domain)
-        # Unisci i JSON
-        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json)
-        combined_json = fileDNSall(domain, combined_json)
-        print("combino i file normali")
+        
         amass_output_file = f"/tmp/{domain}_amass.txt"
         if os.path.exists(amass_output_file):
             print("combino con amass")
+            file_path = f"/tmp/{domain}_reverseDNS.json"
+            os.remove(file_path)
+            file_path = f"/tmp/{domain}_shodan.json"
+            os.remove(file_path)
             amass = amass_json(amass_output_file, base_domain)
             combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json, amass)
             combined_json = fileDNSall(domain, combined_json)
+            return combined_json
+       
+        combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json)
+        combined_json = fileDNSall(domain, combined_json)
         return (combined_json)
 
     else:
         return jsonify({"status": "processing"})
+
 @blueprint.route('/search_shodan', methods=['POST'])
 @login_required
 def search_shodan_route_gowitness():
