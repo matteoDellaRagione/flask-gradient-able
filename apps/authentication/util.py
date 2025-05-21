@@ -254,21 +254,26 @@ def amass_json(file_path, base_domain):
     domains = set()
     ips = set()
 
+    ipv4_pattern = r"\b(?:\d{1,3}\.){3}\d{1,3}\b"
+    ipv6_pattern = r"\b(?:[a-fA-F0-9]{1,4}:){2,7}[a-fA-F0-9]{1,4}\b"
+    domain_pattern = r"\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b"
+    ansi_escape = re.compile(r'\x1B\[[0-?]*[ -/]*[@-~]')
+
+    base = base_domain.lower()
+
     with open(file_path, 'r', encoding='utf-8') as f:
-        content = f.read().lower()
+        for line in f:
+            line = ansi_escape.sub('', line.strip())  # rimuove i codici ANSI
+            line_lower = line.lower()
 
-        # Estrai IP
-        ips.update(re.findall(r"\b(?:\d{1,3}\.){3}\d{1,3}\b", content))
+            # IPs
+            ips.update(re.findall(ipv4_pattern, line))
+            ips.update(re.findall(ipv6_pattern, line, re.IGNORECASE))
 
-        # Estrai tutti i domini
-        domain_pattern = r"\b(?:[a-z0-9-]+\.)+[a-z]{2,}\b"
-        found_domains = re.findall(domain_pattern, content)
-
-        # Filtro dei domini affiliati
-        base = base_domain.lower()
-        for domain in found_domains:
-            if base in domain:
-                domains.add(domain)
+            # Domains
+            for domain in re.findall(domain_pattern, line_lower):
+                if base in domain:
+                    domains.add(domain)
 
     output = {
         "domains": sorted(domains),
@@ -276,7 +281,6 @@ def amass_json(file_path, base_domain):
     }
 
     return output
-
 
 def reverseDNSshodan(IP):
     with open('/ApiKeys/shodan.txt', 'r') as file:
