@@ -234,7 +234,7 @@ def run_theharvester(domain, output_file):
     command = [
         "theHarvester",
         "-d", domain,
-        "-b", "anubis,baidu,bing,bingapi,certspotter,crtsh,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo",
+        "-b", "baidu,bing,bingapi,certspotter,crtsh,duckduckgo,hackertarget,otx,rapiddns,subdomaincenter,subdomainfinderc99,threatminer,urlscan,yahoo",
         "-f", output_file
     ]
     
