@@ -69,7 +69,8 @@ def theharvester_status():
             if os.path.isfile(file_path):
               os.remove(file_path)
             file_path = f"/tmp/{domain}_shodan.json"
-            os.remove(file_path)
+            if os.path.isfile(file_path):
+              os.remove(file_path)
             amass = amass_json(amass_output_file, base_domain)
             combined_json = merge_json(dnsrecon_json, host_json, theharvester_json, shodan_json, shodanOrg_json, amass)
             combined_json = fileDNSall(domain, combined_json)
