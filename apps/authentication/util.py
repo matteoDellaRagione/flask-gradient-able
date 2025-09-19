@@ -755,3 +755,20 @@ def escape_latex_in_json(data):
         return escape_latex(data)
     else:
         return data
+
+def secDB(data):
+    base_url = "https://secdb.nttzen.cloud/api/v1/feed/sighting?q="
+    for host in data["results"]:
+        for vuln in host.get("vulnerabilities", []):
+            cve_id = vuln.get("vulnerability")
+            if cve_id:
+                query = {"cve_id": cve_id}
+                url = base_url + urllib.parse.quote(json.dumps(query))
+                try:
+                    response = requests.get(url, timeout=10)
+                    response.raise_for_status()
+                    vuln["sighting"] = response.json()
+                except Exception as e:
+                    vuln["sighting"] = {"error": str(e)}
+    return data
+    
