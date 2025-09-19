@@ -101,7 +101,7 @@ def search_shodan_route_gowitness():
     if os.path.isfile(filename):
         with open(filename, 'r') as f:
             shodan_json = json.load(f)
-        return jsonify(shodan_json)
+        return jsonify(secDB(shodan_json))
 
     results = []
     total_ports_80 = 0
