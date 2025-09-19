@@ -66,7 +66,7 @@ def theharvester_status():
         if os.path.exists(amass_output_file):
             print("combino con amass")
             file_path = f"/tmp/{domain}_reverseDNS.json"
-            if os.path.isfile(filename):
+            if os.path.isfile(file_path):
               os.remove(file_path)
             file_path = f"/tmp/{domain}_shodan.json"
             os.remove(file_path)
